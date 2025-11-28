@@ -2,72 +2,139 @@
 
 	.countdownContainer{
 	position: absolute;
-	color: #f7ecad;
+	color: white;
 	top: 50%;
 	left: 50%;
-	transform : translateX(-50%)
-	translateY(-50%);
+	transform: translateX(-50%) translateY(-50%);
 	text-align: center;
-	text-shadow: 3px 1px black;
-	font-family: 'Lobster', cursive;
-	
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+	background: rgba(0, 0, 0, 0.7);
+	backdrop-filter: blur(20px) saturate(180%);
+	-webkit-backdrop-filter: blur(20px) saturate(180%);
+	padding: 60px 80px;
+	border-radius: 24px;
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+	z-index: 10;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.countdownContainer:hover{
+	transform: translateX(-50%) translateY(-50%) translateY(-4px);
+	box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
 }
 
 	#R {
-		color: red;
-		text-shadow: 3px 2px black;
+		color: #dc2626;
 		font-family: 'Mountains of Christmas', cursive;
+		font-weight: 700;
+		font-size: 56px;
+		letter-spacing: 0px;
+		margin-bottom: 8px;
 	}
+
 	#p {
-		color:red;
+		color: #dc2626;
 	}
 	#Hype{
 		float: right;
-    	margin-right:35px;
+    	margin-right: 35px;
     	font-size: 25px;
-    	font-family: 'Mali';
 	}
 	.info {
-		font-size: 80px;	
-	}
-	.time {
-		font-size: 24px;
-		font-family: 'Mountains of Christmas', cursive;
+		font-size: 72px;
 		color: white;
-		text-shadow: 1px 1px black;
+		font-weight: 600;
+		letter-spacing: -2px;
+	}
+
+	.info td{
+		padding: 12px 20px;
+	}
+
+	.time {
+		font-size: 14px;
+		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+		color: rgba(255, 255, 255, 0.7);
+		font-weight: 500;
+		letter-spacing: 1px;
+		text-transform: uppercase;
+		padding-top: 8px;
 	}
 
 
 .topnav{
-	background-color: transparent;
-	height: 40pt;
-	position: center;
+	background: rgba(255, 255, 255, 0.95);
+	backdrop-filter: blur(20px) saturate(180%);
+	-webkit-backdrop-filter: blur(20px) saturate(180%);
+	height: 64px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
 	text-align: center;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 10px 30px rgba(0, 0, 0, 0.05);
+	border-bottom: 1px solid rgba(220, 38, 38, 0.1);
+	z-index: 1000;
+	transition: box-shadow 0.3s ease;
 }
 
-
+.topnav:hover{
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 15px 40px rgba(0, 0, 0, 0.08);
+}
 
 .topnav li{
 	display: inline;
 }
 .topnav a{
-	font-family: georgia;
-	font-size: 20pt;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+	font-size: 15px;
+	font-weight: 500;
 	float: left;
 	text-align: center;
 	width: 25%;
-    min-width: 25%;
-    text-decoration-color: white;
+	min-width: 25%;
+	color: #374151;
+	text-decoration: none;
+	padding: 20px 0;
+	transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	position: relative;
+	letter-spacing: 0.3px;
 }
+
+.topnav a::after{
+	content: '';
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 0;
+	height: 2px;
+	background: linear-gradient(90deg, #dc2626, #16a34a);
+	transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 .topnav a:link{
 	text-decoration: none;
 }
+
 .topnav a:hover{
-    font-family: georgia;
-	font-size: 30pt;
-    max-width: 20%
-	font-weight: bold;
-	background-color: black;
+	color: #dc2626;
+	transform: translateY(-1px);
+}
+
+.topnav a:hover::after{
+	width: 80%;
+}
+
+.topnav a.active{
+	color: #dc2626;
+	font-weight: 600;
+}
+
+.topnav a.active::after{
+	width: 80%;
 }
 
 html{
@@ -79,41 +146,578 @@ html{
     	height: 100%;
     	overflow: hidden;
 		overflow-x: hidden;
-		background-position: center 40pt;
-
+		background-position: center center;
 	}
 
+body{
+	padding-top: 64px;
+	padding-bottom: 0;
+	margin: 0;
+	background: linear-gradient(180deg, #fef2f2 0%, #ffffff 100%);
+	background-attachment: fixed;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+	color: #111827;
+	line-height: 1.6;
+}
+
+body::before {
+	content: '';
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background:
+		radial-gradient(circle at 20% 20%, rgba(220, 38, 38, 0.03) 0%, transparent 50%),
+		radial-gradient(circle at 80% 80%, rgba(22, 163, 74, 0.03) 0%, transparent 50%);
+	pointer-events: none;
+	z-index: 0;
+}
+
+.santaFormContainer{
+	position: absolute;
+	top: 100px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 90%;
+	max-width: 600px;
+	background: rgba(0, 0, 0, 0.7);
+	backdrop-filter: blur(20px) saturate(180%);
+	-webkit-backdrop-filter: blur(20px) saturate(180%);
+	padding: 48px;
+	padding-bottom: 120px;
+	border-radius: 16px;
+	color: white;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+	overflow-y: auto;
+	max-height: calc(100vh - 120px);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+	z-index: 10;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+.santaFormContainer::-webkit-scrollbar {
+	width: 0px;
+	display: none;
+}
+
+.santaFormContainer h1{
+	font-family: 'Mountains of Christmas', cursive;
+	color: #dc2626;
+	font-size: 36px;
+	font-weight: 700;
+	text-align: center;
+	letter-spacing: 0px;
+	margin-top: 0;
+	margin-bottom: 8px;
+}
+
+.santaFormContainer h1::before{
+	content: '';
+}
+
+.santaFormContainer h1::after{
+	content: '';
+}
+
+.santaFormContainer::before{
+	content: 'Send your wishes directly to the North Pole';
+	display: block;
+	text-align: center;
+	font-size: 15px;
+	color: rgba(255, 255, 255, 0.7);
+	margin-bottom: 32px;
+	font-weight: 400;
+}
+
 .form1Container{
-	position: absolute;;
+	position: absolute;
 	color: #f7ecad;
 	top: 50%;
 	left: 50%;
-	transform : translateX(-50%)
-	translateY(-50%);
+	transform: translateX(-50%) translateY(-50%);
 	text-shadow: 3px 1px black;
 	font-family: 'Lobster', cursive;
-
 }
 
 .question{
-	font-size: 20px;
-	color: white;
-
+	font-size: 14px;
+	color: rgba(255, 255, 255, 0.9);
+	font-weight: 500;
+	margin-top: 20px;
+	margin-bottom: 6px;
+	display: block;
 }
 
 .answer{
-	width: 120%;
+	width: 100%;
+	padding: 12px 16px;
+	margin-top: 0;
+	margin-bottom: 20px;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 8px;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+	font-size: 15px;
+	background: rgba(255, 255, 255, 0.1);
+	color: white;
+	transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
 
+.answer:focus{
+	outline: none;
+	border-color: #dc2626;
+	box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
 }
 
 .answer2{
-	height: 300px;
-	width: 120%;
-	text-align: left;
+	height: 140px;
+	width: 100%;
+	padding: 12px 16px;
+	margin-top: 0;
+	margin-bottom: 24px;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 8px;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+	font-size: 15px;
+	resize: vertical;
+	background: rgba(255, 255, 255, 0.1);
+	color: white;
+	transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	line-height: 1.5;
+}
+
+.answer2:focus{
+	outline: none;
+	border-color: #dc2626;
+	box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
 }
 
 .button{
 	text-align: center;
-	width: 121.2%;
-	height: 20px;
+	width: 100%;
+	height: 48px;
+	background: #dc2626;
+	color: white;
+	border: none;
+	border-radius: 8px;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+	font-size: 15px;
+	font-weight: 600;
+	cursor: pointer;
+	margin-top: 8px;
+	margin-bottom: 40px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+	transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.button:hover{
+	background: #b91c1c;
+	transform: translateY(-1px);
+	box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.button:active{
+	transform: translateY(0);
+}
+
+.button::before{
+	content: '';
+}
+
+.button::after{
+	content: '';
+}
+
+.confirmation{
+	background: #dcfce7;
+	padding: 24px;
+	border-radius: 12px;
+	text-align: center;
+	margin-top: 24px;
+	border: 1px solid #86efac;
+}
+
+.confirmation p{
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+	font-size: 16px;
+	color: #166534;
+	font-weight: 500;
+	margin: 0;
+	line-height: 1.5;
+}
+
+.confirmation::before{
+	content: '✓';
+	display: block;
+	font-size: 32px;
+	margin-bottom: 12px;
+	color: #16a34a;
+}
+
+.confirmation::after{
+	content: 'We\'ll make sure Santa gets your letter!';
+	display: block;
+	font-size: 14px;
+	color: #166534;
+	margin-top: 8px;
+	opacity: 0.8;
+}
+
+.blogContainer{
+	position: absolute;
+	top: 100px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 90%;
+	max-width: 800px;
+	color: #111827;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+	overflow-y: auto;
+	max-height: calc(100vh - 120px);
+	padding-bottom: 40px;
+	z-index: 10;
+}
+
+.blogContainer::-webkit-scrollbar {
+	width: 0px;
+	display: none;
+}
+
+.blogContainer {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+.blogPost{
+	background: rgba(0, 0, 0, 0.7);
+	backdrop-filter: blur(20px) saturate(180%);
+	-webkit-backdrop-filter: blur(20px) saturate(180%);
+	padding: 40px;
+	margin-bottom: 24px;
+	border-radius: 16px;
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+	transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.blogPost:hover{
+	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+	transform: translateY(-2px);
+}
+
+.blogPost h2{
+	font-family: 'Mountains of Christmas', cursive;
+	color: #dc2626;
+	font-size: 32px;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 12px;
+	letter-spacing: 0px;
+}
+
+.blogPost h2::before{
+	content: '';
+}
+
+.blogDate{
+	color: rgba(255, 255, 255, 0.7);
+	font-size: 14px;
+	margin-bottom: 8px;
+	font-weight: 500;
+}
+
+.blogDate::before{
+	content: '';
+}
+
+.blogAuthor{
+	font-style: normal;
+	color: #dc2626;
+	font-weight: 500;
+	font-size: 14px;
+	margin-bottom: 20px;
+	display: block;
+}
+
+.blogAuthor::before{
+	content: 'By ';
+	color: rgba(255, 255, 255, 0.7);
+	font-weight: 400;
+}
+
+.blogPost p{
+	line-height: 1.7;
+	font-size: 16px;
+	color: rgba(255, 255, 255, 0.9);
+	margin-bottom: 16px;
+}
+
+.aboutContainer{
+	position: absolute;
+	top: 100px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 90%;
+	max-width: 900px;
+	background: rgba(0, 0, 0, 0.7);
+	backdrop-filter: blur(20px) saturate(180%);
+	-webkit-backdrop-filter: blur(20px) saturate(180%);
+	padding: 48px;
+	padding-bottom: 80px;
+	border-radius: 16px;
+	color: white;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+	overflow-y: auto;
+	max-height: calc(100vh - 120px);
+	border: 1px solid rgba(255, 255, 255, 0.1);
+	box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+	z-index: 10;
+}
+
+.aboutContainer::-webkit-scrollbar {
+	width: 0px;
+	display: none;
+}
+
+.aboutContainer {
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+}
+
+.aboutContainer h1{
+	font-family: 'Mountains of Christmas', cursive;
+	color: #dc2626;
+	font-size: 44px;
+	font-weight: 700;
+	text-align: center;
+	letter-spacing: 0px;
+	margin-top: 0;
+	margin-bottom: 16px;
+}
+
+.aboutContainer h1::before{
+	content: '';
+}
+
+.aboutContainer h1::after{
+	content: '';
+}
+
+.aboutContainer h2{
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+	color: white;
+	font-size: 24px;
+	font-weight: 700;
+	margin-top: 36px;
+	margin-bottom: 16px;
+	letter-spacing: -0.5px;
+	border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+	padding-bottom: 8px;
+}
+
+.aboutContainer h2::before{
+	content: '';
+}
+
+.aboutContainer p{
+	font-size: 16px;
+	line-height: 1.7;
+	color: rgba(255, 255, 255, 0.9);
+	margin-bottom: 16px;
+}
+
+.aboutContainer ul{
+	font-size: 16px;
+	line-height: 1.8;
+	color: rgba(255, 255, 255, 0.9);
+	padding-left: 24px;
+}
+
+.aboutContainer li{
+	margin-bottom: 12px;
+	position: relative;
+}
+
+.aboutContainer li::marker{
+	content: '• ';
+	color: #dc2626;
+}
+
+.aboutContainer strong{
+	color: white;
+	font-weight: 600;
+}
+
+.magicFooter{
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	background: rgba(255, 255, 255, 0.95);
+	backdrop-filter: blur(20px) saturate(180%);
+	-webkit-backdrop-filter: blur(20px) saturate(180%);
+	color: #6b7280;
+	text-align: center;
+	padding: 16px 20px;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+	font-size: 14px;
+	border-top: 1px solid rgba(0, 0, 0, 0.05);
+	box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.05);
+	z-index: 999;
+}
+
+/* Mobile Responsive Design */
+@media screen and (max-width: 768px) {
+	.topnav{
+		height: auto;
+		min-height: 70px;
+	}
+
+	.topnav a{
+		font-size: 18pt;
+		width: 50%;
+		padding: 12px 0;
+	}
+
+	.topnav a:hover{
+		font-size: 20pt;
+	}
+
+	.topnav a::before,
+	.topnav a::after{
+		display: none;
+	}
+
+	body{
+		padding-top: 140px;
+	}
+
+	.countdownContainer{
+		width: 90%;
+		font-size: 14px;
+	}
+
+	.info{
+		font-size: 40px !important;
+	}
+
+	#R{
+		font-size: 32px !important;
+	}
+
+	.time{
+		font-size: 16px !important;
+	}
+
+	.blogContainer{
+		width: 90%;
+		top: 80px;
+		max-height: calc(100vh - 140px);
+	}
+
+	.blogPost h2{
+		font-size: 24px;
+	}
+
+	.aboutContainer{
+		width: 90%;
+		top: 80px;
+		padding: 20px;
+		max-height: calc(100vh - 140px);
+	}
+
+	.aboutContainer h1{
+		font-size: 28px;
+	}
+
+	.aboutContainer h2{
+		font-size: 22px;
+	}
+
+	.aboutContainer p, .aboutContainer ul{
+		font-size: 14px;
+	}
+
+	.santaFormContainer{
+		width: 90%;
+		top: 80px;
+		padding: 20px;
+		max-height: calc(100vh - 140px);
+	}
+
+	.santaFormContainer h1{
+		font-size: 28px;
+	}
+
+	.form1Container{
+		width: 90%;
+		top: 40%;
+	}
+
+	.answer, .answer2{
+		width: 100% !important;
+	}
+
+	.button{
+		width: 100% !important;
+	}
+
+	.confirmation p{
+		font-size: 22px;
+	}
+
+	.magicFooter{
+		font-size: 14px;
+		padding: 10px 15px;
+	}
+}
+
+@media screen and (max-width: 480px) {
+	.topnav a{
+		font-size: 14pt;
+	}
+
+	.topnav a:hover{
+		font-size: 16pt;
+	}
+
+	.info{
+		font-size: 32px !important;
+	}
+
+	#R{
+		font-size: 24px !important;
+	}
+
+	.time{
+		font-size: 14px !important;
+	}
+
+	.blogPost h2{
+		font-size: 20px;
+	}
+
+	.aboutContainer h1{
+		font-size: 24px;
+	}
+
+	.aboutContainer h2{
+		font-size: 18px;
+	}
+
+	.santaFormContainer h1{
+		font-size: 24px;
+	}
+
+	.confirmation p{
+		font-size: 18px;
+	}
+
+	.magicFooter{
+		font-size: 12px;
+		padding: 8px 10px;
+	}
 }

@@ -1,36 +1,73 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-
+<!DOCTYPE html>
 <html>
-<link rel="stylesheet" type="text/css" href="Style.css">
-
-<div class="topnav">
-  <a class="active" href="index.html">Home</a>
-  <a href="writeToSatna.html">Write To Santa</a>
-  <a href="#blog">Blog</a>
-  <a href="#about">About</a>
-</div>
 <head>
-	<title>Write To Santa</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Write To Santa - Christmas Reckoning</title>
+	<link href="https://fonts.googleapis.com/css?family=Mali|Mountains+of+Christmas|Lobster" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="Style.css">
+	<script type="text/javascript" src="snowstorm.js"></script>
 </head>
 <body>
-	<form class="form1Container">
-		<label class="question" for="fname">First name:</label><br>
-  		<input class="answer" type="text" id="fname" name="fname"><br>
+	<div class="topnav">
+		<a href="index.html">Home</a>
+		<a class="active" href="writeToSanta.html">Write To Santa</a>
+		<a href="blog.html">Blog</a>
+		<a href="about.html">About</a>
+	</div>
 
-  		<label class="question" for="lname">Last name:</label><br>
-  		<input class="answer" type="text" id="lname" name="lname"><br>
+	<div class="santaFormContainer">
+		<h1>Write Your Letter to Santa</h1>
+		<form id="santaForm">
+			<label class="question" for="fname">First name:</label><br>
+			<input class="answer" type="text" id="fname" name="fname" required><br>
 
-  		<label class="question" for="wantlist">What Do You Want For Christmas?</label><br>
-  		<input class="answer2" type="text" id="wantlist" name="wantlist"><br>
+			<label class="question" for="lname">Last name:</label><br>
+			<input class="answer" type="text" id="lname" name="lname" required><br>
 
-  		<input class="button" type="submit" value="Send To Santa">
-	
-	</form>
+			<label class="question" for="wantlist">What Do You Want For Christmas?</label><br>
+			<textarea class="answer2" id="wantlist" name="wantlist" required></textarea><br>
 
-  <?php
-echo "Hello World!";
-?> 
+			<input class="button" type="submit" value="Send To Santa">
+		</form>
 
+		<div id="confirmationMessage" style="display: none;" class="confirmation">
+			<p>Thank you for writing to Santa! Your letter has been sent to the North Pole!</p>
+		</div>
+	</div>
+
+	<script>
+		document.getElementById('santaForm').addEventListener('submit', function(e) {
+			e.preventDefault();
+
+			const fname = document.getElementById('fname').value;
+			const lname = document.getElementById('lname').value;
+			const wantlist = document.getElementById('wantlist').value;
+
+			// Store the letter data
+			const letter = {
+				firstName: fname,
+				lastName: lname,
+				wishList: wantlist,
+				date: new Date().toLocaleDateString()
+			};
+
+			// Save to localStorage
+			let letters = JSON.parse(localStorage.getItem('santaLetters') || '[]');
+			letters.push(letter);
+			localStorage.setItem('santaLetters', JSON.stringify(letters));
+
+			// Show confirmation and reset form
+			document.getElementById('santaForm').style.display = 'none';
+			document.getElementById('confirmationMessage').style.display = 'block';
+
+			// Reset after 3 seconds
+			setTimeout(function() {
+				document.getElementById('santaForm').reset();
+				document.getElementById('santaForm').style.display = 'block';
+				document.getElementById('confirmationMessage').style.display = 'none';
+			}, 3000);
+		});
+	</script>
 </body>
 </html>
