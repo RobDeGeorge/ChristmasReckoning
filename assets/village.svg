@@ -1,0 +1,180 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 1440 340" fill="none">
+  <defs>
+    <symbol id="pine" viewBox="0 0 120 230">
+      <path d="M55 176h11v54H55z" fill="#654e35"/>
+      <path d="M60 0 39 53l10-3-24 43 15-3-29 52 20-5L0 195c40 12 80 12 120 0l-31-58 20 5-29-52 15 3-24-43 10 3L60 0Z" fill="#153e32"/>
+      <path d="m60 5 6 34-6 159c-21 0-38-2-55-6l27-48 15-16-17 3 21-42 4-30-11 7L60 5Z" fill="#274e3e"/>
+      <path d="m60 0-17 43 15-9 12 8-10-42Z" fill="#e4e9df"/>
+      <path d="m35 73-8 15 23-7 14 5 23-4-16-3-13-13-8 9-15-2Z" fill="#d0ded4"/>
+      <path d="m29 114-13 24 23-8 15 4 16-7 23 6-12-17-13 4-14-12-10 9-15-3Z" fill="#e4e9df"/>
+      <path d="m19 164-13 27 20-8 11 3 24-10 18 9 30 4-14-23-8 7-18-5-10-9-18 15-22-10Z" fill="#d0ded4"/>
+      <path d="m64 42 4 17M71 93l7 15M77 137l9 15" stroke="#9bba9f" stroke-opacity=".25" stroke-width="2" stroke-linecap="round"/>
+    </symbol>
+    <symbol id="small-pine" viewBox="0 0 60 100">
+      <path d="M27 77h6v23h-6z" fill="#705940"/>
+      <path d="M30 0 13 32h8L6 57h11L0 87q30 10 60 0L43 57h11L39 32h8L30 0Z" fill="#315344"/>
+      <path d="m30 0-9 22 9-5 9 5-9-22ZM12 45l-6 12h11l13-9 13 9h11l-8-13-16-8-18 9ZM11 69 0 87l18-7 12 4 13-5 17 8-11-18-10 6-9-11-9 11-10-6Z" fill="#d0ded4"/>
+    </symbol>
+    <symbol id="window" viewBox="0 0 22 29">
+      <path d="M0 0h22v29H0z" fill="#6d5138"/>
+      <path d="M2 2h18v23H2z" fill="#eabc6b"/>
+      <path d="M4 3h6v9H4zM13 14h6v10h-6z" fill="#ffe0a0"/>
+      <path d="M11 1v25M1 13h20" stroke="#795b3c" stroke-width="2"/>
+      <path d="M-2 27h26v3H-2z" fill="#e9eadd"/>
+    </symbol>
+    <symbol id="lamp" viewBox="0 0 30 78">
+      <ellipse cx="15" cy="16" rx="15" ry="17" fill="#edc47d" fill-opacity=".08"/>
+      <path d="M14 21h3v57h-3zM10 77h12" stroke="#455544" stroke-width="2"/>
+      <path d="M8 7h15l-2 16H10L8 7Z" fill="#ddae60" stroke="#455544" stroke-width="2"/>
+      <path d="M12 9h3v11h-3z" fill="#ffe1a2"/>
+      <path d="m6 7 9-7 10 7H6Z" fill="#455544"/>
+      <path d="m9 5 6-4 6 4H9Z" fill="#e4e9df"/>
+    </symbol>
+  </defs>
+
+  <!-- The quiet foothills keep the skyline transparent. -->
+  <path d="M0 240c142-20 214-8 343 5 182 18 319-37 471-39 208-3 298-14 445 19 73 17 124 15 181 5v110H0V240Z" fill="#87a796"/>
+  <path d="M0 267c172-49 278-14 433-5 201 12 276-32 431-31 196 2 305 31 576-9v118H0v-73Z" fill="#d0ded4"/>
+
+  <!-- Small firs give the village a sense of depth. -->
+  <use href="#small-pine" x="247" y="187" width="37" height="65"/>
+  <use href="#small-pine" x="288" y="204" width="25" height="48"/>
+  <use href="#small-pine" x="604" y="189" width="39" height="68"/>
+  <use href="#small-pine" x="645" y="214" width="24" height="44"/>
+  <use href="#small-pine" x="1168" y="168" width="47" height="82"/>
+  <use href="#small-pine" x="1212" y="206" width="25" height="47"/>
+
+  <!-- A little brick-red cottage. -->
+  <ellipse cx="389" cy="281" rx="64" ry="8" fill="#acc1b0" fill-opacity=".6"/>
+  <path d="M346 223h81v53h-81z" fill="#9a5345"/>
+  <path d="m346 223 41-34 40 34h-81Z" fill="#a66c56"/>
+  <path d="M413 189h9v24h-9z" fill="#9a5345"/>
+  <path d="M411 187h13v5h-13z" fill="#e4e9df"/>
+  <path d="m333 225 54-44 52 44-7 7-45-37-45 37-9-7Z" fill="#f0eee1"/>
+  <path d="m339 228 48-39 47 38" stroke="#bfccba" stroke-width="3" stroke-linecap="round"/>
+  <path d="M346 242h81M346 253h81M346 265h81" stroke="#85493f" stroke-opacity=".45"/>
+  <use href="#window" x="354" y="235" width="17" height="23"/>
+  <use href="#window" x="402" y="235" width="17" height="23"/>
+  <path d="M379 241q9-9 18 0v35h-18v-35Z" fill="#4e6550"/>
+  <path d="M382 244h12v12h-12z" fill="#edc178"/>
+  <circle cx="392" cy="264" r="1.3" fill="#eac174"/>
+  <path d="M377 278h21" stroke="#f5f0e0" stroke-width="4" stroke-linecap="round"/>
+  <path d="M420 177c-9-10 9-12 2-24" stroke="#d7e0d1" stroke-opacity=".3" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- The tall cream house, wrapped in an evergreen garland. -->
+  <ellipse cx="499" cy="281" rx="77" ry="9" fill="#acc1b0" fill-opacity=".65"/>
+  <path d="M446 211h103v66H446z" fill="#c7bf9f"/>
+  <path d="m446 211 51-45 52 45H446Z" fill="#d6ceb2"/>
+  <path d="M520 162h13v35h-13z" fill="#896c56"/>
+  <path d="M517 161h19v5h-19z" fill="#e4e9df"/>
+  <path d="m432 212 65-57 65 57-9 8-56-50-57 50-8-8Z" fill="#f2f0e4"/>
+  <path d="m439 215 58-50 58 50" stroke="#b9cbb8" stroke-width="3" stroke-linecap="round"/>
+  <path d="M446 222h103M446 259h103" stroke="#b5ae8e" stroke-width="2"/>
+  <use href="#window" x="458" y="232" width="22" height="29"/>
+  <use href="#window" x="517" y="232" width="22" height="29"/>
+  <circle cx="497" cy="194" r="10" fill="#71674d"/>
+  <circle cx="497" cy="194" r="7" fill="#f1c77c"/>
+  <path d="M490 194h14M497 187v14" stroke="#71674d" stroke-width="1.5"/>
+  <path d="M488 239q10-10 20 0v38h-20v-38Z" fill="#935149"/>
+  <path d="M491 240h14v13h-14z" fill="#d8bc7a"/>
+  <circle cx="503" cy="264" r="1.5" fill="#eedbaa"/>
+  <path d="M482 237q15-14 31 0" stroke="#385b40" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="488" cy="232" r="1.5" fill="#cf7360"/>
+  <circle cx="497" cy="230" r="1.5" fill="#cf7360"/>
+  <circle cx="507" cy="233" r="1.5" fill="#cf7360"/>
+  <path d="M484 279h29" stroke="#f2f0e4" stroke-width="5" stroke-linecap="round"/>
+  <path d="M527 151c-10-7 7-14 1-22s-2-11 1-17" stroke="#d7e0d1" stroke-opacity=".25" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- A snug green cabin with a warmly lit doorway. -->
+  <ellipse cx="804" cy="284" rx="66" ry="9" fill="#acc1b0" fill-opacity=".7"/>
+  <path d="M761 225h87v53h-87z" fill="#4d6c59"/>
+  <path d="m761 225 43-38 44 38h-87Z" fill="#64806a"/>
+  <path d="M773 192h11v23h-11z" fill="#7c6852"/>
+  <path d="M770 190h17v5h-17z" fill="#e4e9df"/>
+  <path d="m748 227 56-49 56 49-9 6-47-40-47 41-9-7Z" fill="#f2f0e4"/>
+  <path d="m754 231 50-44 51 43" stroke="#b9cbb8" stroke-width="3" stroke-linecap="round"/>
+  <path d="M761 238h87M761 250h87M761 263h87" stroke="#36573f" stroke-opacity=".5"/>
+  <use href="#window" x="770" y="237" width="19" height="25"/>
+  <use href="#window" x="821" y="237" width="19" height="25"/>
+  <path d="M796 240h18v38h-18z" fill="#c59b5f"/>
+  <path d="M799 243h12v15h-12z" fill="#ffe0a0"/>
+  <path d="M805 243v15M799 250h12" stroke="#957648" stroke-width="1.5"/>
+  <circle cx="809" cy="266" r="1.3" fill="#655b3f"/>
+  <path d="M792 280h26" stroke="#f2f0e4" stroke-width="4" stroke-linecap="round"/>
+  <path d="M777 181c-7-9 6-9 2-18" stroke="#d7e0d1" stroke-opacity=".25" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- The village's little red townhouse. -->
+  <ellipse cx="966" cy="274" rx="71" ry="9" fill="#acc1b0" fill-opacity=".6"/>
+  <path d="M918 209h94v60h-94z" fill="#9f574a"/>
+  <path d="m918 209 47-43 47 43h-94Z" fill="#b16d55"/>
+  <path d="M987 170h12v27h-12z" fill="#8c5145"/>
+  <path d="M984 167h18v6h-18z" fill="#e4e9df"/>
+  <path d="m905 212 60-55 61 55-8 7-53-47-52 47-8-7Z" fill="#f2f0e4"/>
+  <path d="m912 216 53-48 54 48" stroke="#b9cbb8" stroke-width="3" stroke-linecap="round"/>
+  <path d="M918 223h94M918 256h94" stroke="#8c4b43" stroke-width="2"/>
+  <use href="#window" x="929" y="230" width="21" height="28"/>
+  <use href="#window" x="980" y="230" width="21" height="28"/>
+  <use href="#window" x="956" y="184" width="17" height="23"/>
+  <path d="M955 232h20v37h-20z" fill="#3f614c"/>
+  <path d="M958 235h14v12h-14z" fill="#ebbf78"/>
+  <circle cx="970" cy="257" r="1.4" fill="#d6bf77"/>
+  <circle cx="965" cy="225" r="6" fill="#385b40"/>
+  <circle cx="965" cy="225" r="3" fill="#9f574a"/>
+  <path d="m961 229 4-2 4 2-2 3-2-2-2 2-2-3Z" fill="#d9b77a"/>
+  <path d="M952 272h26" stroke="#f2f0e4" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- A sleepy cottage at the end of the lane. -->
+  <ellipse cx="1093" cy="268" rx="59" ry="8" fill="#acc1b0" fill-opacity=".6"/>
+  <path d="M1055 222h77v42h-77z" fill="#c3b68f"/>
+  <path d="m1055 222 38-34 39 34h-77Z" fill="#d2c5a4"/>
+  <path d="M1066 193h10v24h-10z" fill="#8b6c51"/>
+  <path d="M1064 191h14v4h-14z" fill="#e4e9df"/>
+  <path d="m1045 222 48-42 49 42-7 7-42-36-42 36-6-7Z" fill="#f2f0e4"/>
+  <path d="m1050 226 43-38 44 38" stroke="#b9cbb8" stroke-width="2.5" stroke-linecap="round"/>
+  <use href="#window" x="1063" y="233" width="17" height="23"/>
+  <use href="#window" x="1110" y="233" width="17" height="23"/>
+  <path d="M1086 235h17v29h-17z" fill="#8e5b47"/>
+  <path d="M1089 238h11v10h-11z" fill="#eac17b"/>
+  <circle cx="1099" cy="255" r="1.3" fill="#e7c68d"/>
+  <path d="M1083 267h23" stroke="#f2f0e4" stroke-width="4" stroke-linecap="round"/>
+
+  <use href="#lamp" x="571" y="218" width="24" height="65"/>
+  <use href="#lamp" x="863" y="218" width="24" height="65"/>
+  <use href="#lamp" x="1028" y="213" width="21" height="60"/>
+
+  <!-- Footpaths disappear into a soft foreground drift. -->
+  <path d="M0 289c103-25 197-19 330 1 141 21 236-4 372-5 177-2 264 17 424-4 124-16 229-13 314 0v59H0v-51Z" fill="#e4e9df"/>
+  <path d="M807 282c-20 15 21 24 37 31s25 17 31 27H756c12-14 52-25 54-32s-27-14-12-26h9Z" fill="#c6d4c7"/>
+  <path d="M496 280c-8 14 6 21 23 28" stroke="#d0ded0" stroke-width="8" stroke-linecap="round"/>
+  <path d="M966 272c-8 12-31 15-36 24" stroke="#d0ded0" stroke-width="7" stroke-linecap="round"/>
+  <path d="M1089 268c-8 12-29 18-51 22" stroke="#d0ded0" stroke-width="6" stroke-linecap="round"/>
+  <path d="M807 284c-7 10 1 16 13 20" stroke="#eef0e6" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Fence posts and snow-covered stones along the lane. -->
+  <path d="M292 277v21m17-19v21m18-18v21m-43-16 52 7m-52-16 52 7M659 276v22m18-23v22m18-22v21m-44-12 51-2m-51 11 51-2" stroke="#809b82" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="m291 276 3 1m14 1 3 1m15 2 3 1m329-7h3m15-1h3m15-1h3" stroke="#f5f2e8" stroke-width="4" stroke-linecap="round"/>
+  <ellipse cx="733" cy="304" rx="7" ry="2" fill="#c4d2c4"/>
+  <ellipse cx="724" cy="306" rx="3" ry="1.5" fill="#c4d2c4"/>
+  <path d="M890 311c6-7 13-7 18-2M382 313c5-5 9-5 14-1M1132 301c6-8 13-8 20-3" stroke="#f5f2e8" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Framing firs, two with little strings of warm lights. -->
+  <use href="#pine" x="-35" y="75" width="132" height="253"/>
+  <use href="#pine" x="47" y="20" width="161" height="309"/>
+  <use href="#pine" x="178" y="139" width="91" height="176"/>
+  <use href="#pine" x="1280" y="44" width="148" height="284"/>
+  <use href="#pine" x="1378" y="115" width="106" height="203"/>
+  <use href="#pine" x="1222" y="158" width="79" height="154"/>
+  <path d="M109 105q20 17 40 5m-59 50q40 23 74 6m-95 59q61 25 121 3" stroke="#ba995d" stroke-width="1.3" stroke-linecap="round"/>
+  <g fill="#f4d38b">
+    <circle cx="111" cy="108" r="2.3"/><circle cx="125" cy="115" r="2.3"/><circle cx="140" cy="114" r="2.3"/>
+    <circle cx="92" cy="163" r="2.5"/><circle cx="109" cy="170" r="2.5"/><circle cx="128" cy="174" r="2.5"/><circle cx="147" cy="172" r="2.5"/><circle cx="163" cy="167" r="2.5"/>
+    <circle cx="72" cy="227" r="2.5"/><circle cx="93" cy="235" r="2.5"/><circle cx="116" cy="241" r="2.5"/><circle cx="140" cy="242" r="2.5"/><circle cx="163" cy="237" r="2.5"/><circle cx="186" cy="230" r="2.5"/>
+  </g>
+  <path d="M1337 121q19 16 36 4m-51 42q34 24 67 7m-88 48q54 27 109 6" stroke="#ba995d" stroke-width="1.3" stroke-linecap="round"/>
+  <g fill="#f4d38b">
+    <circle cx="1339" cy="124" r="2.3"/><circle cx="1352" cy="130" r="2.3"/><circle cx="1367" cy="129" r="2.3"/>
+    <circle cx="1325" cy="170" r="2.5"/><circle cx="1340" cy="178" r="2.5"/><circle cx="1358" cy="182" r="2.5"/><circle cx="1375" cy="179" r="2.5"/><circle cx="1388" cy="174" r="2.5"/>
+    <circle cx="1304" cy="225" r="2.5"/><circle cx="1324" cy="234" r="2.5"/><circle cx="1345" cy="240" r="2.5"/><circle cx="1366" cy="242" r="2.5"/><circle cx="1386" cy="237" r="2.5"/><circle cx="1407" cy="229" r="2.5"/>
+  </g>
+  <path d="M27 324c28-7 47-7 77-1m4 4c24-5 52-6 73-2m1098 1c27-7 51-8 80-3m11 2c23-5 45-7 67-3" stroke="#f3f1e8" stroke-width="8" stroke-linecap="round"/>
+</svg>

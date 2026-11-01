@@ -1,0 +1,83 @@
+.flurry-game {
+  color: #173e35;
+  font-family: inherit;
+}
+
+.flurry-description {
+  max-width: 36rem;
+  margin: 0 0 1.25rem;
+  color: #63736a;
+  font-size: .92rem;
+  line-height: 1.65;
+}
+
+.flurry-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .75rem;
+  padding: 1rem 0;
+  border-top: 1px solid #173e351c;
+}
+
+.flurry-stats > div { text-align: center; }
+.flurry-stats > div + div { border-left: 1px solid #173e351c; }
+.flurry-stat-label { display: block; color: #6b786f; font-size: .65rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; }
+.flurry-stat-number { display: block; margin-top: .15rem; font-size: 1.8rem; font-variant-numeric: tabular-nums; font-weight: 500; line-height: 1.25; }
+.flurry-timeline { height: 4px; overflow: hidden; background: #d9e2d8; border-radius: 5px 5px 0 0; }
+.flurry-timeline > span { display: block; width: 100%; height: 100%; background: #a82e36; transform-origin: left; }
+
+.flurry-field {
+  position: relative;
+  height: 290px;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid #173e3514;
+  border-top: 0;
+  border-radius: 0 0 12px 12px;
+  background: #e8eee5;
+  background-image: radial-gradient(circle at 15% 25%, #fff 0 1.5px, transparent 2px), radial-gradient(circle at 68% 19%, #fff 0 1px, transparent 2px), radial-gradient(circle at 80% 64%, #fff 0 2px, transparent 2.5px), radial-gradient(circle at 37% 72%, #fff 0 1px, transparent 2px);
+  background-size: 117px 127px, 149px 143px, 193px 157px, 179px 163px;
+  outline-offset: 4px;
+}
+
+.flurry-field:focus-visible { outline: 2px solid #a82e36; }
+.flurry-scenery { position: absolute; color: #fff; pointer-events: none; line-height: 1; }
+.flurry-scenery-one { top: 18%; left: 14%; font-size: 2rem; }
+.flurry-scenery-two { top: 16%; right: 18%; font-size: 1.5rem; }
+.flurry-scenery-three { bottom: 20%; right: 12%; font-size: 1rem; }
+.flurry-hill { position: absolute; z-index: -1; width: 115%; height: 90px; border-radius: 50% 50% 0 0; pointer-events: none; }
+.flurry-hill-back { left: -35%; bottom: -32px; background: #f7f4eb99; transform: rotate(6deg); }
+.flurry-hill-front { right: -40%; bottom: -40px; height: 100px; background: #fff9; transform: rotate(-8deg); }
+
+.flurry-overlay { position: absolute; inset: 0; z-index: 2; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.25rem; text-align: center; background: #edf0e8ab; }
+.flurry-overlay[hidden], .flurry-snowflake[hidden], .flurry-hint[hidden] { display: none; }
+.flurry-intro-icon { margin-bottom: .3rem; color: #a82e36; font-size: 2.8rem; line-height: 1; }
+.flurry-result-title { margin: .5rem 0; color: #173e35; font-family: Georgia, 'Times New Roman', serif; font-size: clamp(1.4rem, 4vw, 1.85rem); font-weight: 400; line-height: 1.1; }
+.flurry-result-copy { max-width: 25rem; margin: .2rem 0 1.1rem; color: #617069; font-size: .8rem; line-height: 1.65; }
+.flurry-start { display: inline-flex; align-items: center; justify-content: center; gap: 1.25rem; min-height: 46px; padding: .7rem 1.3rem; border: 1px solid #a82e36; border-radius: 6px; background: #a82e36; color: #fffaf1; cursor: pointer; font: inherit; font-size: .8rem; font-weight: 600; transition: background .15s, transform .15s; }
+.flurry-start:hover { background: #90222b; }
+.flurry-start:active { transform: translateY(1px); }
+.flurry-start:focus-visible, .flurry-snowflake:focus-visible { outline: 3px solid #173e35; outline-offset: 4px; }
+
+.flurry-snowflake { position: absolute; z-index: 3; display: grid; place-items: center; width: 76px; height: 76px; margin: 0; padding: 0; border: 3px solid #fff9; border-radius: 50%; background: #f7f4ebb3; color: #698f8c; box-shadow: 0 3px 16px #173e350c; transform: translate(-50%, -50%); cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; user-select: none; font: inherit; transition: background .12s, border-color .12s, color .12s; }
+.flurry-snowflake > span { font-family: Georgia, 'Times New Roman', serif; font-size: 3.15rem; line-height: 1; pointer-events: none; }
+.flurry-snowflake.flurry-ready { border-color: #c19443; background: #fff7de; color: #a57628; box-shadow: 0 0 0 5px #d9b77a30, 0 5px 18px #173e3510; }
+.flurry-snowflake.flurry-ready:hover { background: #ffedb8; }
+.flurry-hint { position: absolute; right: 0; bottom: 13px; left: 0; color: #526a5a; font-size: .72rem; font-weight: 600; text-align: center; pointer-events: none; }
+.flurry-instructions { display: flex; align-items: baseline; gap: .3rem; flex-wrap: wrap; margin: .85rem 0 0; color: #6b786f; font-size: .7rem; line-height: 1.65; }
+.flurry-instructions > span { color: #a57628; margin-right: .2rem; }
+.flurry-instructions kbd { padding: .03rem .27rem; border: 1px solid #d6dbd0; border-bottom-width: 2px; border-radius: 3px; background: #f7f4eb; color: #173e35; font: inherit; }
+.flurry-status { min-height: 1.5em; margin: .55rem 0 0; color: #173e35; font-size: .74rem; line-height: 1.5; }
+
+@media (max-width: 480px) {
+  .flurry-field { height: 265px; }
+  .flurry-description { font-size: .84rem; margin-bottom: .8rem; }
+  .flurry-stat-label { font-size: .57rem; letter-spacing: .09em; }
+  .flurry-stat-number { font-size: 1.55rem; }
+  .flurry-stats { padding: .8rem 0; }
+  .flurry-result-copy { font-size: .75rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flurry-start, .flurry-snowflake { transition: none; }
+}

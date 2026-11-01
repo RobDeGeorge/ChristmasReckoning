@@ -1,73 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Write To Santa - Christmas Reckoning</title>
-	<link href="https://fonts.googleapis.com/css?family=Mali|Mountains+of+Christmas|Lobster" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="Style.css">
-	<script type="text/javascript" src="snowstorm.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173e35">
+  <meta name="description" content="Write a little letter to Santa. Create a personal Christmas keepsake, save your draft on this device, and print or download your wishes.">
+  <title>Write to Santa · Christmas Reckoning</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="christmas.css">
+  <link rel="stylesheet" href="santa.css">
+  <script src="santa.js" defer></script>
 </head>
-<body>
-	<div class="topnav">
-		<a href="index.html">Home</a>
-		<a class="active" href="writeToSanta.html">Write To Santa</a>
-		<a href="blog.html">Blog</a>
-		<a href="about.html">About</a>
-	</div>
-
-	<div class="santaFormContainer">
-		<h1>Write Your Letter to Santa</h1>
-		<form id="santaForm">
-			<label class="question" for="fname">First name:</label><br>
-			<input class="answer" type="text" id="fname" name="fname" required><br>
-
-			<label class="question" for="lname">Last name:</label><br>
-			<input class="answer" type="text" id="lname" name="lname" required><br>
-
-			<label class="question" for="wantlist">What Do You Want For Christmas?</label><br>
-			<textarea class="answer2" id="wantlist" name="wantlist" required></textarea><br>
-
-			<input class="button" type="submit" value="Send To Santa">
-		</form>
-
-		<div id="confirmationMessage" style="display: none;" class="confirmation">
-			<p>Thank you for writing to Santa! Your letter has been sent to the North Pole!</p>
-		</div>
-	</div>
-
-	<script>
-		document.getElementById('santaForm').addEventListener('submit', function(e) {
-			e.preventDefault();
-
-			const fname = document.getElementById('fname').value;
-			const lname = document.getElementById('lname').value;
-			const wantlist = document.getElementById('wantlist').value;
-
-			// Store the letter data
-			const letter = {
-				firstName: fname,
-				lastName: lname,
-				wishList: wantlist,
-				date: new Date().toLocaleDateString()
-			};
-
-			// Save to localStorage
-			let letters = JSON.parse(localStorage.getItem('santaLetters') || '[]');
-			letters.push(letter);
-			localStorage.setItem('santaLetters', JSON.stringify(letters));
-
-			// Show confirmation and reset form
-			document.getElementById('santaForm').style.display = 'none';
-			document.getElementById('confirmationMessage').style.display = 'block';
-
-			// Reset after 3 seconds
-			setTimeout(function() {
-				document.getElementById('santaForm').reset();
-				document.getElementById('santaForm').style.display = 'block';
-				document.getElementById('confirmationMessage').style.display = 'none';
-			}, 3000);
-		});
-	</script>
+<body class="santa-page">
+  <a class="skip-link" href="#letter-composer">Skip to your letter</a>
+  <header class="santa-header wrap">
+    <a class="brand" href="index.html" aria-label="Christmas Reckoning home"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 2 2.7 6.3 6.8.7-5.1 4.5 1.5 6.7-5.9-3.5-5.9 3.5 1.5-6.7L2.5 9l6.8-.7Z"/></svg></span><span>Christmas<span class="brand-second">Reckoning</span></span></a>
+    <a class="santa-back" href="index.html"><span aria-hidden="true">←</span> Back to the magic</a>
+  </header>
+  <main class="santa-main wrap" id="letter-composer">
+    <div class="santa-heading">
+      <p class="santa-eyebrow"><span aria-hidden="true">✦</span> SPECIAL DELIVERY, FROM THE HEART</p>
+      <h1>A little wish. <br>A little <em>wonder.</em></h1>
+      <p>You’re never too old to write to Santa.<br>Put a little Christmas hope on paper.</p>
+    </div>
+    <div class="santa-layout">
+      <section class="composer-panel" aria-labelledby="composer-heading">
+        <div class="composer-heading"><span class="composer-number" aria-hidden="true">01</span><div><h2 id="composer-heading">Let’s write your letter.</h2><p>No perfect words required. Just yours.</p></div></div>
+        <form id="santaForm">
+          <div class="letter-field"><label for="fname">What should Santa call you?</label><input type="text" id="fname" name="firstName" placeholder="Your first name" autocomplete="given-name" maxlength="60" required></div>
+          <div class="letter-field"><label for="wantlist">What are you wishing for?</label><p id="wishlist-hint" class="field-hint">Big dreams, little wishes, or something you can’t wrap.</p><textarea id="wantlist" name="wishList" rows="5" maxlength="3000" placeholder="This Christmas, I would love…" aria-describedby="wishlist-hint" required></textarea></div>
+          <div class="letter-field"><label for="kindness">A little wish for someone else <span>optional</span></label><textarea id="kindness" name="kindness" rows="3" maxlength="1200" placeholder="And if there’s a little extra magic to spare…"></textarea></div>
+          <button class="santa-button santa-button-primary" id="save-letter" type="submit" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v14H3Zm0 1 9 7 9-7"/></svg> Save my letter <span aria-hidden="true">↗</span></button>
+          <div class="letter-tools"><button class="santa-button santa-button-secondary" id="print-letter" type="button" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 8V3h10v5M7 16H4V9h16v7h-3M7 13h10v8H7Z"/></svg> Print letter</button><button class="santa-button santa-button-secondary" id="download-letter" type="button" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M4 16v5h16v-5"/></svg> Download .txt</button></div>
+          <p id="letter-status" class="letter-status" role="status" aria-live="polite">Your draft saves as you write.</p>
+        </form>
+        <p class="letter-privacy" id="letter-privacy"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 10h12v11H6Zm2 0V6a4 4 0 0 1 8 0v4M12 14v3"/></svg><span>A little keepsake, saved on this device. No letter is sent online.</span></p>
+        <noscript><p class="letter-noscript">Turn on JavaScript to compose, save, print, and download your letter.</p></noscript>
+      </section>
+      <section class="letter-preview-section" aria-label="Live preview of your letter">
+        <div class="preview-label"><span class="preview-dot" aria-hidden="true"></span> YOUR LITTLE CHRISTMAS KEEPSAKE <span class="preview-star" aria-hidden="true">✧</span></div>
+        <div class="paper-stage">
+          <article class="letter-paper" id="letter-preview" aria-label="Your letter to Santa">
+            <div class="paper-top"><div class="paper-heading"><span class="paper-star" aria-hidden="true">✦</span><span>CHRISTMAS<br>CORRESPONDENCE</span></div><div class="santa-postmark" aria-hidden="true"><span>NORTH POLE</span><b>✳</b><span>CHRISTMAS MAIL</span></div></div>
+            <p class="letter-date" id="letter-date"></p>
+            <h2>Dear Santa,</h2>
+            <p class="letter-opening">This Christmas, I’m wishing for…</p>
+            <p class="letter-wishes is-placeholder" id="preview-wishlist">A little something wonderful. Your wishes will appear here as you write.</p>
+            <div id="preview-kindness-section" hidden><p class="letter-opening">And a little wish for someone else…</p><p class="letter-wishes" id="preview-kindness"></p></div>
+            <div class="letter-signoff"><p>With a little Christmas hope,</p><p class="letter-signature is-placeholder" id="preview-name">Your name</p></div>
+            <div class="letter-paper-footer"><span aria-hidden="true">✧</span><p>Some wishes are too lovely to keep to yourself.</p><span aria-hidden="true">✧</span></div>
+          </article>
+        </div>
+        <p class="preview-footnote">For the fridge, the memory box, or a certain someone in red.</p>
+      </section>
+    </div>
+    <div class="santa-closing"><span aria-hidden="true">✧</span><p>There’s a little magic<br>in simply <em>believing.</em></p><span aria-hidden="true">✧</span></div>
+  </main>
+  <footer class="santa-footer wrap"><a href="index.html">Christmas Reckoning <span aria-hidden="true">✦</span></a><p>A cozy corner of the internet, all year round.</p><nav aria-label="Footer navigation"><a href="blog.html">From the North Pole</a><a href="about.html">Santa’s journey</a></nav></footer>
 </body>
 </html>

@@ -1,40 +1,97 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Christmas Reckoning</title>
-	<link href="https://fonts.googleapis.com/css?family=Mali|Mountains+of+Christmas|Lobster" rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="Style.css">
-	<script type="text/javascript" src="snowstorm.js"></script>
-	<script type="text/javascript" src="sparkle.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#183e35">
+  <meta name="description" content="A little Christmas, every day. Count down to Christmas in a snowy village, unwrap daily surprises, grow your ornament collection, and make a little magic.">
+  <meta property="og:title" content="Christmas Reckoning · The most wonderful wait of the year">
+  <meta property="og:description" content="Your cozy corner of Christmas. A live countdown, daily presents, a tree to decorate, and a little snowflake-catching joy.">
+  <meta property="og:type" content="website">
+  <title>Christmas Reckoning · A little closer to Christmas</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500;1,600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="christmas.css">
+  <link rel="stylesheet" href="snow-game.css">
+  <script src="countdown.js" defer></script>
+  <script src="christmas.js" defer></script>
+  <script src="festive.js" defer></script>
+  <script src="snow-game.js" defer></script>
 </head>
 <body>
-	<div class="topnav">
-		<a class="active" href="index.html">Home</a>
-		<a href="writeToSanta.html">Write To Santa</a>
-		<a href="blog.html">Blog</a>
-		<a href="about.html">About</a>
-	</div>
-
-	<table class="countdownContainer">
-		<tr class="info">
-			<td colspan="4" id="R">Christmas Reckoning</td>
-		</tr>
-		<tr class="info">
-			<td id="days">120</td>
-			<td id="hours">4</td>
-			<td id="minutes">12</td>
-			<td id="seconds">22</td>
-		</tr>
-		<tr>
-			<td class="time">Days</td>
-			<td class="time">Hours</td>
-			<td class="time">Minutes</td>
-			<td class="time">Seconds</td>
-		</tr>
-	</table>
-
-	<script type="text/javascript" src="countdown.js"></script>
+  <a class="skip-link" href="#main">Skip to the Christmas magic</a>
+  <svg class="icon-library" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 2 2.7 6.3 6.8.7-5.1 4.5 1.5 6.7-5.9-3.5-5.9 3.5 1.5-6.7L2.5 9l6.8-.7Z"/></symbol>
+    <symbol id="i-snow" viewBox="0 0 24 24"><path d="M12 2v20M3.4 7l17.2 10M3.4 17 20.6 7M8.5 4.5 12 8l3.5-3.5M8.5 19.5 12 16l3.5 3.5M4 11l4.8-1.3L7.5 5M16.5 19l-1.3-4.7L20 13M4 13l4.8 1.3L7.5 19M16.5 5l-1.3 4.7L20 11"/></symbol>
+    <symbol id="i-sound" viewBox="0 0 24 24"><path d="m11 5-6 4H2v6h3l6 4ZM15 8a6 6 0 0 1 0 8m3-11a10 10 0 0 1 0 14"/></symbol>
+    <symbol id="i-expand" viewBox="0 0 24 24"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5"/></symbol>
+    <symbol id="i-share" viewBox="0 0 24 24"><path d="M12 15V2m-4 4 4-4 4 4M7 10H4v11h16V10h-3"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-gift" viewBox="0 0 24 24"><path d="M3 11h18V7H3Zm2 0v10h14V11M12 7v14m0-14S4 8 6 3s6 4 6 4 8 1 6-4-6 4-6 4Z"/></symbol>
+    <symbol id="i-flame" viewBox="0 0 24 24"><path d="M13 2c1 6-5 6-3 10 2-1 3-3 3-3s7 6 4 11C10 26 0 17 7 10c-1 5 3 5 3 5s-4-7 3-13Z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 21 3 12C-3 5 6-1 12 6c6-7 15-1 9 6Z"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><path d="M2 5h20v14H2Zm0 1 10 7L22 6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M6 18 18 6"/></symbol>
+  </defs></svg>
+  <header class="site-header wrap">
+    <a class="brand" href="index.html" aria-label="Christmas Reckoning home"><span class="brand-mark"><svg><use href="#i-star"/></svg></span><span>Christmas<span class="brand-second">Reckoning</span></span></a>
+    <nav class="main-nav" aria-label="Main navigation"><a class="active" href="#countdown">The countdown</a><a href="#daily-magic">Daily magic <span class="nav-dot"></span></a><a href="#play">A little play</a></nav>
+    <button class="button button-small header-share" id="share-open"><svg class="icon"><use href="#i-share"/></svg><span>Spread the cheer</span></button>
+  </header>
+  <main id="main">
+    <section class="hero wrap" id="countdown" aria-labelledby="hero-title" data-scene="evergreen">
+      <div class="hero-sky" aria-hidden="true"><span class="sky-star s1">✧</span><span class="sky-star s2">✦</span><span class="sky-star s3">✧</span><span class="sky-star s4">✦</span><span class="sky-star s5">✧</span><span class="sky-star s6">✧</span><div class="moon"></div></div>
+      <canvas id="snow-canvas" aria-hidden="true"></canvas>
+      <div class="hero-content">
+        <p class="eyebrow" id="hero-eyebrow"><span></span> THE MOST WONDERFUL WAIT OF THE YEAR <span></span></p>
+        <h1 id="hero-title">A little closer to <em>Christmas.</em></h1>
+        <p class="hero-intro">The lights. The laughter. The feeling.<br class="mobile-break"> Let’s make the waiting wonderful.</p>
+        <div class="countdown-clock" aria-hidden="true">
+          <div class="time-unit"><div class="time-value" id="days">—</div><span>Days</span></div><span class="time-colon">:</span>
+          <div class="time-unit"><div class="time-value" id="hours">—</div><span>Hours</span></div><span class="time-colon">:</span>
+          <div class="time-unit"><div class="time-value" id="minutes">—</div><span>Minutes</span></div><span class="time-colon">:</span>
+          <div class="time-unit"><div class="time-value" id="seconds">—</div><span>Seconds</span></div>
+        </div>
+        <p class="sr-only" id="countdown-accessible" role="timer" aria-live="off">Loading the Christmas countdown.</p>
+        <p class="countdown-note" id="countdown-note">Counting down to December 25 · your local time</p>
+        <a class="hero-cta" href="#daily-magic"><svg class="icon"><use href="#i-gift"/></svg> A little surprise is waiting for you <span>↗</span></a>
+      </div>
+      <img class="village" src="assets/village.svg" alt="" fetchpriority="high" width="1440" height="340">
+      <div class="hero-bottom"><span class="village-caption"><span class="live-dot"></span> Somewhere, someone is putting up a tree.</span><div class="scene-controls" aria-label="Set the Christmas mood">
+        <button id="snow-toggle" aria-pressed="true" title="Toggle snowfall"><svg class="icon"><use href="#i-snow"/></svg><span>Snow on</span></button>
+        <button id="sound-toggle" aria-pressed="false" title="Toggle cozy chimes"><svg class="icon"><use href="#i-sound"/></svg><span>Sound off</span></button>
+        <button id="scene-toggle" title="Change village colors" aria-label="Change village colors, current scene Evergreen"><span class="scene-dot"></span><span id="scene-label">Evergreen</span></button>
+        <button id="fullscreen-toggle" class="icon-only" aria-label="Enter fullscreen countdown" title="Fullscreen"><svg class="icon"><use href="#i-expand"/></svg></button>
+      </div></div>
+      <noscript><p class="noscript-note">Enable JavaScript for the live countdown, daily presents, and games. Christmas is December 25 — there’s always a little magic to look forward to.</p></noscript>
+    </section>
+    <div class="wonder-strip wrap"><span>Made for the Christmas people.</span><svg class="icon"><use href="#i-star"/></svg><span>The “is it too early?” people.</span><svg class="icon"><use href="#i-star"/></svg><span>The “just one more song” people.</span></div>
+    <section class="daily-section wrap" id="daily-magic" aria-labelledby="daily-heading">
+      <div class="section-heading"><div><p class="eyebrow">YOUR DAILY LITTLE TRADITION</p><h2 id="daily-heading">Keep the magic <em>going.</em></h2></div><div class="streak-pill"><svg class="icon"><use href="#i-flame"/></svg><span><strong id="streak-count">1</strong> <span id="streak-label">day streak</span></span></div></div>
+      <div class="daily-grid">
+        <article class="daily-card gift-card"><div class="card-kicker"><svg class="icon"><use href="#i-gift"/></svg><span id="gift-status">A PRESENT, JUST FOR YOU</span></div><h3>Good things come<br>in little packages.</h3><p id="gift-copy">A tiny surprise. A new ornament.<br>A reason to feel a little more festive.</p><div class="present-art" aria-hidden="true"><span class="present-spark spark-one">✧</span><span class="present-spark spark-two">✦</span><div class="present-bow bow-left"></div><div class="present-bow bow-right"></div><div class="present-box"><span></span></div><div class="present-lid"><span></span></div><span class="present-tag">for you</span></div><button class="button button-red" id="gift-open">Unwrap today’s present <svg class="icon"><use href="#i-arrow"/></svg></button><span class="card-footnote">One little joy, every day. No peeking.</span></article>
+        <article class="daily-card tree-card"><div class="card-kicker"><svg class="icon"><use href="#i-star"/></svg> YOUR OWN LITTLE EVERGREEN</div><h3>A tree full of memories.</h3><p>Come for the countdown. Stay for the sparkle.</p><div class="collection-tree"><img src="assets/tree.svg" alt="Your Christmas tree" width="240" height="230"><div id="tree-ornaments" aria-label="Collected ornaments on your tree"></div></div><div class="tree-card-bottom"><span><strong id="collection-count">0 / 12</strong> ornaments collected</span><button class="text-button" id="collection-open">My collection <span>↗</span></button></div></article>
+        <article class="daily-card mission-card"><div class="card-kicker"><svg class="icon"><use href="#i-heart"/></svg> A LITTLE GOOD GOES A LONG WAY</div><span class="mission-number" aria-hidden="true">01</span><p class="mission-pretitle">Today’s merry mission</p><h3 id="mission-title">Send a little warmth.</h3><p id="mission-description">Tell someone you’re glad they’re in your life. A tiny message can make a whole day.</p><button class="button mission-button" id="mission-complete" aria-pressed="false"><svg class="icon"><use href="#i-check"/></svg> Consider it done</button><span class="card-footnote" id="mission-status">Small acts. Big Christmas energy.</span></article>
+      </div>
+      <p class="local-note">Your tree and daily magic are saved in this browser. No account. Just Christmas.</p>
+    </section>
+    <section class="play-section wrap" id="play" aria-labelledby="play-heading">
+      <div class="section-heading"><div><p class="eyebrow">WHILE WE WAIT</p><h2 id="play-heading">Take a little <em>joy break.</em></h2></div><span class="section-aside">There’s more to Christmas than counting.</span></div>
+      <div class="play-grid"><article class="flurry-card"><div class="flurry-art" aria-hidden="true"><span>❄</span><span>❄</span><span>✧</span><span>❄</span><div class="snow-hill"></div><div class="snowman"><i></i><b></b><span></span></div></div><div class="flurry-card-content"><span class="tiny-tag">30 SECONDS OF PURE JOY</span><h3>Catch a little<br>Christmas magic.</h3><p>Fast fingers. Falling snowflakes.<br>One very beatable personal best.</p><button class="button button-green" id="game-open">Play snowflake flurry <svg class="icon"><use href="#i-arrow"/></svg></button><span class="game-input-note">Made for mouse, touch & keyboard</span></div></article>
+      <article class="letter-card"><div class="postmark" aria-hidden="true">NORTH POLE<br><span>✳</span><br>EXPRESS POST</div><svg class="icon letter-icon"><use href="#i-mail"/></svg><p class="eyebrow">SPECIAL DELIVERY</p><h3>You’re never too old<br>to write to Santa.</h3><p>Big dreams, little wishes, and a little belief. Put yours on paper.</p><a class="text-button" href="writeToSanta.html">Write your letter <svg class="icon"><use href="#i-arrow"/></svg></a></article></div>
+    </section>
+    <section class="closing-note wrap"><span aria-hidden="true">✧</span><p>Christmas isn’t just a day.<br>It’s all the little things <em>along the way.</em></p><span aria-hidden="true">✧</span></section>
+  </main>
+  <footer class="site-footer wrap"><a class="footer-brand" href="index.html">Christmas Reckoning <span>✦</span></a><p>A cozy corner of the internet, all year round.</p><nav aria-label="Footer navigation"><a href="blog.html">From the North Pole</a><a href="about.html">Santa’s journey</a><button class="text-button" id="how-open">How it works</button></nav></footer>
+  <dialog id="gift-dialog" class="magic-dialog gift-dialog" aria-labelledby="gift-name"><button class="dialog-close" data-close-dialog aria-label="Close present"><svg class="icon"><use href="#i-close"/></svg></button><p class="eyebrow">A LITTLE MAGIC, JUST FOR YOU</p><div id="gift-icon" class="gift-reveal-icon" aria-hidden="true">✦</div><h2 id="gift-name">Your daily present</h2><p id="gift-description"></p><button class="button button-red" data-close-dialog>Lovely. Back to my tree <svg class="icon"><use href="#i-star"/></svg></button></dialog>
+  <dialog id="collection-dialog" class="magic-dialog" aria-labelledby="collection-heading"><button class="dialog-close" data-close-dialog aria-label="Close collection"><svg class="icon"><use href="#i-close"/></svg></button><p class="eyebrow">LITTLE THINGS, COLLECTED WITH JOY</p><h2 id="collection-heading">Your Christmas keepsakes.</h2><p>Open your daily present to find a new ornament. There are twelve little treasures to discover.</p><ul id="collection-list" class="collection-list"></ul><p class="dialog-footnote">Saved on this browser, ready for your next visit.</p></dialog>
+  <dialog id="game-dialog" class="magic-dialog game-dialog" aria-labelledby="game-title"><button class="dialog-close" data-close-dialog aria-label="Close game"><svg class="icon"><use href="#i-close"/></svg></button><p class="eyebrow">A LITTLE WINTER WONDER</p><h2 id="game-title">Snowflake flurry</h2><div id="game-mount"></div></dialog>
+  <dialog id="share-dialog" class="magic-dialog" aria-labelledby="share-heading"><button class="dialog-close" data-close-dialog aria-label="Close sharing"><svg class="icon"><use href="#i-close"/></svg></button><p class="eyebrow">JOY IS BETTER TOGETHER</p><h2 id="share-heading">Send a little Christmas.</h2><p>Know someone who starts celebrating a little early? This one’s for them.</p><label class="sr-only" for="share-message">Countdown message to share</label><textarea id="share-message" rows="4" readonly></textarea><button class="button button-red" id="share-copy"><svg class="icon"><use href="#i-share"/></svg> Copy a little cheer</button><p class="dialog-footnote" id="share-status" role="status">Share the countdown with your favorite Christmas person.</p></dialog>
+  <dialog id="how-dialog" class="magic-dialog" aria-labelledby="how-heading"><button class="dialog-close" data-close-dialog aria-label="Close how it works"><svg class="icon"><use href="#i-close"/></svg></button><p class="eyebrow">WELCOME TO YOUR COZY CORNER</p><h2 id="how-heading">A little magic. No strings.</h2><div class="how-copy"><p><strong>Count down together.</strong> The clock counts to midnight on December 25 in your own time zone. On Christmas Day, we celebrate.</p><p><strong>Make it a little ritual.</strong> Visit on consecutive days to grow your streak. Open a present each day to collect twelve ornaments, and try a small act of festive kindness.</p><p><strong>Settle into the scene.</strong> Change the village colors, turn on cozy chimes, or put the countdown in fullscreen. Sound starts only when you ask.</p><p><strong>Your magic stays with you.</strong> Ornaments, progress, and game records are stored in this browser. Clearing browser data resets them; they don’t sync between devices. If storage is unavailable, progress lasts for this visit.</p></div><button class="button button-green" data-close-dialog>Let’s make some magic</button></dialog>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <div id="confetti" aria-hidden="true"></div>
 </body>
 </html>
