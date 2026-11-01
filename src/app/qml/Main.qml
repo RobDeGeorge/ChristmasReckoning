@@ -19,7 +19,17 @@ ApplicationWindow {
     palette.toolTipText: Theme.text
 
     // The simulation always describes the Christmas the countdown is counting towards.
-    CountdownClock { id: appClock }
+    CountdownClock {
+        id: appClock
+        onChanged: {
+            const page = Platform.page === "mission-control" ? qsTr("North Pole Mission Control")
+                                                              : qsTr("Christmas Reckoning");
+            const lead = isChristmas ? qsTr("Merry Christmas!")
+                       : days > 0 ? (days === 1 ? qsTr("1 day until Christmas") : qsTr("%1 days until Christmas").arg(days))
+                       : qsTr("%1h %2m until Christmas").arg(hours).arg(minutes);
+            Platform.setDocumentTitle(lead + " · " + page);
+        }
+    }
     Binding { target: Mission; property: "year"; value: appClock.year }
 
     Component {

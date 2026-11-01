@@ -89,3 +89,11 @@ target_link_libraries(christmasreckoning PRIVATE
 if(NOT MSVC)
     target_compile_options(christmasreckoning PRIVATE -Wall -Wextra)
 endif()
+
+if(EMSCRIPTEN)
+    # Smallest code; the app only decodes JPEG (Earth imagery), PNG (built in) and SVG (formulas).
+    target_link_options(christmasreckoning PRIVATE -Oz)
+    qt_import_plugins(christmasreckoning
+        INCLUDE_BY_TYPE imageformats Qt::QJpegPlugin Qt::QSvgPlugin
+    )
+endif()

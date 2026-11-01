@@ -16,7 +16,7 @@ Item {
     id: page
     signal back()
 
-    readonly property bool sideBySide: width >= 900 && width > height * 1.15
+    readonly property bool sideBySide: width >= 640 && width > height * 1.15
     readonly property bool phone: width < 600
 
     // Simulation clock --------------------------------------------------------------------------------

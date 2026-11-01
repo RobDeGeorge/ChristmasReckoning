@@ -162,6 +162,14 @@ void downloadText(const QString &fileName, const QString &text, const QString &m
     val::global("URL").call<void>("revokeObjectURL", url);
 }
 
+void setDocumentTitle(const QString &title)
+{
+    const std::string value = title.toStdString();
+    val document = val::global("document");
+    if (document["title"].as<std::string>() != value)
+        document.set("title", value);
+}
+
 void installHashListener(Platform *platform)
 {
     g_hashTarget = platform;

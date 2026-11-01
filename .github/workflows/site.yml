@@ -46,6 +46,27 @@ jobs:
       - name: Test
         run: ctest --test-dir build --output-on-failure
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Formulas are up to date
+        # The console formulas are typeset to SVG at development time and committed; make sure they
+        # still match the TeX in the code.
+        run: |
+          npm ci --prefix tools
+          build/src/tools/cr-report --formulas > formulas.json
+          node tools/formulas/render.cjs formulas.json assets/formulas
+          git diff --exit-code --stat -- assets/formulas
+
+      - name: Static summary for the HTML fallback
+        run: build/src/tools/cr-report > summary.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: summary
+          path: summary.json
+
   wasm:
     name: WebAssembly build + smoke test
     needs: test
@@ -95,8 +116,12 @@ jobs:
             -DCR_BUILD_TESTS=OFF
           cmake --build build
 
+      - uses: actions/download-artifact@v4
+        with:
+          name: summary
+
       - name: Package
-        run: python3 tools/web/package.py --build build --out dist
+        run: python3 tools/web/package.py --build build --out dist --summary summary.json
 
       - uses: actions/setup-node@v4
         with:

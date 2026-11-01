@@ -79,6 +79,8 @@ void downloadText(const QString &fileName, const QString &text, const QString &)
     qInfo("saved %s", qPrintable(file.fileName()));
 }
 
+void setDocumentTitle(const QString &) {}
+
 void installHashListener(Platform *) {}
 
 } // namespace host

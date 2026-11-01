@@ -18,7 +18,10 @@ const MIME = {
 const VIEWPORTS = {
   phone: { width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true },
   laptop: { width: 1366, height: 768, deviceScaleFactor: 1 },
-  desktop: { width: 1680, height: 1000, deviceScaleFactor: 1 }
+  desktop: { width: 1680, height: 1000, deviceScaleFactor: 1 },
+  smallLaptop: { width: 1280, height: 720, deviceScaleFactor: 1 },
+  phoneLandscape: { width: 844, height: 390, deviceScaleFactor: 2, isMobile: true, hasTouch: true },
+  og: { width: 1200, height: 630, deviceScaleFactor: 1 }
 };
 
 // name, viewport, hash/query, wait ms, optional action
@@ -34,7 +37,11 @@ const SHOTS = [
   ['console-fido-phone', 'phone', '/?now=2026-12-24T20:00:00Z#/mission-control/fido', 3000],
   ['console-windows-laptop', 'laptop', '/?now=2026-12-24T20:00:00Z#/mission-control/windows', 3000],
   ['scenario-phone', 'phone', '/#/mission-control/scenario', 3000],
-  ['mission-preview-laptop', 'laptop', '/#/mission-control', 9000]
+  ['mission-preview-laptop', 'laptop', '/#/mission-control', 9000],
+  ['countdown-smalllaptop', 'smallLaptop', '/', 1500],
+  ['mission-smalllaptop', 'smallLaptop', '/?now=2026-12-24T20:00:00Z#/mission-control', 4000],
+  ['mission-phone-landscape', 'phoneLandscape', '/?now=2026-12-24T20:00:00Z#/mission-control', 4000],
+  ['og', 'og', '/?now=2026-12-24T21:30:00Z#/mission-control', 5000]
 ];
 
 function serve(root) {

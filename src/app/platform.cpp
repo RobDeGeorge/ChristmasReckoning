@@ -122,3 +122,8 @@ void Platform::downloadText(const QString &fileName, const QString &text, const 
 {
     host::downloadText(fileName, text, mimeType);
 }
+
+void Platform::setDocumentTitle(const QString &title)
+{
+    host::setDocumentTitle(title);
+}
