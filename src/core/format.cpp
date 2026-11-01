@@ -183,6 +183,8 @@ std::string length(double metres, int sig)
         return number(metres * 1e3, sig) + " mm";
     if (a < 1e4)
         return number(metres, sig) + " m";
+    if (a >= 1e9)
+        return count(metres / 1e3, sig) + " km"; // "66 million km" reads better than 6.6×10⁷ km
     return number(metres / 1e3, sig) + " km";
 }
 
@@ -206,6 +208,8 @@ std::string mass(double kg, int sig)
         return number(kg * 1e3, sig) + " g";
     if (a < 1e4)
         return number(kg, sig) + " kg";
+    if (a < 1e9)
+        return number(kg / 1e3, sig) + " t";
     return count(kg / 1e3, sig) + " t";
 }
 

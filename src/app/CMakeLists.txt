@@ -8,6 +8,7 @@ qt_add_qml_module(christmasreckoning
     SOURCES
         astro.h astro.cpp
         countdownclock.h countdownclock.cpp
+        mission.h mission.cpp
         platform.h platform.cpp
     QML_FILES
         qml/Main.qml
@@ -32,6 +33,16 @@ qt_add_shaders(christmasreckoning "shaders"
     NOMSL
     FILES
         shaders/globe.frag
+)
+
+# The simulation's world data and the matching delivery texture are built together by
+# tools/data/build_world.py, so they ship together inside the app.
+qt_add_resources(christmasreckoning "worlddata"
+    PREFIX "/"
+    BASE "${PROJECT_SOURCE_DIR}"
+    FILES
+        "${PROJECT_SOURCE_DIR}/data/world.bin"
+        "${PROJECT_SOURCE_DIR}/data/delivery.png"
 )
 
 file(GLOB cr_font_files CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/assets/fonts/*.ttf")

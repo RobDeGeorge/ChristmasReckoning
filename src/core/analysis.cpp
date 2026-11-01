@@ -332,8 +332,8 @@ Results analyse(const WorldData &world, const Scenario &s)
             F::count(r.children), {"wpp2024"}));
         c.steps.push_back(makeStep(
             "households", "Households with children",
-            R"(H = e \sum_{c} \frac{P_c}{\bar{s}_c}\,\varphi_{c,18})",
-            "H = e × Σ (population ÷ average household size × share of households with a child)",
+            R"(H = e \sum_{c} C_c / \kappa_c)",
+            "H = e × Σ (children ÷ children per household with children), country by country",
             "= " + F::percent(e) + " × " + F::count(world.totalHouseholds()),
             F::count(r.households), {"un-households", "wpp2024"}));
         c.steps.push_back(makeStep(
@@ -343,8 +343,8 @@ Results analyse(const WorldData &world, const Scenario &s)
         c.steps.push_back(makeStep(
             "presents", "Presents", R"(N_{\text{gifts}} = C \times g)", "presents = C × presents per child",
             "= " + F::count(r.children) + " × " + F::number(presentsPerChild, 2), F::count(r.presents), {}));
-        c.comparisons.push_back("Spy magazine's famous 1990 estimate counted " + F::count(kSpyHomes)
-                                + " homes. The real list is " + F::times(r.households / kSpyHomes) + " longer.");
+        c.comparisons.push_back("Spy magazine's famous 1990 estimate counted 91.8 million homes. The real list is "
+                                + F::times(r.households / kSpyHomes) + " longer.");
         c.comparisons.push_back("That is one child for every " + F::number(world.totalPopulation() / std::max(1.0, r.children), 2)
                                 + " people on Earth.");
         c.params = {"eligibility", "presentsPerChild"};
@@ -446,6 +446,16 @@ Results analyse(const WorldData &world, const Scenario &s)
             F::times(v / C::parkerSolarProbeSpeed.si()) + " Parker Solar Probe, the fastest object ever built",
             F::times(v / C::milkyWayEscapeSpeed.si()) + " the speed needed to escape the Milky Way",
             "Laps the Earth in " + F::duration(2 * kPi * radius / v)};
+        c.barTitle = "Speed";
+        c.barUnit = "m/s";
+        c.bars = {{"Concorde", C::concordeCruiseSpeed.si()},
+                  {"Rifle bullet", C::rifleBulletSpeed.si()},
+                  {"Space Station", C::issOrbitalSpeed.si()},
+                  {"Escape velocity", escape},
+                  {"Parker Solar Probe", C::parkerSolarProbeSpeed.si()},
+                  {"Escape the Milky Way", C::milkyWayEscapeSpeed.si()},
+                  {"Santa (average)", r.averageSpeedMps, true},
+                  {"Santa (peak)", v, true}};
         c.params = {"routeQuality", "householdsPerStop", "eligibility", "windowLengthHours", "altitudeM"};
         c.caveat = "The tour estimate assumes households are scattered at random within each 1 km cell. Real "
                    "streets make tours a little shorter; apartment blocks make them much shorter (try "
@@ -499,6 +509,20 @@ Results analyse(const WorldData &world, const Scenario &s)
         r.consoles.push_back(std::move(c));
     }
 
+    std::string halfDeliveredText = "—";
+    {
+        double cumulative = 0;
+        for (const ZoneResult &z : r.zones) {
+            if (cumulative + z.presents >= r.presents / 2 && z.presents > 0) {
+                const double share = (r.presents / 2 - cumulative) / z.presents;
+                const double t = z.startS + z.transitionTimeS + share * z.deliveryTimeS;
+                halfDeliveredText = utcTime(t) + " (over " + z.label + ")";
+                break;
+            }
+            cumulative += z.presents;
+        }
+    }
+
     // LOADMASTER -------------------------------------------------------------------------------------
     {
         Console c;
@@ -525,12 +549,11 @@ Results analyse(const WorldData &world, const Scenario &s)
             "launchmass", "Launch mass", R"(M_0 = M_{\text{sleigh}} + M_{\text{Santa}} + n\,m_r + M_p)",
             "sleigh + Santa + reindeer + presents",
             "= " + F::mass(s[Param::SleighMassKg]) + " + " + F::mass(s[Param::SantaMassKg]) + " + "
-                + F::number(s[Param::ReindeerCount], 2) + " × " + F::mass(s[Param::ReindeerMassKg]) + " + "
+                + F::grouped(s[Param::ReindeerCount]) + " × " + F::mass(s[Param::ReindeerMassKg]) + " + "
                 + F::mass(r.payloadKg),
             F::mass(r.launchMassKg), {"reindeer-mass"}));
         c.comparisons = {"The sack alone is " + F::length(r.sackDiameterM) + " across — the Burj Khalifa is 828 m tall.",
-                         "The sleigh gets lighter all night: by the last time zone it carries "
-                             + F::percent(r.zones.back().presents / std::max(1.0, r.presents)) + " of its load."};
+                         "The sleigh gets lighter all night: half the presents are gone by " + halfDeliveredText + "."};
         c.params = {"giftMassKg", "presentsPerChild", "eligibility", "sleighMassKg"};
         c.caveat = "Parcel density uses the air-cargo volumetric rule (6,000 cm³ per kg). Packed tighter, the "
                    "sack shrinks but drag barely changes.";
@@ -546,7 +569,7 @@ Results analyse(const WorldData &world, const Scenario &s)
         c.question = "Can nine reindeer pull it?";
         c.go = r.reindeerNeeded <= s[Param::ReindeerCount];
         c.status = std::string(c.go ? "GO" : "NO-GO") + " — it takes " + F::count(r.reindeerNeeded)
-            + " reindeer, not " + F::number(s[Param::ReindeerCount], 2) + ".";
+            + " reindeer, not " + F::grouped(s[Param::ReindeerCount]) + ".";
         c.readouts = {{"Thrust needed", F::number(r.dragForceN, 2) + " N"},
                       {"Power needed", F::power(r.dragPowerW)},
                       {"One reindeer", F::power(r.reindeerPowerW)},
@@ -575,6 +598,15 @@ Results analyse(const WorldData &world, const Scenario &s)
                              + F::times(r.reindeerNeeded * s[Param::ReindeerMassKg] / kMoonMassKg) + " the Moon.",
                          "Spy sized the team by pulling force (300 lb each). What limits a fast sleigh is power, P = F·v.",
                          "The drag power is " + F::times(r.dragPowerW / C::solarLuminosity.si()) + " the Sun's entire output."};
+        c.barTitle = "Power";
+        c.barUnit = "W";
+        c.bars = {{"One reindeer", r.reindeerPowerW},
+                  {"The whole team", s[Param::ReindeerCount] * r.reindeerPowerW},
+                  {"Formula 1 car", 7.5e5},
+                  {"Saturn V first stage", 6.0e10},
+                  {"All human energy use", C::worldPrimaryEnergyPerYear.si() / kYear},
+                  {"The Sun", C::solarLuminosity.si()},
+                  {"Santa's sleigh", r.dragPowerW, true}};
         c.params = {"reindeerCount", "reindeerMassKg", "dragCoefficient", "altitudeM", "giftMassKg"};
         c.caveat = "Steady flight only. Accelerating out of each stop (see RETRO) needs vastly more.";
         r.consoles.push_back(std::move(c));
@@ -688,6 +720,15 @@ Results analyse(const WorldData &world, const Scenario &s)
                              + " of the Sun's total output.",
                          "Stopping at every house would take " + F::duration(stopGoEnergy / C::solarLuminosity.si())
                              + " of sunshine."};
+        c.barTitle = "Energy";
+        c.barUnit = "J";
+        c.bars = {{"Hiroshima bomb", 6.3e13},
+                  {"Largest H-bomb (Tsar Bomba)", 2.1e17},
+                  {"Humanity, one year", C::worldPrimaryEnergyPerYear.si()},
+                  {"Chicxulub impact", 4.2e23},
+                  {"Sleigh kinetic energy", r.kineticEnergyJ, true},
+                  {"Drag, whole night", r.dragWorkJ, true},
+                  {"Stop-and-go, whole night", stopGoEnergy, true}};
         c.params = {"altitudeM", "dragCoefficient", "giftMassKg"};
         c.caveat = "Treats the shock as a cylindrical blast. At these energies much of it would leave as light "
                    "and X-rays, so the blast estimate is rough.";
@@ -737,11 +778,19 @@ Results analyse(const WorldData &world, const Scenario &s)
             "milk", "Milk", R"(V = N \times v_{\text{glass}})", "stops × one glass",
             "= " + F::count(r.stops) + " × " + F::number(s[Param::MilkPerStopMl], 3) + " mL",
             F::number(milkM3 / 1000, 2) + " million litres", {"fina-pool"}));
-        c.comparisons = {"Spy's figure was 17,500 g. Following the ground at the bottleneck speed takes "
+        c.comparisons = {"Spy's figure was 17,500.06 g. Following the ground at the bottleneck speed takes "
                              + F::acceleration(r.curvatureGs) + ".",
                          "Burning off the cookies by walking would take longer than recorded history."};
         if (burnTime < 5000 * kYear)
             c.comparisons.back() = "Burning off the cookies by walking would take " + F::duration(burnTime) + ".";
+        c.barTitle = "Acceleration";
+        c.barUnit = "g";
+        c.bars = {{"Roller coaster", 4.0},
+                  {"Sustainable (5 g)", C::humanSustainedGTolerance},
+                  {"Fighter pilot (9 g)", 9.0},
+                  {"Survived crash (Stapp)", 46.2},
+                  {"Santa: hugging the ground", r.curvatureGs, true},
+                  {"Santa: stopping at each house", r.stopGoAccelMps2 / g0, true}};
         c.params = {"cookiesPerStop", "cookieMassG", "milkPerStopMl", "santaMassKg"};
         c.caveat = "Human tolerance: about 5 g for minutes, tens of g for a fraction of a second when strapped in.";
         r.consoles.push_back(std::move(c));
@@ -806,7 +855,8 @@ Results analyse(const WorldData &world, const Scenario &s)
             {"si"}));
         c.steps.push_back(makeStep(
             "gamma", "Time dilation factor", R"(\gamma - 1 = \frac{1}{\sqrt{1-\beta^2}} - 1 \approx \tfrac12\beta^2)",
-            "γ − 1 ≈ ½ β²", "", F::scientific(gammaMinusOne), {"si"}));
+            "γ − 1 ≈ ½ β²", "= ½ × (" + F::scientific(v / C::speedOfLight.si()) + ")²", F::scientific(gammaMinusOne),
+            {"si"}));
         c.steps.push_back(makeStep(
             "lag", "How far Santa's watch falls behind", R"(\Delta\tau = \sum_k (\gamma_k - 1)\, t_k)",
             "Σ (γ − 1) × time at each speed", "moving clocks run slow, so Santa gets less time, not more",
@@ -834,10 +884,10 @@ Results analyse(const WorldData &world, const Scenario &s)
         c.question = "Where did the famous version go wrong?";
         c.go = true;
         c.status = "GO — its conclusion survives; most of its numbers don't.";
-        c.readouts = {{"Homes: 1990 vs now", F::count(kSpyHomes) + " → " + F::count(r.households)},
-                      {"Speed", F::speed(kSpySpeedMps) + " → " + F::speed(v)},
-                      {"g-force", F::acceleration(kSpyGs) + " → " + F::acceleration(r.curvatureGs)},
-                      {"Rudolph lasts", F::duration(kSpyVaporiseS) + " → see THERMAL"}};
+        c.readouts = {{"Homes", "91.8 million → " + F::count(r.households)},
+                      {"Speed", "650 miles/s (" + F::speed(kSpySpeedMps, 4) + ") → " + F::speed(v)},
+                      {"g-force", "17,500.06 g → " + F::acceleration(r.curvatureGs)},
+                      {"Rudolph lasts", "4.26 ms → see THERMAL"}};
         c.comparisons = {
             "Averaging before a non-linear step: spacing homes evenly over all land overstates the route about "
             "three-fold. We sum √(N·A) cell by cell on a 1 km grid.",

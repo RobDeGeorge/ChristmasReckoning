@@ -1,0 +1,635 @@
+{
+  "dataYear": 2026,
+  "population": 8298381748.999992,
+  "children": 2402904757.999995,
+  "households": 1097490115.4805,
+  "pathSumM": 92313782014.3268,
+  "bhhTourKm": 65764338.30700642,
+  "gapKm": 171868.56350615178,
+  "landAreaKm2": 134457898.78233534,
+  "resolution": [
+    {
+      "label": "30″ (~1 km)",
+      "cellArcSeconds": 30,
+      "pathSumM": 92313782014.32683
+    },
+    {
+      "label": "1′ (~2 km)",
+      "cellArcSeconds": 60,
+      "pathSumM": 110302263177.25673
+    },
+    {
+      "label": "2′ (~4 km)",
+      "cellArcSeconds": 120,
+      "pathSumM": 129224669120.29108
+    },
+    {
+      "label": "5′ (~9 km)",
+      "cellArcSeconds": 300,
+      "pathSumM": 154526088481.08194
+    },
+    {
+      "label": "15′ (~28 km)",
+      "cellArcSeconds": 900,
+      "pathSumM": 187663758582.98038
+    },
+    {
+      "label": "30′ (~55 km)",
+      "cellArcSeconds": 1800,
+      "pathSumM": 211610438064.6543
+    },
+    {
+      "label": "1° (~110 km)",
+      "cellArcSeconds": 3600,
+      "pathSumM": 238554409007.23434
+    },
+    {
+      "label": "Uniform over all land",
+      "cellArcSeconds": 0,
+      "pathSumM": 384143482128.60596
+    }
+  ],
+  "zones": [
+    {
+      "utcOffsetHours": 14.0,
+      "households": 1646.914584610343,
+      "children": 4693.706566139478,
+      "blocks": 5,
+      "gapKm": 318.4961753374106,
+      "transitionKm": 9486.759542878615,
+      "topCountries": [
+        "Kiribati"
+      ]
+    },
+    {
+      "utcOffsetHours": 13.75,
+      "households": 59.1019528101716,
+      "children": 136.76191880273709,
+      "blocks": 10,
+      "gapKm": 0.0,
+      "transitionKm": 5402.276389777301,
+      "topCountries": [
+        "New Zealand"
+      ]
+    },
+    {
+      "utcOffsetHours": 13.0,
+      "households": 534237.0448501307,
+      "children": 1279253.3428537264,
+      "blocks": 618,
+      "gapKm": 3517.472311401069,
+      "transitionKm": 1226.7849222588331,
+      "topCountries": [
+        "New Zealand",
+        "Samoa",
+        "Tonga",
+        "Fiji"
+      ]
+    },
+    {
+      "utcOffsetHours": 12.0,
+      "households": 201774.66845808772,
+      "children": 446053.5412556516,
+      "blocks": 897,
+      "gapKm": 12154.779518274903,
+      "transitionKm": 8216.60938458651,
+      "topCountries": [
+        "Fiji",
+        "Russian Federation",
+        "Kiribati",
+        "Marshall Islands"
+      ]
+    },
+    {
+      "utcOffsetHours": 11.0,
+      "households": 1903264.0146969378,
+      "children": 4389393.741174151,
+      "blocks": 2942,
+      "gapKm": 14211.685230578501,
+      "transitionKm": 2618.271669299846,
+      "topCountries": [
+        "Australia",
+        "Solomon Islands",
+        "Russian Federation",
+        "Vanuatu"
+      ]
+    },
+    {
+      "utcOffsetHours": 10.5,
+      "households": 171341.43038097187,
+      "children": 396484.069901569,
+      "blocks": 808,
+      "gapKm": 133.5212941238542,
+      "transitionKm": 26.159368899309833,
+      "topCountries": [
+        "Australia"
+      ]
+    },
+    {
+      "utcOffsetHours": 10.0,
+      "households": 2358954.8876810665,
+      "children": 6043082.677990331,
+      "blocks": 4150,
+      "gapKm": 7434.443267121472,
+      "transitionKm": 4569.092820794754,
+      "topCountries": [
+        "Papua New Guinea",
+        "Australia",
+        "Russian Federation",
+        "Guam"
+      ]
+    },
+    {
+      "utcOffsetHours": 9.5,
+      "households": 24481.502347701084,
+      "children": 56650.1964325803,
+      "blocks": 886,
+      "gapKm": 128.79822114735776,
+      "transitionKm": 7744.391450572784,
+      "topCountries": [
+        "Australia"
+      ]
+    },
+    {
+      "utcOffsetHours": 9.0,
+      "households": 18865378.896985415,
+      "children": 34137119.41702955,
+      "blocks": 4296,
+      "gapKm": 10226.147074949451,
+      "transitionKm": 5662.407945267277,
+      "topCountries": [
+        "Japan",
+        "Republic of Korea",
+        "Dem. People's Republic of Korea",
+        "Indonesia"
+      ]
+    },
+    {
+      "utcOffsetHours": 8.75,
+      "households": 9.500286572669614,
+      "children": 21.983663129157485,
+      "blocks": 26,
+      "gapKm": 2.09097779411394,
+      "transitionKm": 6812.938509236445,
+      "topCountries": [
+        "Australia"
+      ]
+    },
+    {
+      "utcOffsetHours": 8.0,
+      "households": 201548128.2267828,
+      "children": 325704863.85092366,
+      "blocks": 18079,
+      "gapKm": 3625.412428557502,
+      "transitionKm": 270.10002710726565,
+      "topCountries": [
+        "China",
+        "Philippines",
+        "Indonesia",
+        "Malaysia"
+      ]
+    },
+    {
+      "utcOffsetHours": 7.0,
+      "households": 66567271.16838431,
+      "children": 117215750.31418236,
+      "blocks": 6397,
+      "gapKm": 6760.373541233666,
+      "transitionKm": 1627.895076213141,
+      "topCountries": [
+        "Indonesia",
+        "Viet Nam",
+        "Thailand",
+        "Cambodia"
+      ]
+    },
+    {
+      "utcOffsetHours": 6.5,
+      "households": 7739960.414367484,
+      "children": 15781094.948739432,
+      "blocks": 1047,
+      "gapKm": 2482.4660566388507,
+      "transitionKm": 3959.066697228903,
+      "topCountries": [
+        "Myanmar",
+        "Thailand",
+        "China",
+        "India"
+      ]
+    },
+    {
+      "utcOffsetHours": 6.0,
+      "households": 35876392.44376118,
+      "children": 66931087.28045624,
+      "blocks": 2506,
+      "gapKm": 1963.2461268746208,
+      "transitionKm": 6028.870155918532,
+      "topCountries": [
+        "Bangladesh",
+        "China",
+        "Kyrgyzstan",
+        "India"
+      ]
+    },
+    {
+      "utcOffsetHours": 5.75,
+      "households": 4961238.563788957,
+      "children": 9522788.8587185,
+      "blocks": 260,
+      "gapKm": 0.0,
+      "transitionKm": 3180.733028512422,
+      "topCountries": [
+        "Nepal",
+        "India",
+        "China"
+      ]
+    },
+    {
+      "utcOffsetHours": 5.5,
+      "households": 203668778.255344,
+      "children": 433182473.0760148,
+      "blocks": 4925,
+      "gapKm": 1397.4332368420673,
+      "transitionKm": 1379.2622289474652,
+      "topCountries": [
+        "India",
+        "Sri Lanka",
+        "Nepal",
+        "Bangladesh"
+      ]
+    },
+    {
+      "utcOffsetHours": 5.0,
+      "households": 45968778.31004117,
+      "children": 142673162.72926852,
+      "blocks": 11191,
+      "gapKm": 2736.251660087374,
+      "transitionKm": 3861.021702611605,
+      "topCountries": [
+        "Pakistan",
+        "Uzbekistan",
+        "Kazakhstan",
+        "Russian Federation"
+      ]
+    },
+    {
+      "utcOffsetHours": 4.5,
+      "households": 4721603.043417081,
+      "children": 22142707.36508584,
+      "blocks": 918,
+      "gapKm": 25.062125242601564,
+      "transitionKm": 4291.140341602825,
+      "topCountries": [
+        "Afghanistan",
+        "Turkmenistan",
+        "Pakistan",
+        "Tajikistan"
+      ]
+    },
+    {
+      "utcOffsetHours": 4.0,
+      "households": 5363518.832596674,
+      "children": 10256987.583470872,
+      "blocks": 1728,
+      "gapKm": 10553.767266008863,
+      "transitionKm": 3252.515711678651,
+      "topCountries": [
+        "Azerbaijan",
+        "Russian Federation",
+        "United Arab Emirates",
+        "Oman"
+      ]
+    },
+    {
+      "utcOffsetHours": 3.5,
+      "households": 14259464.066722771,
+      "children": 24191303.770092484,
+      "blocks": 2513,
+      "gapKm": 50.89130059979304,
+      "transitionKm": 5075.8296038671115,
+      "topCountries": [
+        "Iran (Islamic Republic of)",
+        "Afghanistan",
+        "Azerbaijan",
+        "Pakistan"
+      ]
+    },
+    {
+      "utcOffsetHours": 3.0,
+      "households": 106537730.99481244,
+      "children": 284485864.8184011,
+      "blocks": 17882,
+      "gapKm": 2570.134356071591,
+      "transitionKm": 3473.6365491252823,
+      "topCountries": [
+        "Ethiopia",
+        "Russian Federation",
+        "United Republic of Tanzania",
+        "Türkiye"
+      ]
+    },
+    {
+      "utcOffsetHours": 2.0,
+      "households": 87149977.93640606,
+      "children": 228489592.67415166,
+      "blocks": 17402,
+      "gapKm": 1876.0575279154511,
+      "transitionKm": 4140.397211799037,
+      "topCountries": [
+        "Egypt",
+        "Democratic Republic of the Congo",
+        "South Africa",
+        "Sudan"
+      ]
+    },
+    {
+      "utcOffsetHours": 1.0,
+      "households": 114091575.51690228,
+      "children": 300883462.66391087,
+      "blocks": 18934,
+      "gapKm": 2783.069091351264,
+      "transitionKm": 1595.4498879860812,
+      "topCountries": [
+        "Nigeria",
+        "Germany",
+        "France",
+        "Algeria"
+      ]
+    },
+    {
+      "utcOffsetHours": 0.0,
+      "households": 40866300.79065165,
+      "children": 117209449.94107588,
+      "blocks": 6597,
+      "gapKm": 9630.998782599143,
+      "transitionKm": 2146.239365022913,
+      "topCountries": [
+        "United Kingdom",
+        "Ghana",
+        "Côte d'Ivoire",
+        "Morocco"
+      ]
+    },
+    {
+      "utcOffsetHours": -1.0,
+      "households": 67784.05502007998,
+      "children": 191433.88873904975,
+      "blocks": 51,
+      "gapKm": 2573.271267415664,
+      "transitionKm": 1790.3014402446859,
+      "topCountries": [
+        "Cabo Verde",
+        "Portugal"
+      ]
+    },
+    {
+      "utcOffsetHours": -2.0,
+      "households": 7806.555601632109,
+      "children": 14166.994432669157,
+      "blocks": 78,
+      "gapKm": 9031.115231532249,
+      "transitionKm": 3381.487072786949,
+      "topCountries": [
+        "Greenland",
+        "Brazil"
+      ]
+    },
+    {
+      "utcOffsetHours": -3.0,
+      "households": 35548481.66604245,
+      "children": 65006271.06377901,
+      "blocks": 13370,
+      "gapKm": 6388.332918808838,
+      "transitionKm": 4304.20123228292,
+      "topCountries": [
+        "Brazil",
+        "Argentina",
+        "Chile",
+        "Paraguay"
+      ]
+    },
+    {
+      "utcOffsetHours": -3.5,
+      "households": 54756.83402809626,
+      "children": 96262.51422139327,
+      "blocks": 284,
+      "gapKm": 14.094604433058011,
+      "transitionKm": 11523.466674100553,
+      "topCountries": [
+        "Canada"
+      ]
+    },
+    {
+      "utcOffsetHours": -4.0,
+      "households": 10413976.846300153,
+      "children": 21598622.45227733,
+      "blocks": 6829,
+      "gapKm": 6357.368931061093,
+      "transitionKm": 6382.505506843243,
+      "topCountries": [
+        "Venezuela (Bolivarian Republic of)",
+        "Bolivia (Plurinational State of)",
+        "Dominican Republic",
+        "Brazil"
+      ]
+    },
+    {
+      "utcOffsetHours": -5.0,
+      "households": 39894259.17832667,
+      "children": 75562844.01513584,
+      "blocks": 10853,
+      "gapKm": 11589.361684062378,
+      "transitionKm": 5996.496255725159,
+      "topCountries": [
+        "United States of America",
+        "Colombia",
+        "Peru",
+        "Canada"
+      ]
+    },
+    {
+      "utcOffsetHours": -6.0,
+      "households": 36054703.766059846,
+      "children": 72283449.90416458,
+      "blocks": 11160,
+      "gapKm": 6170.990669812371,
+      "transitionKm": 329.0548442228193,
+      "topCountries": [
+        "Mexico",
+        "United States of America",
+        "Guatemala",
+        "Honduras"
+      ]
+    },
+    {
+      "utcOffsetHours": -7.0,
+      "households": 4803126.003147814,
+      "children": 9058406.28643731,
+      "blocks": 5806,
+      "gapKm": 3371.9917206846185,
+      "transitionKm": 985.6716230890178,
+      "topCountries": [
+        "United States of America",
+        "Mexico",
+        "Canada"
+      ]
+    },
+    {
+      "utcOffsetHours": -8.0,
+      "households": 6964526.723396685,
+      "children": 13080888.922755755,
+      "blocks": 2030,
+      "gapKm": 6361.57815943708,
+      "transitionKm": 3336.1680218943593,
+      "topCountries": [
+        "United States of America",
+        "Mexico",
+        "Canada",
+        "Chile"
+      ]
+    },
+    {
+      "utcOffsetHours": -9.0,
+      "households": 95249.91056518065,
+      "children": 178477.29404982543,
+      "blocks": 1510,
+      "gapKm": 11184.129019188402,
+      "transitionKm": 3643.9354607221653,
+      "topCountries": [
+        "United States of America",
+        "French Polynesia",
+        "Canada"
+      ]
+    },
+    {
+      "utcOffsetHours": -9.5,
+      "households": 534.226075957889,
+      "children": 1561.0085939489516,
+      "blocks": 9,
+      "gapKm": 72.22929342170505,
+      "transitionKm": 1457.294385457835,
+      "topCountries": [
+        "French Polynesia"
+      ]
+    },
+    {
+      "utcOffsetHours": -10.0,
+      "households": 197964.16459118776,
+      "children": 394053.4306683538,
+      "blocks": 164,
+      "gapKm": 13343.089278923486,
+      "transitionKm": 7580.067442970401,
+      "topCountries": [
+        "United States of America",
+        "French Polynesia",
+        "Cook Islands",
+        "American Samoa"
+      ]
+    },
+    {
+      "utcOffsetHours": -11.0,
+      "households": 5079.025141056911,
+      "children": 14840.911462168291,
+      "blocks": 8,
+      "gapKm": 828.4131566199436,
+      "transitionKm": 7231.075227555279,
+      "topCountries": [
+        "American Samoa",
+        "Niue"
+      ]
+    }
+  ],
+  "imputedCountries": [
+    "American Samoa",
+    "Andorra",
+    "Anguilla",
+    "Antigua and Barbuda",
+    "Aruba",
+    "Australia",
+    "Bahamas",
+    "Bahrain",
+    "Belgium",
+    "Bermuda",
+    "Bonaire, Sint Eustatius and Saba",
+    "British Virgin Islands",
+    "Brunei Darussalam",
+    "Bulgaria",
+    "Cabo Verde",
+    "Cayman Islands",
+    "China, Hong Kong SAR",
+    "China, Macao SAR",
+    "China, Taiwan Province of China",
+    "Cook Islands",
+    "Croatia",
+    "Curaçao",
+    "Cyprus",
+    "Czechia",
+    "Dem. People's Republic of Korea",
+    "Denmark",
+    "Dominica",
+    "Eritrea",
+    "Estonia",
+    "Falkland Islands (Malvinas)",
+    "Faroe Islands",
+    "Finland",
+    "French Guiana",
+    "French Polynesia",
+    "Germany",
+    "Gibraltar",
+    "Greenland",
+    "Grenada",
+    "Guadeloupe",
+    "Guam",
+    "Guernsey",
+    "Holy See",
+    "Iceland",
+    "Isle of Man",
+    "Japan",
+    "Jersey",
+    "Kuwait",
+    "Latvia",
+    "Lebanon",
+    "Libya",
+    "Liechtenstein",
+    "Lithuania",
+    "Luxembourg",
+    "Malta",
+    "Marshall Islands",
+    "Martinique",
+    "Mayotte",
+    "Micronesia (Fed. States of)",
+    "Monaco",
+    "Montserrat",
+    "Netherlands",
+    "New Caledonia",
+    "New Zealand",
+    "Niue",
+    "Northern Mariana Islands",
+    "Norway",
+    "Oman",
+    "Palau",
+    "Republic of Korea",
+    "Réunion",
+    "Saint Barthélemy",
+    "Saint Helena",
+    "Saint Kitts and Nevis",
+    "Saint Martin (French part)",
+    "Saint Pierre and Miquelon",
+    "Saint Vincent and the Grenadines",
+    "San Marino",
+    "Saudi Arabia",
+    "Seychelles",
+    "Singapore",
+    "Sint Maarten (Dutch part)",
+    "Slovakia",
+    "Solomon Islands",
+    "Sri Lanka",
+    "Sweden",
+    "Tokelau",
+    "United Arab Emirates",
+    "United States Virgin Islands",
+    "Wallis and Futuna Islands",
+    "Western Sahara"
+  ],
+  "elapsedSeconds": 109
+}

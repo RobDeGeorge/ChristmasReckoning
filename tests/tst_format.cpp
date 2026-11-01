@@ -65,7 +65,9 @@ private slots:
         QCOMPARE(q(F::speed(1.5e6)), QStringLiteral("1,500 km/s"));
         QCOMPARE(q(F::speed(340)), QStringLiteral("340 m/s"));
         QCOMPARE(q(F::length(90)), QStringLiteral("90 m"));
-        QCOMPARE(q(F::length(1e11)), QStringLiteral("1.0×10⁸ km"));
+        QCOMPARE(q(F::length(1e11)), QStringLiteral("100 million km"));
+        QCOMPARE(q(F::length(6.6e10)), QStringLiteral("66 million km"));
+        QCOMPARE(q(F::mass(16'462'500)), QStringLiteral("16,000 t"));
         QCOMPARE(q(F::mass(2.4e9)), QStringLiteral("2.4 million t"));
         QCOMPARE(q(F::percent(0.81)), QStringLiteral("81%"));
         QCOMPARE(q(F::times(1700)), QStringLiteral("1,700×"));

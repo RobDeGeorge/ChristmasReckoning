@@ -1,2 +1,4 @@
 # Native command-line tools that run at build/package time (never shipped to the browser).
-# cr-report (default-scenario numbers for the static HTML summary) is added in a later milestone.
+add_executable(cr-report cr-report.cpp)
+target_link_libraries(cr-report PRIVATE cr_core Qt6::Core)
+target_compile_definitions(cr-report PRIVATE CR_SOURCE_DIR="${PROJECT_SOURCE_DIR}")

@@ -32,6 +32,13 @@ struct Readout
     std::string value;
 };
 
+struct Bar
+{
+    std::string label;
+    double value = 0;       // SI, in `unit`
+    bool highlight = false; // Santa's own number, as opposed to a yardstick
+};
+
 struct Console
 {
     std::string id;        // url-safe, e.g. "fido"
@@ -45,6 +52,10 @@ struct Console
     std::vector<std::string> comparisons;
     std::vector<std::string> params;  // scenario parameter keys that matter here
     std::string caveat;
+    // Optional log-scale bar chart comparing Santa's number with yardsticks.
+    std::string barTitle;
+    std::string barUnit;
+    std::vector<Bar> bars;
 };
 
 struct ZoneResult

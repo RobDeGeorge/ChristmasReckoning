@@ -61,6 +61,7 @@ struct Country
     double population = 0;
     double children = 0;
     double households = 0;    // households with at least one member under 18
+    double childrenPerHousehold = 0; // κ: children per household with children (latest survey)
     double avgHouseholdSize = 0;
     double shareWithChildren = 0; // φ18: share of households with a member under 18
     int surveyYear = 0;

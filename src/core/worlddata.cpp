@@ -119,6 +119,7 @@ std::optional<WorldData> WorldData::fromBytes(const QByteArray &bytes, QString *
         c.population = o.value(u"population").toDouble();
         c.children = o.value(u"children").toDouble();
         c.households = o.value(u"households").toDouble();
+        c.childrenPerHousehold = o.value(u"childrenPerHousehold").toDouble();
         c.avgHouseholdSize = o.value(u"avgHouseholdSize").toDouble();
         c.shareWithChildren = o.value(u"shareWithChildren").toDouble();
         c.surveyYear = o.value(u"surveyYear").toInt();
@@ -195,6 +196,7 @@ QByteArray WorldData::toBytes() const
                                         {QStringLiteral("population"), c.population},
                                         {QStringLiteral("children"), c.children},
                                         {QStringLiteral("households"), c.households},
+                                        {QStringLiteral("childrenPerHousehold"), c.childrenPerHousehold},
                                         {QStringLiteral("avgHouseholdSize"), c.avgHouseholdSize},
                                         {QStringLiteral("shareWithChildren"), c.shareWithChildren},
                                         {QStringLiteral("surveyYear"), c.surveyYear},
