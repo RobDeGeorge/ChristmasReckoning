@@ -17,7 +17,9 @@ qt_add_qml_module(christmasreckoning
         qml/charts/LineChart.qml
         qml/charts/LogBarChart.qml
         qml/charts/ZoneGantt.qml
+        qml/components/CalendarButton.qml
         qml/components/Formula.qml
+        qml/components/LiveBadge.qml
         qml/components/ParamSlider.qml
         qml/components/PillButton.qml
         qml/components/PlayPauseButton.qml
@@ -29,6 +31,7 @@ qt_add_qml_module(christmasreckoning
         qml/globe/SantaMarker.qml
         qml/mission/ConsoleDetail.qml
         qml/mission/ConsoleTile.qml
+        qml/mission/LiveBanner.qml
         qml/mission/ScenarioDetail.qml
         qml/mission/SidePanel.qml
         qml/mission/SourcesDetail.qml

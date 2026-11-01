@@ -170,6 +170,32 @@ void setDocumentTitle(const QString &title)
         document.set("title", value);
 }
 
+int utcOffsetMinutes(double epochMs)
+{
+    return -val::global("Date").new_(epochMs).call<int>("getTimezoneOffset");
+}
+
+QString localTime(double epochMs)
+{
+    val options = val::object();
+    options.set("hour", std::string("numeric"));
+    options.set("minute", std::string("2-digit"));
+    const val date = val::global("Date").new_(epochMs);
+    return QString::fromStdString(date.call<std::string>("toLocaleTimeString", val::undefined(), options));
+}
+
+QString localDateTime(double epochMs)
+{
+    val options = val::object();
+    options.set("weekday", std::string("short"));
+    options.set("day", std::string("numeric"));
+    options.set("month", std::string("short"));
+    options.set("hour", std::string("numeric"));
+    options.set("minute", std::string("2-digit"));
+    const val date = val::global("Date").new_(epochMs);
+    return QString::fromStdString(date.call<std::string>("toLocaleString", val::undefined(), options));
+}
+
 void installHashListener(Platform *platform)
 {
     g_hashTarget = platform;

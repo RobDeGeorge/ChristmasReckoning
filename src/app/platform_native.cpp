@@ -8,6 +8,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QFile>
+#include <QLocale>
 #include <QStandardPaths>
 
 #include <cmath>
@@ -80,6 +81,23 @@ void downloadText(const QString &fileName, const QString &text, const QString &)
 }
 
 void setDocumentTitle(const QString &) {}
+
+int utcOffsetMinutes(double epochMs)
+{
+    return QDateTime::fromMSecsSinceEpoch(qint64(epochMs)).toLocalTime().offsetFromUtc() / 60;
+}
+
+QString localTime(double epochMs)
+{
+    return QLocale::system().toString(QDateTime::fromMSecsSinceEpoch(qint64(epochMs)).toLocalTime().time(),
+                                      QLocale::ShortFormat);
+}
+
+QString localDateTime(double epochMs)
+{
+    return QLocale::system().toString(QDateTime::fromMSecsSinceEpoch(qint64(epochMs)).toLocalTime(),
+                                      QStringLiteral("ddd d MMM, ") + QLocale::system().timeFormat(QLocale::ShortFormat));
+}
 
 void installHashListener(Platform *) {}
 

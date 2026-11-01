@@ -84,6 +84,9 @@ public:
     // Santa's recent path as [{lat, lon}], oldest first, sampled over `spanMs` ending at `endMs`.
     Q_INVOKABLE QVariantList trail(double endMs, double spanMs, int samples) const;
     Q_INVOKABLE int consoleIndex(const QString &id) const;
+    // The simulation's time zone for a UTC offset (the visitor's), or the nearest one:
+    // {index, label, exact, startMs, endMs, windowOpenMs, windowCloseMs, households, countries}.
+    Q_INVOKABLE QVariantMap zoneForOffset(int offsetMinutes) const;
     Q_INVOKABLE QString exportJson() const;
 
     const cr::WorldData *world() const { return m_world ? &*m_world : nullptr; }

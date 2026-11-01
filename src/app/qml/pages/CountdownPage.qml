@@ -21,6 +21,20 @@ Item {
     readonly property string santaPhase: santa.phase ?? "prelaunch"
     readonly property bool inFlight: santaPhase !== "prelaunch" && santaPhase !== "landed"
     readonly property bool landedToday: santaPhase === "landed" && clock.isChristmas
+    // The live tracker opens two hours before launch and stays open until an hour after landing.
+    readonly property bool liveWindow: clock.nowMs >= Mission.launchMs - 2 * 3600000
+                                       && clock.nowMs <= Mission.landingMs + 3600000
+    readonly property var zone: Mission.zoneForOffset(Platform.utcOffsetMinutes(Mission.referenceMs))
+    readonly property string zoneText: {
+        if (!zone.startMs)
+            return "";
+        if (clock.nowMs < zone.startMs)
+            return qsTr("Santa reaches your time zone (%1) at about %2 your time.")
+                   .arg(zone.label).arg(Platform.localDateTime(zone.startMs));
+        if (clock.nowMs <= zone.endMs)
+            return qsTr("Santa is in your time zone right now!");
+        return qsTr("Santa has already visited your time zone.");
+    }
 
     Rectangle {
         anchors.fill: parent
@@ -200,10 +214,23 @@ Item {
                     horizontalAlignment: Text.AlignHCenter
                     wrapMode: Text.WordWrap
                     visible: !page.inFlight && !page.landedToday
-                    text: qsTr("22:00 on Christmas Eve in Kiribati, the first place to reach it (%1)")
-                          .arg(Fmt.utcDayClock(Mission.launchMs))
+                    text: qsTr("%1 your time, when it's 22:00 on Christmas Eve in Kiribati")
+                          .arg(Platform.localDateTime(Mission.launchMs))
                     color: Theme.textFaint
                     font.pixelSize: 12
+                }
+                Label {
+                    Layout.alignment: Qt.AlignHCenter
+                    Layout.maximumWidth: content.width - 2 * Theme.s4
+                    Layout.topMargin: 4
+                    horizontalAlignment: Text.AlignHCenter
+                    wrapMode: Text.WordWrap
+                    visible: page.zoneText.length > 0 && !page.landedToday
+                    text: page.zoneText
+                    color: page.inFlight && clock.nowMs >= page.zone.startMs && clock.nowMs <= page.zone.endMs
+                           ? Theme.go : Theme.goldBright
+                    font.pixelSize: 13
+                    font.weight: Font.Medium
                 }
             }
         }
@@ -215,8 +242,21 @@ Item {
             implicitHeight: 48
             padding2: 26
             font.pixelSize: 16
-            text: page.inFlight ? qsTr("Watch live in Mission Control  →") : qsTr("Enter North Pole Mission Control  →")
-            onClicked: page.openMissionControl()
+            text: page.liveWindow ? qsTr("●  Watch Santa live  →") : qsTr("Enter North Pole Mission Control  →")
+            onClicked: page.liveWindow ? Platform.navigate("live") : page.openMissionControl()
+        }
+
+        RowLayout {
+            Layout.alignment: Qt.AlignHCenter
+            visible: !page.liveWindow && clock.nowMs < Mission.launchMs
+            spacing: Theme.s2
+            Label {
+                text: qsTr("Track him live on Christmas Eve:")
+                color: Theme.textMuted
+                font.pixelSize: page.phone ? 13 : 14
+                visible: !page.phone
+            }
+            CalendarButton {}
         }
 
         Label {

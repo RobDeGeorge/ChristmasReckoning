@@ -60,6 +60,12 @@ public:
     // Browser tab title (the countdown shows there too, like the original site).
     Q_INVOKABLE void setDocumentTitle(const QString &title);
 
+    // The visitor's own clock: UTC offset (minutes east of UTC) at an instant, and times formatted
+    // the way their device shows them ("11:30 PM" or "23:30").
+    Q_INVOKABLE int utcOffsetMinutes(double epochMs) const;
+    Q_INVOKABLE QString localTime(double epochMs) const;
+    Q_INVOKABLE QString localDateTime(double epochMs) const;
+
     // Called when the browser reports a hash change (back/forward, edited URL, links).
     void applyHash(const QString &hash);
 
@@ -92,5 +98,8 @@ void markReady();
 void publishState(const QString &key, const QVariant &value);
 void downloadText(const QString &fileName, const QString &text, const QString &mimeType);
 void setDocumentTitle(const QString &title);
+int utcOffsetMinutes(double epochMs);
+QString localTime(double epochMs);
+QString localDateTime(double epochMs);
 void installHashListener(Platform *platform);
 } // namespace host
