@@ -1,0 +1,161 @@
+name: site
+
+on:
+  push:
+    branches: [master, qml-rebuild]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  QT_VERSION: 6.12.0
+  EMSDK_VERSION: 5.0.5   # must match Qt's QT_EMCC_RECOMMENDED_VERSION for QT_VERSION
+  AQT_VERSION: 3.3.0
+
+jobs:
+  test:
+    name: Unit tests (native)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/Qt
+          key: qt-desktop-${{ env.QT_VERSION }}-shadertools-v1
+
+      - name: Install Qt (desktop)
+        run: |
+          pip install --user "aqtinstall==${AQT_VERSION}"
+          [ -d ~/Qt/${QT_VERSION}/gcc_64 ] || aqt install-qt linux desktop ${QT_VERSION} linux_gcc_64 -m qtshadertools -O ~/Qt
+
+      - name: Configure
+        run: >
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_PREFIX_PATH=$HOME/Qt/${QT_VERSION}/gcc_64 -DCR_BUILD_APP=OFF
+
+      - name: Build
+        run: cmake --build build
+
+      - name: Test
+        run: ctest --test-dir build --output-on-failure
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Formulas are up to date
+        # The console formulas are typeset to SVG at development time and committed; make sure they
+        # still match the TeX in the code.
+        run: |
+          npm ci --prefix tools
+          build/src/tools/cr-report --formulas > formulas.json
+          node tools/formulas/render.cjs formulas.json assets/formulas
+          git diff --exit-code --stat -- assets/formulas
+
+      - name: Static summary for the HTML fallback
+        run: build/src/tools/cr-report > summary.json
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: summary
+          path: summary.json
+
+  wasm:
+    name: WebAssembly build + smoke test
+    needs: test
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/Qt
+          key: qt-wasm-${{ env.QT_VERSION }}-shadertools-v1
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/emsdk
+          key: emsdk-${{ env.EMSDK_VERSION }}-v1
+
+      - name: Install host libraries
+        # Qt's host tools (qsb, the shader baker) link QtGui, which needs EGL/GL/fontconfig at runtime.
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libegl1 libgl1 libopengl0 libxkbcommon0 libfontconfig1 libfreetype6 libdbus-1-3
+
+      - name: Install Qt (desktop host + wasm_singlethread)
+        run: |
+          pip install --user "aqtinstall==${AQT_VERSION}" brotli
+          [ -d ~/Qt/${QT_VERSION}/gcc_64 ] || aqt install-qt linux desktop ${QT_VERSION} linux_gcc_64 -m qtshadertools -O ~/Qt
+          [ -d ~/Qt/${QT_VERSION}/wasm_singlethread ] || aqt install-qt all_os wasm ${QT_VERSION} wasm_singlethread -m qtshadertools -O ~/Qt
+
+      - name: Install Emscripten
+        run: |
+          if [ ! -d ~/emsdk/upstream ]; then
+            git clone --depth 1 https://github.com/emscripten-core/emsdk.git ~/emsdk
+            ~/emsdk/emsdk install ${EMSDK_VERSION}
+          fi
+          ~/emsdk/emsdk activate ${EMSDK_VERSION}
+
+      - name: Build
+        run: |
+          qt_version="${QT_VERSION}"   # emsdk_env.sh clears variables named EMSDK_*, keep ours safe
+          source ~/emsdk/emsdk_env.sh
+          # The all_os wasm archive doesn't keep qt-cmake's exec bit, so use the toolchain file directly.
+          cmake -S . -B build -G Ninja \
+            -DCMAKE_TOOLCHAIN_FILE=$HOME/Qt/${qt_version}/wasm_singlethread/lib/cmake/Qt6/qt.toolchain.cmake \
+            -DCMAKE_BUILD_TYPE=MinSizeRel \
+            -DQT_HOST_PATH=$HOME/Qt/${qt_version}/gcc_64 \
+            -DCR_BUILD_TESTS=OFF
+          cmake --build build
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: summary
+
+      - name: Package
+        run: python3 tools/web/package.py --build build --out dist --summary summary.json
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Smoke test (headless Chrome)
+        run: |
+          npm ci --prefix tools
+          node tools/smoke/smoke.cjs --dist dist --out smoke --chrome "$(command -v google-chrome)"
+
+      - name: Upload smoke screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-${{ github.sha }}
+          path: smoke/
+          if-no-files-found: ignore
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    name: Deploy to GitHub Pages
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: wasm
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
