@@ -13,9 +13,30 @@ qt_add_qml_module(christmasreckoning
     QML_FILES
         qml/Main.qml
         qml/Theme.qml
+        qml/charts/HopProfile.qml
+        qml/charts/LineChart.qml
+        qml/charts/LogBarChart.qml
+        qml/charts/ZoneGantt.qml
+        qml/components/Formula.qml
+        qml/components/ParamSlider.qml
+        qml/components/PillButton.qml
+        qml/components/PlayPauseButton.qml
+        qml/components/Readout.qml
+        qml/components/SnowField.qml
+        qml/components/SourceChip.qml
+        qml/components/StatusLight.qml
         qml/globe/Globe.qml
+        qml/globe/SantaMarker.qml
+        qml/mission/ConsoleDetail.qml
+        qml/mission/ConsoleTile.qml
+        qml/mission/ScenarioDetail.qml
+        qml/mission/SidePanel.qml
+        qml/mission/SourcesDetail.qml
+        qml/mission/Telemetry.qml
+        qml/mission/TimelineBar.qml
         qml/pages/CountdownPage.qml
         qml/pages/MissionControlPage.qml
+        qml/js/fmt.js
 )
 
 if(EMSCRIPTEN)
@@ -33,6 +54,7 @@ qt_add_shaders(christmasreckoning "shaders"
     NOMSL
     FILES
         shaders/globe.frag
+        shaders/snow.frag
 )
 
 # The simulation's world data and the matching delivery texture are built together by
@@ -45,11 +67,13 @@ qt_add_resources(christmasreckoning "worlddata"
         "${PROJECT_SOURCE_DIR}/data/delivery.png"
 )
 
+# Fonts, and the console formulas typeset to SVG by tools/formulas/render.cjs.
 file(GLOB cr_font_files CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/assets/fonts/*.ttf")
+file(GLOB cr_formula_files CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/assets/formulas/*.svg")
 qt_add_resources(christmasreckoning "assets"
     PREFIX "/"
     BASE "${PROJECT_SOURCE_DIR}/assets"
-    FILES ${cr_font_files}
+    FILES ${cr_font_files} ${cr_formula_files}
 )
 
 target_link_libraries(christmasreckoning PRIVATE

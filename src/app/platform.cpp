@@ -117,3 +117,8 @@ void Platform::publishState(const QString &key, const QVariant &value)
 {
     host::publishState(key, value);
 }
+
+void Platform::downloadText(const QString &fileName, const QString &text, const QString &mimeType)
+{
+    host::downloadText(fileName, text, mimeType);
+}

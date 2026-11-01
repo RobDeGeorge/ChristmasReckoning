@@ -81,6 +81,8 @@ public:
 
     // Santa's state at any instant (for the countdown page's live numbers).
     Q_INVOKABLE QVariantMap stateAt(double epochMs) const;
+    // Santa's recent path as [{lat, lon}], oldest first, sampled over `spanMs` ending at `endMs`.
+    Q_INVOKABLE QVariantList trail(double endMs, double spanMs, int samples) const;
     Q_INVOKABLE int consoleIndex(const QString &id) const;
     Q_INVOKABLE QString exportJson() const;
 

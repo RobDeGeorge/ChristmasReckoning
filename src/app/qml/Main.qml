@@ -14,6 +14,13 @@ ApplicationWindow {
     title: qsTr("Christmas Reckoning")
     color: Theme.sky
     font.family: Theme.sansFamily
+    font.pixelSize: Theme.fontBody
+    palette.toolTipBase: Theme.panelRaised
+    palette.toolTipText: Theme.text
+
+    // The simulation always describes the Christmas the countdown is counting towards.
+    CountdownClock { id: appClock }
+    Binding { target: Mission; property: "year"; value: appClock.year }
 
     Component {
         id: countdownPage

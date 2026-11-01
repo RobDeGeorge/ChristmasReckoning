@@ -55,6 +55,8 @@ public:
     Q_INVOKABLE void navigate(const QString &route);
     Q_INVOKABLE void notifyReady();
     Q_INVOKABLE void publishState(const QString &key, const QVariant &value);
+    // Saves text as a file: a browser download on the web, a file in Downloads on the desktop.
+    Q_INVOKABLE void downloadText(const QString &fileName, const QString &text, const QString &mimeType);
 
     // Called when the browser reports a hash change (back/forward, edited URL, links).
     void applyHash(const QString &hash);
@@ -86,5 +88,6 @@ bool prefersReducedMotion();
 bool touchFirst();
 void markReady();
 void publishState(const QString &key, const QVariant &value);
+void downloadText(const QString &fileName, const QString &text, const QString &mimeType);
 void installHashListener(Platform *platform);
 } // namespace host

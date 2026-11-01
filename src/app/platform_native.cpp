@@ -7,6 +7,8 @@
 #include <QDateTime>
 #include <QDebug>
 #include <QDir>
+#include <QFile>
+#include <QStandardPaths>
 
 #include <cmath>
 
@@ -67,6 +69,15 @@ void markReady()
 }
 
 void publishState(const QString &, const QVariant &) {}
+
+void downloadText(const QString &fileName, const QString &text, const QString &)
+{
+    const QString dir = QStandardPaths::writableLocation(QStandardPaths::DownloadLocation);
+    QFile file(QDir(dir.isEmpty() ? QDir::homePath() : dir).filePath(fileName));
+    if (file.open(QIODevice::WriteOnly | QIODevice::Truncate))
+        file.write(text.toUtf8());
+    qInfo("saved %s", qPrintable(file.fileName()));
+}
 
 void installHashListener(Platform *) {}
 

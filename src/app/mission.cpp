@@ -166,10 +166,24 @@ void Mission::recompute()
                                      {QStringLiteral("sources"), qsl(step.sources)}});
         }
         QVariantList bars;
-        for (const cr::Bar &bar : c.bars)
+        for (const cr::Bar &bar : c.bars) {
+            const QString unit = qs(c.barUnit);
+            QString text;
+            if (unit == u"m/s")
+                text = qs(F::speed(bar.value));
+            else if (unit == u"W")
+                text = qs(F::power(bar.value));
+            else if (unit == u"J")
+                text = qs(F::energy(bar.value));
+            else if (unit == u"g")
+                text = qs(F::acceleration(bar.value));
+            else
+                text = qs(F::number(bar.value)) + u' ' + unit;
             bars.append(QVariantMap{{QStringLiteral("label"), qs(bar.label)},
                                     {QStringLiteral("value"), bar.value},
+                                    {QStringLiteral("text"), text},
                                     {QStringLiteral("highlight"), bar.highlight}});
+        }
         m_consoles.append(QVariantMap{{QStringLiteral("id"), qs(c.id)},
                                       {QStringLiteral("callsign"), qs(c.callsign)},
                                       {QStringLiteral("title"), qs(c.title)},
@@ -218,6 +232,7 @@ void Mission::recompute()
     }
 
     const double windowStart = m_scenario[cr::Param::WindowStartHour];
+    const double hopTime = r.stopGoAccelMps2 > 0 ? 2 * std::sqrt(r.averageHopM / r.stopGoAccelMps2) : 0.0;
     m_summary = QVariantMap{
         {QStringLiteral("feasible"), r.feasible},
         {QStringLiteral("feasibilityNote"), qs(r.feasibilityNote)},
@@ -249,6 +264,10 @@ void Mission::recompute()
                                            + F::clock((windowStart + m_scenario[cr::Param::WindowLengthHours]) * 3600))},
              {QStringLiteral("launchMass"), qs(F::mass(r.launchMassKg))},
              {QStringLiteral("gload"), qs(F::acceleration(r.curvatureGs))},
+             {QStringLiteral("hop"), qs(F::length(r.averageHopM))},
+             {QStringLiteral("hopTime"), qs(F::duration(hopTime))},
+             {QStringLiteral("hopPeak"), qs(F::speed(hopTime > 0 ? 2 * r.averageHopM / hopTime : 0.0))},
+             {QStringLiteral("stopGoG"), qs(F::acceleration(r.stopGoAccelMps2 / 9.80665))},
          }},
     };
 
@@ -376,6 +395,22 @@ QVariantMap Mission::toMap(const cr::SantaState &s) const
              {QStringLiteral("timePerStop"), qs(F::duration(r.timePerStopS))},
          }},
     };
+}
+
+QVariantList Mission::trail(double endMs, double spanMs, int samples) const
+{
+    QVariantList points;
+    if (!m_world || samples < 2)
+        return points;
+    const double start = std::max(endMs - spanMs, launchMs());
+    if (endMs <= start)
+        return points;
+    for (int i = 0; i < samples; ++i) {
+        const double t = start + (endMs - start) * i / (samples - 1);
+        const cr::SantaState s = cr::stateAt(*m_world, m_results, t);
+        points.append(QVariantMap{{QStringLiteral("lat"), s.latitudeDeg}, {QStringLiteral("lon"), s.longitudeDeg}});
+    }
+    return points;
 }
 
 int Mission::consoleIndex(const QString &id) const

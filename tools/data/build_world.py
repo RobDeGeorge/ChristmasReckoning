@@ -15,7 +15,7 @@ encodes (zone, rank) per block so the globe can light up delivered regions with 
 
 Outputs (committed):
   data/world.bin        binary world for the app (format: src/core/worlddata.cpp)
-  data/delivery.png     1440×720 RGBA: R = zone+1, G·B = rank in zone, A = log household density
+  data/delivery.png     1440×720 RGBA: R = zone+1, G·B = rank in zone (A = 255; 0 everywhere unpopulated)
   data/world-report.json  totals and per-zone summary for review
 """
 from __future__ import annotations
@@ -536,13 +536,13 @@ def main() -> int:
         checkpoints[-1].update(children=1.0, households=1.0, path=1.0, stopgo=1.0)
 
         # Texture: each block shows the zone with most households there.
-        density = H / (rows[:, 7] / 1e6)  # households per km² of populated area
         for i, b in enumerate(blocks):
             if H[i] > texture_h[b]:
                 texture_h[b] = H[i]
                 r, c = divmod(int(b), BLOCK_COLS)
-                texture[r, c] = (z + 1, i >> 8, i & 255,
-                                 int(np.clip((math.log10(max(density[i], 1e-3)) + 2) * 42.5, 1, 255)))
+                # Opaque on purpose: Qt premultiplies alpha when uploading textures, which would
+                # corrupt the zone/rank values packed into R, G and B.
+                texture[r, c] = (z + 1, i >> 8, i & 255, 255)
 
         top = np.argsort(-zone_country_h[z])[:6]
         zones_out.append({

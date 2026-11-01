@@ -145,6 +145,23 @@ void publishState(const QString &key, const QVariant &value)
     crState().set(key.toStdString(), parsed[0]);
 }
 
+void downloadText(const QString &fileName, const QString &text, const QString &mimeType)
+{
+    val parts = val::array();
+    parts.call<void>("push", text.toStdString());
+    val options = val::object();
+    options.set("type", mimeType.toStdString());
+    val blob = val::global("Blob").new_(parts, options);
+    val url = val::global("URL").call<val>("createObjectURL", blob);
+    val link = val::global("document").call<val>("createElement", std::string("a"));
+    link.set("href", url);
+    link.set("download", fileName.toStdString());
+    val::global("document")["body"].call<void>("appendChild", link);
+    link.call<void>("click");
+    link.call<void>("remove");
+    val::global("URL").call<void>("revokeObjectURL", url);
+}
+
 void installHashListener(Platform *platform)
 {
     g_hashTarget = platform;

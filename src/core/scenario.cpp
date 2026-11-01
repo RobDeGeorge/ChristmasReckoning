@@ -15,7 +15,7 @@ const std::array<ParamInfo, kParamCount> &parameterTable()
          "How many presents each child receives."},
         {Param::GiftMassKg, "giftMassKg", "Mass per present", "kg", 0.1, 5, 1, 0.1, false, "assumption",
          "Average wrapped present. A board game is about 1 kg; a smartphone in a box about 0.5 kg."},
-        {Param::WindowStartHour, "windowStartHour", "Delivery window opens", "h", 18, 26, 22, 0.5, false, "aasm-sleep",
+        {Param::WindowStartHour, "windowStartHour", "Delivery window opens", "clock", 18, 26, 22, 0.5, false, "aasm-sleep",
          "Local time on Christmas Eve when children are reliably asleep. Values past 24 mean after midnight."},
         {Param::WindowLengthHours, "windowLengthHours", "Delivery window length", "h", 1, 12, 8, 0.5, false, "aasm-sleep",
          "How long every child in a time zone stays asleep. Children 6–12 need 9–12 hours of sleep."},
