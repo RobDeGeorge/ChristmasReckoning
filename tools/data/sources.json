@@ -1,0 +1,49 @@
+{
+  "datasets": {
+    "ghsl_pop": {
+      "title": "GHS-POP R2023A: GHS population grid, epoch 2025, 30 arcsec, WGS84",
+      "publisher": "European Commission, Joint Research Centre (JRC)",
+      "citation": "Schiavina M., Freire S., Carioli A., MacManus K. (2023): GHS-POP R2023A - GHS population grid multitemporal (1975-2030). European Commission, Joint Research Centre (JRC). doi:10.2905/2FF68A52-5B5B-4A22-8F40-C41DA8332CFE",
+      "license": "CC BY 4.0",
+      "url": "https://jeodpp.jrc.ec.europa.eu/ftp/jrc-opendata/GHSL/GHS_POP_GLOBE_R2023A/GHS_POP_E2025_GLOBE_R2023A_4326_30ss/V1-0/GHS_POP_E2025_GLOBE_R2023A_4326_30ss_V1_0.zip",
+      "file": "GHS_POP_E2025_GLOBE_R2023A_4326_30ss_V1_0.zip",
+      "sha256": "752626a5bbe6f9d0cf79ac33a3cac3572234952b98b5113a4cc01a6bd2d30383"
+    },
+    "wpp_single_age": {
+      "title": "World Population Prospects 2024: population by single age and sex, medium variant, 2024-2100",
+      "publisher": "United Nations, Department of Economic and Social Affairs, Population Division",
+      "citation": "United Nations, DESA, Population Division (2024). World Population Prospects 2024, Online Edition.",
+      "license": "CC BY 3.0 IGO",
+      "url": "https://population.un.org/wpp/assets/Excel%20Files/1_Indicator%20(Standard)/CSV_FILES/WPP2024_PopulationBySingleAgeSex_Medium_2024-2100.csv.gz",
+      "file": "WPP2024_PopulationBySingleAgeSex_Medium_2024-2100.csv.gz",
+      "sha256": "31804a296b663716236cd26c46415271cc9386fb3b2be56aff6467ad32283dc8"
+    },
+    "un_households": {
+      "title": "Household Size and Composition, 2026",
+      "publisher": "United Nations, Department of Economic and Social Affairs, Population Division",
+      "citation": "United Nations, DESA, Population Division (2026). Database on Household Size and Composition 2026.",
+      "license": "UN Terms of Use (free reuse with attribution)",
+      "url": "https://population.un.org/Household/assets/UNDESA_PD_2026_hh-size-composition.xlsx",
+      "file": "UNDESA_PD_2026_hh-size-composition.xlsx",
+      "sha256": "fde0eedd2d3e7f32ad5d8bd8f9ba694dae7f4046190e9adb12175adcce0fb63c"
+    },
+    "ne_countries": {
+      "title": "Natural Earth 1:10m Cultural Vectors, Admin 0 - Countries",
+      "publisher": "Natural Earth",
+      "citation": "Made with Natural Earth. Free vector and raster map data @ naturalearthdata.com.",
+      "license": "Public domain",
+      "url": "https://naciscdn.org/naturalearth/10m/cultural/ne_10m_admin_0_countries.zip",
+      "file": "ne_10m_admin_0_countries.zip",
+      "sha256": "ce1ac7036499a0edd641fbc093cd209a98f96a49d2eca8480aaacad35138a7f6"
+    },
+    "tz_boundaries": {
+      "title": "timezone-boundary-builder release 2026f (timezones-now)",
+      "publisher": "Evan Siroky and contributors, data from OpenStreetMap",
+      "citation": "timezone-boundary-builder 2026f, https://github.com/evansiroky/timezone-boundary-builder. Contains information from OpenStreetMap.",
+      "license": "ODbL 1.0",
+      "url": "https://github.com/evansiroky/timezone-boundary-builder/releases/download/2026f/timezones-now.geojson.zip",
+      "file": "timezones-now-2026f.geojson.zip",
+      "sha256": "11f54e0db8493766dbf5e7c328930645232edf1005b3bd9cba5d159b7d125689"
+    }
+  }
+}

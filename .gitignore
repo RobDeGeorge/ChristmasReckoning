@@ -18,3 +18,4 @@ aqtinstall.log
 .idea/
 *.swp
 .DS_Store
+.clangd

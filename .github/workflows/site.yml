@@ -79,10 +79,13 @@ jobs:
 
       - name: Build
         run: |
+          qt_version="${QT_VERSION}"   # emsdk_env.sh clears variables named EMSDK_*, keep ours safe
           source ~/emsdk/emsdk_env.sh
-          ~/Qt/${QT_VERSION}/wasm_singlethread/bin/qt-cmake -S . -B build -G Ninja \
+          # The all_os wasm archive doesn't keep qt-cmake's exec bit, so use the toolchain file directly.
+          cmake -S . -B build -G Ninja \
+            -DCMAKE_TOOLCHAIN_FILE=$HOME/Qt/${qt_version}/wasm_singlethread/lib/cmake/Qt6/qt.toolchain.cmake \
             -DCMAKE_BUILD_TYPE=MinSizeRel \
-            -DQT_HOST_PATH=$HOME/Qt/${QT_VERSION}/gcc_64 \
+            -DQT_HOST_PATH=$HOME/Qt/${qt_version}/gcc_64 \
             -DCR_BUILD_TESTS=OFF
           cmake --build build
 
