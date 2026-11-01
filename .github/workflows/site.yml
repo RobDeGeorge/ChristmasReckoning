@@ -1,0 +1,127 @@
+name: site
+
+on:
+  push:
+    branches: [master, qml-rebuild]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: site-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  QT_VERSION: 6.12.0
+  EMSDK_VERSION: 5.0.5   # must match Qt's QT_EMCC_RECOMMENDED_VERSION for QT_VERSION
+  AQT_VERSION: 3.3.0
+
+jobs:
+  test:
+    name: Unit tests (native)
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/Qt
+          key: qt-desktop-${{ env.QT_VERSION }}-shadertools-v1
+
+      - name: Install Qt (desktop)
+        run: |
+          pip install --user "aqtinstall==${AQT_VERSION}"
+          [ -d ~/Qt/${QT_VERSION}/gcc_64 ] || aqt install-qt linux desktop ${QT_VERSION} linux_gcc_64 -m qtshadertools -O ~/Qt
+
+      - name: Configure
+        run: >
+          cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_PREFIX_PATH=$HOME/Qt/${QT_VERSION}/gcc_64 -DCR_BUILD_APP=OFF
+
+      - name: Build
+        run: cmake --build build
+
+      - name: Test
+        run: ctest --test-dir build --output-on-failure
+
+  wasm:
+    name: WebAssembly build + smoke test
+    needs: test
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/Qt
+          key: qt-wasm-${{ env.QT_VERSION }}-shadertools-v1
+
+      - uses: actions/cache@v4
+        with:
+          path: ~/emsdk
+          key: emsdk-${{ env.EMSDK_VERSION }}-v1
+
+      - name: Install Qt (desktop host + wasm_singlethread)
+        run: |
+          pip install --user "aqtinstall==${AQT_VERSION}" brotli
+          [ -d ~/Qt/${QT_VERSION}/gcc_64 ] || aqt install-qt linux desktop ${QT_VERSION} linux_gcc_64 -m qtshadertools -O ~/Qt
+          [ -d ~/Qt/${QT_VERSION}/wasm_singlethread ] || aqt install-qt all_os wasm ${QT_VERSION} wasm_singlethread -m qtshadertools -O ~/Qt
+
+      - name: Install Emscripten
+        run: |
+          if [ ! -d ~/emsdk/upstream ]; then
+            git clone --depth 1 https://github.com/emscripten-core/emsdk.git ~/emsdk
+            ~/emsdk/emsdk install ${EMSDK_VERSION}
+          fi
+          ~/emsdk/emsdk activate ${EMSDK_VERSION}
+
+      - name: Build
+        run: |
+          source ~/emsdk/emsdk_env.sh
+          ~/Qt/${QT_VERSION}/wasm_singlethread/bin/qt-cmake -S . -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=MinSizeRel \
+            -DQT_HOST_PATH=$HOME/Qt/${QT_VERSION}/gcc_64 \
+            -DCR_BUILD_TESTS=OFF
+          cmake --build build
+
+      - name: Package
+        run: python3 tools/web/package.py --build build --out dist
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Smoke test (headless Chrome)
+        run: |
+          npm ci --prefix tools
+          node tools/smoke/smoke.cjs --dist dist --out smoke --chrome "$(command -v google-chrome)"
+
+      - name: Upload smoke screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-${{ github.sha }}
+          path: smoke/
+          if-no-files-found: ignore
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    name: Deploy to GitHub Pages
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    needs: wasm
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

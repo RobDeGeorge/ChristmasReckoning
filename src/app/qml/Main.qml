@@ -1,0 +1,71 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
+import QtQuick
+import QtQuick.Controls.Basic
+import QtQuick.Window
+import ChristmasReckoning
+
+ApplicationWindow {
+    id: window
+
+    width: 1280
+    height: 800
+    visible: true
+    visibility: Platform.web ? Window.FullScreen : Window.AutomaticVisibility
+    title: qsTr("Christmas Reckoning")
+    color: Theme.sky
+    font.family: Theme.sansFamily
+
+    Component {
+        id: countdownPage
+        CountdownPage {
+            onOpenMissionControl: Platform.navigate("mission-control")
+        }
+    }
+
+    Component {
+        id: missionControlPage
+        MissionControlPage {
+            onBack: Platform.navigate("")
+        }
+    }
+
+    function componentFor(page) {
+        return page === "mission-control" ? missionControlPage : countdownPage;
+    }
+
+    StackView {
+        id: stack
+        anchors.fill: parent
+        initialItem: window.componentFor(Platform.page)
+        // Deliberately not a binding: it records which page is on screen.
+        property string shownPage
+        Component.onCompleted: shownPage = Platform.page
+
+        replaceEnter: Transition {
+            NumberAnimation { property: "opacity"; from: 0; to: 1; duration: Platform.reducedMotion ? 0 : 280; easing.type: Easing.OutCubic }
+        }
+        replaceExit: Transition {
+            NumberAnimation { property: "opacity"; from: 1; to: 0; duration: Platform.reducedMotion ? 0 : 200; easing.type: Easing.InCubic }
+        }
+    }
+
+    Connections {
+        target: Platform
+        function onRouteChanged() {
+            if (stack.shownPage !== Platform.page) {
+                stack.shownPage = Platform.page;
+                stack.replace(null, window.componentFor(Platform.page));
+            }
+            Platform.publishState("route", Platform.route);
+        }
+    }
+
+    property bool readyAnnounced: false
+    onFrameSwapped: {
+        if (readyAnnounced)
+            return;
+        readyAnnounced = true;
+        Platform.publishState("route", Platform.route);
+        Platform.notifyReady();
+    }
+}

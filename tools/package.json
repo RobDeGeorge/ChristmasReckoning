@@ -1,0 +1,10 @@
+{
+  "name": "christmasreckoning-tools",
+  "private": true,
+  "description": "Build-time tools: headless smoke test and formula rendering. Never shipped to the browser.",
+  "license": "GPL-3.0-or-later",
+  "dependencies": {
+    "mathjax-full": "3.2.1",
+    "puppeteer-core": "25.16.0"
+  }
+}

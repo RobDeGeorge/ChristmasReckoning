@@ -1,0 +1,193 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+:root {
+  color-scheme: dark;
+  --sky: #050d0b;
+  --sky-high: #0b2420;
+  --text: #f4f0e4;
+  --muted: #a9b9ad;
+  --gold: #d7b678;
+  --gold-bright: #f1d39a;
+  --red: #d1495b;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: var(--sky);
+  color: var(--text);
+  font-family: "DM Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+#screen {
+  position: fixed;
+  inset: 0;
+}
+
+#loader {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(ellipse at 50% 120%, rgba(24, 62, 53, 0.9), transparent 60%),
+    linear-gradient(var(--sky), var(--sky-high));
+  transition: opacity 0.6s ease, visibility 0.6s;
+}
+
+.app-ready #loader {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.loader-card {
+  width: min(440px, 86vw);
+  text-align: center;
+}
+
+.loader-star {
+  width: 44px;
+  height: 44px;
+  fill: var(--gold);
+  filter: drop-shadow(0 0 18px rgba(241, 211, 154, 0.55));
+  animation: twinkle 2.4s ease-in-out infinite;
+}
+
+.loader-eyebrow {
+  margin: 18px 0 4px;
+  color: var(--gold);
+  font-size: 13px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.loader-title {
+  margin: 0 0 28px;
+  font: 600 clamp(24px, 5vw, 34px) / 1.15 "Playfair Display", Georgia, serif;
+}
+
+.loader-track {
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(244, 240, 228, 0.12);
+  overflow: hidden;
+}
+
+.loader-bar {
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-bright));
+  box-shadow: 0 0 12px rgba(241, 211, 154, 0.7);
+  transform: scaleX(0.02);
+  transform-origin: left center;
+  transition: transform 0.2s ease-out;
+}
+
+.loader-status {
+  margin: 14px 0 0;
+  min-height: 1.4em;
+  color: var(--muted);
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.loader-retry {
+  margin-top: 18px;
+  padding: 10px 22px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--gold);
+  color: var(--sky);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.loader-retry:focus-visible {
+  outline: 2px solid var(--text);
+  outline-offset: 3px;
+}
+
+/* The summary stays in the document for screen readers and search engines, visually hidden while
+   the app runs, and becomes the page itself when the app can't run. */
+.summary {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.no-app body {
+  overflow: auto;
+}
+
+.no-app #loader {
+  position: static;
+  min-height: 60vh;
+}
+
+.no-app .loader-track,
+.no-app .loader-star {
+  display: none;
+}
+
+.no-app .summary {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip-path: none;
+  white-space: normal;
+  max-width: 720px;
+  margin: 0 auto 64px;
+  padding: 0 24px;
+  line-height: 1.6;
+}
+
+.summary a {
+  color: var(--gold-bright);
+}
+
+.summary table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.summary td,
+.summary th {
+  padding: 6px 8px;
+  border-bottom: 1px solid rgba(244, 240, 228, 0.12);
+  text-align: left;
+  vertical-align: top;
+}
+
+.noscript {
+  position: fixed;
+  inset: auto 0 24px;
+  z-index: 20;
+  text-align: center;
+  color: var(--gold-bright);
+}
+
+@keyframes twinkle {
+  50% {
+    transform: scale(0.88);
+    opacity: 0.75;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .loader-star {
+    animation: none;
+  }
+  #loader,
+  .loader-bar {
+    transition: none;
+  }
+}

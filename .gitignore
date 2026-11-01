@@ -1,0 +1,20 @@
+# Builds live outside the repository (~/build/christmasreckoning), but guard against in-tree ones.
+/build/
+/build-*/
+/dist/
+CMakeUserPresets.json
+compile_commands.json
+.cache/
+
+# Tooling
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+aqtinstall.log
+
+# Editors
+.vscode/
+.idea/
+*.swp
+.DS_Store
