@@ -169,7 +169,48 @@ async function main() {
       await page.close();
     }
 
-    // 5. Phone-sized viewport renders.
+    // 5. The live tracker: preview before the night, live (and actually lifting off) on Christmas
+    //    Eve, replay after landing. ?now= starts the page's clock at that instant and lets it run.
+    {
+      const tracker = async (page) => page.evaluate(() => window.crState && window.crState.tracker);
+      const waitTracker = (page, predicate, timeout) =>
+        page.waitForFunction(`window.crState && window.crState.tracker && (${predicate})(window.crState.tracker)`,
+                             { timeout: timeout || 20000, polling: 250 });
+
+      let { page } = await openPage(`${base}/?now=2026-12-10T12:00:00Z#/live`, { timezone: 'Europe/London' });
+      await waitTracker(page, 't => true');
+      let t = await tracker(page);
+      check('#/live before Christmas Eve is a preview', t.mode === 'preview' && !t.live, JSON.stringify(t));
+      check('#/live opens Mission Control', await page.evaluate(() => window.crState.route) === 'mission-control/live');
+      await page.close();
+
+      ({ page } = await openPage(`${base}/?now=2026-12-24T07:59:52Z#/live`, { timezone: 'America/New_York' }));
+      await waitTracker(page, 't => t.live');
+      t = await tracker(page);
+      check('live on the pad before launch', t.live && t.phase === 'prelaunch', JSON.stringify(t));
+      await sleep(1500);
+      await page.screenshot({ path: path.join(args.out, 'live-prelaunch.png') });
+      await waitTracker(page, 't => t.phase !== "prelaunch"', 30000);
+      t = await tracker(page);
+      check('Santa lifts off live at launch time', t.live && t.phase !== 'prelaunch', JSON.stringify(t));
+      await page.close();
+
+      ({ page } = await openPage(`${base}/?now=2026-12-24T20:00:00Z#/mission-control`, { timezone: 'America/New_York' }));
+      await waitTracker(page, 't => t.live');
+      t = await tracker(page);
+      check('live during the night', t.live && t.phase === 'delivering', JSON.stringify(t));
+      await sleep(2000);
+      await page.screenshot({ path: path.join(args.out, 'live-night.png') });
+      await page.close();
+
+      ({ page } = await openPage(`${base}/?now=2026-12-25T21:00:00Z#/mission-control`, { timezone: 'Europe/London' }));
+      await waitTracker(page, 't => true');
+      t = await tracker(page);
+      check('after landing it is a replay', t.mode === 'replay' && !t.live, JSON.stringify(t));
+      await page.close();
+    }
+
+    // 6. Phone-sized viewport renders.
     {
       const { page } = await openPage(`${base}/`, { viewport: { width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true } });
       await sleep(1500);

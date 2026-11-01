@@ -10,7 +10,7 @@ import "../js/fmt.js" as Fmt
 Rectangle {
     id: bar
     required property QtObject clock   // the page's SimClock: playing, speed, live, startMs, endMs, nightSpeed
-    readonly property bool liveAvailable: Platform.nowMs() >= clock.startMs && Platform.nowMs() <= clock.endMs
+    readonly property bool liveAvailable: clock.liveWindow
     property bool narrow: width < 640
 
     color: Theme.panel
@@ -62,7 +62,12 @@ Rectangle {
                     visible: bar.liveAvailable
                     text: qsTr("● Live")
                     selected: bar.clock.live
-                    onClicked: { bar.clock.live = true; bar.clock.playing = true; bar.clock.speed = 1; }
+                    onClicked: {
+                        bar.clock.live = true;
+                        bar.clock.speed = 1;
+                        Mission.timeMs = Platform.nowMs();
+                        bar.clock.playing = true;
+                    }
                 }
             }
         }

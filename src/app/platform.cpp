@@ -48,7 +48,9 @@ QString Platform::routeFromHash(const QString &hash)
         path.chop(1);
     path = path.toLower();
 
-    const QString first = path.section(u'/', 0, 0);
+    QString first = path.section(u'/', 0, 0);
+    if (first == u"live")
+        return QStringLiteral("mission-control/live");
     if (!kPages.contains(first))
         return QString();
     // Keep only simple, safe sub-route segments (console ids like "fido").
@@ -126,4 +128,19 @@ void Platform::downloadText(const QString &fileName, const QString &text, const 
 void Platform::setDocumentTitle(const QString &title)
 {
     host::setDocumentTitle(title);
+}
+
+int Platform::utcOffsetMinutes(double epochMs) const
+{
+    return host::utcOffsetMinutes(epochMs);
+}
+
+QString Platform::localTime(double epochMs) const
+{
+    return host::localTime(epochMs);
+}
+
+QString Platform::localDateTime(double epochMs) const
+{
+    return host::localDateTime(epochMs);
 }

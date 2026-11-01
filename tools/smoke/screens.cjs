@@ -41,7 +41,12 @@ const SHOTS = [
   ['countdown-smalllaptop', 'smallLaptop', '/', 1500],
   ['mission-smalllaptop', 'smallLaptop', '/?now=2026-12-24T20:00:00Z#/mission-control', 4000],
   ['mission-phone-landscape', 'phoneLandscape', '/?now=2026-12-24T20:00:00Z#/mission-control', 4000],
-  ['og', 'og', '/?now=2026-12-24T21:30:00Z#/mission-control', 5000]
+  ['og', 'og', '/?now=2026-12-24T21:30:00Z#/mission-control', 5000],
+  ['come-back-countdown-phone', 'phone', '/?now=2026-12-10T12:00:00Z', 2000],
+  ['come-back-countdown-laptop', 'laptop', '/?now=2026-12-10T12:00:00Z', 2000],
+  ['come-back-mission-phone', 'phone', '/?now=2026-12-10T12:00:00Z#/mission-control', 3000],
+  ['live-countdown-phone', 'phone', '/?now=2026-12-24T07:30:00Z', 2000],
+  ['live-tracker-phone', 'phone', '/?now=2026-12-24T20:00:00Z#/live', 3000]
 ];
 
 function serve(root) {
@@ -75,7 +80,7 @@ async function main() {
     if (args.only && !name.includes(args.only)) continue;
     const page = await browser.newPage();
     await page.setViewport(VIEWPORTS[viewport]);
-    await page.emulateTimezone('Europe/London');
+    await page.emulateTimezone('America/New_York');
     page.on('console', m => { if (m.type() === 'error' || m.type() === 'warn') problems.push(`${name}: ${m.text()}`); });
     page.on('pageerror', e => problems.push(`${name}: ${e}`));
     await page.goto(base + url, { waitUntil: 'domcontentloaded' });

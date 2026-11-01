@@ -28,18 +28,48 @@ Item {
         property bool playing: false
         property real speed: 1
         property bool live: false
+        readonly property bool liveWindow: page.liveWindow
         readonly property real startMs: Mission.launchMs - 30 * 60000
         readonly property real endMs: Mission.landingMs + 30 * 60000
         readonly property real nightSpeed: Math.max(1, (endMs - startMs) / 60000)
     }
 
+    // The real flight is trackable live from two hours before launch until an hour after landing.
+    property real nowMs: Platform.nowMs()
+    Timer {
+        interval: 1000
+        running: true
+        repeat: true
+        onTriggered: page.nowMs = Platform.nowMs()
+    }
+    readonly property real liveFromMs: Mission.launchMs - 2 * 3600000
+    readonly property real liveUntilMs: Mission.landingMs + 3600000
+    readonly property bool liveWindow: nowMs >= liveFromMs && nowMs <= liveUntilMs
+    readonly property string watchMode: simClock.live ? "live" : (nowMs > liveUntilMs ? "replay" : "preview")
+    onLiveWindowChanged: if (liveWindow && !simClock.live) goLive()
+
+    function goLive() {
+        simClock.live = true;
+        simClock.speed = 1;
+        Mission.timeMs = Platform.nowMs();
+        simClock.playing = true;
+        page.followSanta = true;
+    }
+
+    // Lets the smoke tests check the tracker without reading pixels.
+    Timer {
+        interval: 1000
+        running: true
+        repeat: true
+        triggeredOnStart: true
+        onTriggered: Platform.publishState("tracker", {
+            live: simClock.live, liveWindow: page.liveWindow, mode: page.watchMode,
+            phase: Mission.state.phase ?? "", timeMs: Mission.timeMs })
+    }
+
     function startPreview() {
-        const now = Platform.nowMs();
-        if (now >= simClock.startMs && now <= simClock.endMs) {
-            simClock.live = true;
-            simClock.speed = 1;
-            Mission.timeMs = now;
-            simClock.playing = true;
+        if (page.liveWindow) {
+            goLive();
         } else {
             simClock.live = false;
             Mission.timeMs = Mission.launchMs;
@@ -90,6 +120,10 @@ Item {
         if (!id.length) {
             if (panel.opened && panel.mode === "console")
                 panel.close();
+            return;
+        }
+        if (id === "live") {
+            if (page.liveWindow) goLive();
             return;
         }
         if (id === "scenario") { panel.showScenario(); return; }
@@ -160,6 +194,11 @@ Item {
                     elide: Text.ElideRight
                 }
             }
+            LiveBadge {
+                mode: page.watchMode
+                enabled: page.liveWindow && !simClock.live
+                onClicked: page.goLive()
+            }
             PillButton {
                 text: page.phone ? "⚙" : qsTr("Scenario")
                 Accessible.name: qsTr("Scenario settings")
@@ -216,6 +255,46 @@ Item {
                 text: page.followSanta ? qsTr("Following") : qsTr("Follow Santa")
                 selected: page.followSanta
                 onClicked: page.followSanta = !page.followSanta
+            }
+        }
+
+        Rectangle { // launch countdown (live, before liftoff)
+            visible: simClock.live && (Mission.state.phase ?? "") === "prelaunch"
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: parent.top
+            anchors.topMargin: page.phone ? Theme.s3 : Theme.s6
+            width: Math.min(parent.width - 2 * Theme.s4, launchCol.implicitWidth + 2 * Theme.s5)
+            height: launchCol.implicitHeight + 2 * Theme.s3
+            radius: Theme.radius
+            color: Theme.scrim
+            border.color: Qt.alpha(Theme.gold, 0.5)
+            ColumnLayout {
+                id: launchCol
+                anchors.centerIn: parent
+                spacing: 2
+                Label {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: qsTr("LAUNCH IN")
+                    color: Theme.gold
+                    font.family: Theme.monoFamily
+                    font.pixelSize: 12
+                    font.weight: Font.Bold
+                    font.letterSpacing: 2
+                }
+                Label {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: "T−" + Fmt.countdown(Mission.launchMs - page.nowMs)
+                    color: Theme.text
+                    font.family: Theme.monoFamily
+                    font.pixelSize: page.phone ? 26 : 34
+                    font.weight: Font.Bold
+                }
+                Label {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: qsTr("Liftoff from the North Pole at %1 your time").arg(Platform.localTime(Mission.launchMs))
+                    color: Theme.textMuted
+                    font.pixelSize: Theme.fontSmall
+                }
             }
         }
 
@@ -290,6 +369,13 @@ Item {
                 Layout.fillWidth: true
                 visible: !page.sideBySide
                 clock: simClock
+            }
+
+            LiveBanner {
+                Layout.fillWidth: true
+                mode: page.watchMode
+                liveWindow: page.liveWindow
+                onGoLive: page.goLive()
             }
 
             Rectangle { // feasibility banner

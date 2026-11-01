@@ -413,6 +413,31 @@ QVariantList Mission::trail(double endMs, double spanMs, int samples) const
     return points;
 }
 
+QVariantMap Mission::zoneForOffset(int offsetMinutes) const
+{
+    int best = -1;
+    int bestDiff = 0;
+    for (int i = 0; i < int(m_results.zones.size()); ++i) {
+        const int diff = std::abs(m_results.zones[std::size_t(i)].offsetMinutes - offsetMinutes);
+        if (best < 0 || diff < bestDiff) {
+            best = i;
+            bestDiff = diff;
+        }
+    }
+    if (best < 0)
+        return {};
+    const cr::ZoneResult &z = m_results.zones[std::size_t(best)];
+    return QVariantMap{{QStringLiteral("index"), best},
+                       {QStringLiteral("label"), qs(z.label)},
+                       {QStringLiteral("exact"), bestDiff == 0},
+                       {QStringLiteral("startMs"), toMs(z.startS + z.transitionTimeS)},
+                       {QStringLiteral("endMs"), toMs(z.endS)},
+                       {QStringLiteral("windowOpenMs"), toMs(z.windowOpenS)},
+                       {QStringLiteral("windowCloseMs"), toMs(z.windowCloseS)},
+                       {QStringLiteral("households"), z.households},
+                       {QStringLiteral("countries"), qsl(z.countries)}};
+}
+
 int Mission::consoleIndex(const QString &id) const
 {
     for (int i = 0; i < int(m_results.consoles.size()); ++i) {
