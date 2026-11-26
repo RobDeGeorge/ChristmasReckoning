@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.24)
 
 project(ChristmasReckoning
     VERSION 2.0.0
-    DESCRIPTION "Christmas countdown and North Pole Mission Control"
+    DESCRIPTION "Santa tracker: his flight path, live on Christmas Eve"
     HOMEPAGE_URL "https://www.christmasreckoning.com"
     LANGUAGES CXX)
 
@@ -16,7 +16,7 @@ option(CR_BUILD_TESTS "Build the unit tests" ON)
 
 set(cr_qt_components Core)
 if(CR_BUILD_APP)
-    list(APPEND cr_qt_components Gui Qml Quick QuickControls2 Svg Network ShaderTools)
+    list(APPEND cr_qt_components Gui Qml Quick Network ShaderTools)
 endif()
 if(CR_BUILD_TESTS AND NOT EMSCRIPTEN)
     list(APPEND cr_qt_components Test)
@@ -30,10 +30,7 @@ if(CR_BUILD_APP)
     add_subdirectory(src/app)
 endif()
 
-if(NOT EMSCRIPTEN)
-    add_subdirectory(src/tools)
-    if(CR_BUILD_TESTS)
-        enable_testing()
-        add_subdirectory(tests)
-    endif()
+if(CR_BUILD_TESTS AND NOT EMSCRIPTEN)
+    enable_testing()
+    add_subdirectory(tests)
 endif()

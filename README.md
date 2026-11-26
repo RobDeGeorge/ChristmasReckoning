@@ -1,59 +1,37 @@
 # Christmas Reckoning
 
-**www.ChristmasReckoning.com** is a Christmas countdown, plus **North Pole Mission Control**: a live
-simulation of what it would really take for Santa to visit every child on Earth in one night,
-using real population data and real physics. Every number shows its formula, its inputs and its
-sources.
+**www.ChristmasReckoning.com** is a Santa tracker. It shows the flight path Santa will take around
+the world, counts down to liftoff, and on Christmas Eve follows him live.
 
 It is a [Qt 6](https://www.qt.io) / QML application compiled to WebAssembly and hosted on GitHub Pages.
 
 ## What's on the site
 
-- **Countdown:** a live countdown to Christmas in your own time zone. It shows the countdown to
-  Santa's launch window, his live progress during Christmas Eve, and his landing.
-- **Mission Control:**
-  - A ray-traced globe and a ground-track map, with the real day/night line for Christmas Eve.
-  - Santa's position and trail, and delivered regions lighting up as he goes.
-  - Telemetry and a timeline you can scrub, play at 1×/60×/3600×, run as "the whole night in
-    60 s", or follow live.
-- **13 flight-controller consoles,** each with a GO/NO-GO verdict: MANIFEST, LAUNCH, FIDO, RETRO,
-  LOADMASTER, PROP, THERMAL, RANGE SAFETY, SURGEON, NAV, TIMING, DEBRIEF and FLIGHT. Every
-  calculation is shown step by step:
-  - the typeset formula;
-  - today's numbers plugged in;
-  - the result;
-  - a warning when a formula is being pushed outside its range of validity;
-  - links to its sources.
-- **Scenario panel:** 18 assumptions you can change (who gets presents, the delivery window,
-  stop time, route quality, altitude, sleigh, reindeer, cookies…). The whole room recalculates
-  instantly.
+One screen:
 
-### The model, briefly
+- **Before Christmas Eve:** a countdown to liftoff, a preview of the route on a globe, when Santa
+  reaches your time zone, and a "Remind me" button that saves a calendar reminder.
+- **On the night** (from two hours before liftoff): Santa's real position, live, with the path he
+  has flown and the path still to come. `christmasreckoning.com/#/live` is the link to share.
+- **Afterwards:** a replay, until the countdown to next year takes over.
 
-| Piece | Approach |
-|---|---|
-| Households | Children aged 0–17 for each country (UN WPP 2024) ÷ children per household with children (UN Household Size & Composition 2026), placed on the ~1 km GHSL 2025 population grid |
-| Route | Beardwood–Halton–Hammersley tour estimate `β·Σ√(N·A)`, summed cell by cell at 30″ so clustering counts, plus minimum-spanning-tree hops between disconnected clusters |
-| Schedule | Time zones (37, with real Christmas Eve offsets) are jobs with delivery windows. Horn's condition gives the exact minimum peak speed and the bottleneck run of zones; Yao–Demers–Shenker gives energy-optimal speeds per zone |
-| Physics | US Standard Atmosphere 1976, drag, Mach, stagnation temperature (ideal gas and plasma bound), Sutton–Graves heating, blast radius, orbital/escape speed, curvature downforce, Lorentz factor, allometric reindeer power… with compile-time dimensional analysis |
+### How the flight is worked out
 
-With the defaults (every child under 18, 22:00–06:00 local):
-- 2.4 billion children in 1.1 billion households;
-- a 66 million km route;
-- 82% of households fall in a 15-hour bottleneck from UTC+8 to UTC+1;
-- a minimum top speed of 940 km/s;
-- 110 µs per household.
+Santa visits every child under 18, between 22:00 and 06:00 local time, one time zone after another.
+Households come from UN population and household data placed on the ~1 km GHSL population grid;
+the scheduler in `src/core` turns the time zones' delivery windows into a timetable, and the route
+follows the populated places inside each zone. The position is a pure function of the clock, so
+everyone watching sees the same sleigh at the same moment.
 
 ## Repository layout
 
 ```
-src/core/      physics, scheduler, analysis, timeline, world-data reader (C++20 + QtCore, unit-tested)
-src/app/       Qt Quick app: QML pages and components, globe/snow shaders, platform bridge
-src/tools/     cr-report (build-time numbers for the HTML fallback and formula rendering)
+src/core/      scheduler, timeline, physics, world-data reader (C++20 + QtCore, unit-tested)
+src/app/       Qt Quick app: the tracker page, globe shader, platform bridge
 tests/         Qt Test suites (countdown, sun position, physics, formatting, scheduler, analysis, real data)
 data/          world.bin + delivery.png (generated, committed) and world-report.json
 tools/data/    dataset fetching (pinned SHA-256) and the world builder
-tools/fonts/   subset OFL fonts     tools/formulas/  MathJax → SVG     tools/web/  site packager
+tools/fonts/   subset OFL fonts     tools/web/  site packager
 tools/smoke/   headless-Chromium smoke test and screenshot gallery
 web/           HTML shell, streaming loader, styles, NASA textures
 docs/BRIEF.md  the original brief
@@ -91,23 +69,14 @@ python3 tools/data/build_world.py    # ~2 minutes; writes data/world.bin, delive
 Dependencies: `numpy rasterio pyshp openpyxl scipy pillow`. Every input is pinned by SHA-256 in
 `tools/data/sources.json`.
 
-### Regenerating the formulas
-
-```sh
-cr-report --formulas > formulas.json
-node tools/formulas/render.cjs formulas.json assets/formulas
-```
-
-CI fails if the committed SVGs don't match the code.
-
 ## Deployment
 
 Every push runs `.github/workflows/site.yml`:
 1. Native unit tests.
-2. A formula check.
-3. The WebAssembly build.
-4. A headless Chrome smoke test (routing, deep links, the countdown across time zones).
-5. On `master`, a deploy to GitHub Pages.
+2. The WebAssembly build.
+3. A headless Chrome smoke test (the tracker before, during and after the flight; the countdown
+   across time zones).
+4. On `master`, a deploy to GitHub Pages.
 
 The `.wasm` ships precompressed and with content-hashed names, so a browser can never mix an old
 script with a new binary.

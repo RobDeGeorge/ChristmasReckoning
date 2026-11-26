@@ -5,8 +5,6 @@
 #include <QFontDatabase>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include <QQuickStyle>
-#include <QQuickWindow>
 
 namespace {
 
@@ -32,7 +30,6 @@ int main(int argc, char *argv[])
     QFont font(QStringLiteral("DM Sans"));
     font.setPixelSize(16);
     QGuiApplication::setFont(font);
-    QQuickStyle::setStyle(QStringLiteral("Basic"));
 
     // Make sure the platform bridge (routing, clock) exists before QML starts asking for it.
     Platform::instance();

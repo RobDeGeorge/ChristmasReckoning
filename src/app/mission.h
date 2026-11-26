@@ -14,8 +14,8 @@
 class QQmlEngine;
 class QJSEngine;
 
-// The simulation, exposed to QML as the `Mission` singleton: the user's scenario, everything derived
-// from it (consoles, zones, charts), and Santa's state at the simulated time.
+// The flight, exposed to QML as the `Mission` singleton: when Santa launches and lands, the route he
+// flies, and where he is at any instant.
 class Mission : public QObject
 {
     Q_OBJECT
@@ -25,20 +25,9 @@ class Mission : public QObject
     Q_PROPERTY(bool ready READ ready CONSTANT FINAL)
     Q_PROPERTY(QString loadError READ loadError CONSTANT FINAL)
     Q_PROPERTY(int year READ year WRITE setYear NOTIFY resultsChanged FINAL)
-    Q_PROPERTY(QVariantList parameters READ parameters NOTIFY scenarioChanged FINAL)
-    Q_PROPERTY(bool scenarioIsDefault READ scenarioIsDefault NOTIFY scenarioChanged FINAL)
-
-    Q_PROPERTY(QVariantList consoles READ consoles NOTIFY resultsChanged FINAL)
-    Q_PROPERTY(QVariantMap summary READ summary NOTIFY resultsChanged FINAL)
-    Q_PROPERTY(QVariantList zones READ zones NOTIFY resultsChanged FINAL)
-    Q_PROPERTY(QVariantList massSeries READ massSeries NOTIFY resultsChanged FINAL)
-    Q_PROPERTY(QVariantList resolution READ resolution NOTIFY resultsChanged FINAL)
-    Q_PROPERTY(QVariantList sources READ sources CONSTANT FINAL)
-    Q_PROPERTY(QVariantMap dataInfo READ dataInfo CONSTANT FINAL)
 
     Q_PROPERTY(double referenceMs READ referenceMs NOTIFY resultsChanged FINAL)
     Q_PROPERTY(double launchMs READ launchMs NOTIFY resultsChanged FINAL)
-    Q_PROPERTY(double lastDeliveryMs READ lastDeliveryMs NOTIFY resultsChanged FINAL)
     Q_PROPERTY(double landingMs READ landingMs NOTIFY resultsChanged FINAL)
 
     Q_PROPERTY(double timeMs READ timeMs WRITE setTimeMs NOTIFY stateChanged FINAL)
@@ -55,22 +44,8 @@ public:
     int year() const { return m_scenario.year; }
     void setYear(int year);
 
-    QVariantList parameters() const;
-    bool scenarioIsDefault() const;
-    Q_INVOKABLE void setParameter(const QString &key, double value);
-    Q_INVOKABLE void resetParameters();
-
-    QVariantList consoles() const { return m_consoles; }
-    QVariantMap summary() const { return m_summary; }
-    QVariantList zones() const { return m_zones; }
-    QVariantList massSeries() const { return m_massSeries; }
-    QVariantList resolution() const;
-    QVariantList sources() const;
-    QVariantMap dataInfo() const;
-
     double referenceMs() const { return m_results.referenceEpochMs; }
     double launchMs() const { return toMs(m_results.launchS); }
-    double lastDeliveryMs() const { return toMs(m_results.lastDeliveryS); }
     double landingMs() const { return toMs(m_results.landingS); }
 
     double timeMs() const { return m_timeMs; }
@@ -79,21 +54,16 @@ public:
     int frontierZone() const { return m_state.frontierZone; }
     double frontierRank() const { return m_state.frontierRank; }
 
-    // Santa's state at any instant (for the countdown page's live numbers).
+    // Santa's state at any instant, whatever the tracker is currently showing.
     Q_INVOKABLE QVariantMap stateAt(double epochMs) const;
-    // Santa's recent path as [{lat, lon}], oldest first, sampled over `spanMs` ending at `endMs`.
-    Q_INVOKABLE QVariantList trail(double endMs, double spanMs, int samples) const;
-    Q_INVOKABLE int consoleIndex(const QString &id) const;
-    // The simulation's time zone for a UTC offset (the visitor's), or the nearest one:
-    // {index, label, exact, startMs, endMs, windowOpenMs, windowCloseMs, households, countries}.
+    // The whole night's route as [{lat, lon, t}], launch to landing, sampled evenly in time
+    // (`t` is ms since the epoch).
+    Q_INVOKABLE QVariantList flightPath(int samples) const;
+    // When Santa works the time zone with this UTC offset (the visitor's), or the nearest one:
+    // {label, startMs, endMs}.
     Q_INVOKABLE QVariantMap zoneForOffset(int offsetMinutes) const;
-    Q_INVOKABLE QString exportJson() const;
-
-    const cr::WorldData *world() const { return m_world ? &*m_world : nullptr; }
-    const cr::Results &results() const { return m_results; }
 
 signals:
-    void scenarioChanged();
     void resultsChanged();
     void stateChanged();
 
@@ -110,10 +80,5 @@ private:
     cr::Results m_results;
     cr::SantaState m_state;
     double m_timeMs = 0;
-
-    QVariantList m_consoles;
-    QVariantMap m_summary;
-    QVariantList m_zones;
-    QVariantList m_massSeries;
     QVariantMap m_stateMap;
 };

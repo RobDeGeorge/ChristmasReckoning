@@ -23,8 +23,6 @@ class Platform : public QObject
     QML_SINGLETON
 
     Q_PROPERTY(QString route READ route NOTIFY routeChanged FINAL)
-    Q_PROPERTY(QString page READ page NOTIFY routeChanged FINAL)
-    Q_PROPERTY(QString subRoute READ subRoute NOTIFY routeChanged FINAL)
     Q_PROPERTY(QUrl assetBase READ assetBase CONSTANT FINAL)
     Q_PROPERTY(bool web READ isWeb CONSTANT FINAL)
     Q_PROPERTY(QString timeZoneName READ timeZoneName CONSTANT FINAL)
@@ -36,9 +34,7 @@ public:
     static Platform *instance();
     static Platform *create(QQmlEngine *, QJSEngine *);
 
-    QString route() const { return m_route; }
-    QString page() const;     // "" (countdown) or "mission-control"
-    QString subRoute() const; // e.g. "fido" for "#/mission-control/fido"
+    QString route() const { return m_route; } // "" or "live" (the shareable Christmas Eve link)
     QUrl assetBase() const;
     bool isWeb() const;
     QString timeZoneName() const;
@@ -57,7 +53,7 @@ public:
     Q_INVOKABLE void publishState(const QString &key, const QVariant &value);
     // Saves text as a file: a browser download on the web, a file in Downloads on the desktop.
     Q_INVOKABLE void downloadText(const QString &fileName, const QString &text, const QString &mimeType);
-    // Browser tab title (the countdown shows there too, like the original site).
+    // Browser tab title (the countdown shows there too).
     Q_INVOKABLE void setDocumentTitle(const QString &title);
 
     // The visitor's own clock: UTC offset (minutes east of UTC) at an instant, and times formatted

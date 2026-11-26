@@ -28,13 +28,7 @@ native()  { cmake --preset native-debug && cmake --build --preset native-debug; 
 tests()   { ctest --preset native-debug; }
 run()     { "$BUILD/native-debug/src/app/christmasreckoning" "$@"; }
 wasm()    { emsdk_env && cmake --preset wasm-release && cmake --build --preset wasm-release; }
-report()  {
-    if [ -x "$BUILD/native-debug/src/tools/cr-report" ]; then
-        "$BUILD/native-debug/src/tools/cr-report" > "$BUILD/summary.json"
-        echo "--summary $BUILD/summary.json"
-    fi
-}
-package() { "$PYTHON" tools/web/package.py --build "$BUILD/wasm-release" --out "$BUILD/dist" $(report); }
+package() { "$PYTHON" tools/web/package.py --build "$BUILD/wasm-release" --out "$BUILD/dist"; }
 serve()   { "$PYTHON" -m http.server --directory "$BUILD/dist" 8000; }
 smoke()   { NODE_PATH="$CACHE/node/node_modules" node tools/smoke/smoke.cjs --dist "$BUILD/dist" --out "$BUILD/smoke" "$@"; }
 

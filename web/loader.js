@@ -128,11 +128,11 @@
 
   async function start() {
     if (typeof WebAssembly !== 'object' || !supportsWebGL2()) {
-      showProblem('This browser can’t run the interactive site (it needs WebAssembly and WebGL 2). Here’s the summary instead.', false);
+      showProblem('This browser can’t run the tracker (it needs WebAssembly and WebGL 2).', false);
       return;
     }
     if (typeof window.qtLoad !== 'function' || typeof window[build.entry] !== 'function') {
-      showProblem('Part of the app didn’t download. Check your connection and try again.', true);
+      showProblem('The download didn’t finish. Check your connection and try again.', true);
       return;
     }
 
@@ -146,7 +146,7 @@
     const module = fetchModule();
     module.then(function () {
       setProgress(1);
-      setStatus('Warming up the sleigh…');
+      setStatus('Almost there…');
     }, function () {});
 
     try {
@@ -158,7 +158,7 @@
           onExit: function (exit) {
             if (exit.crashed || (exit.code !== undefined && exit.code !== 0)) {
               root.classList.remove('app-ready');
-              showProblem('Mission Control hit turbulence and stopped. Reloading usually fixes it.', true);
+              showProblem('Something went wrong. Reloading usually fixes it.', true);
               console.error('Application exit', exit);
             }
           }
@@ -170,7 +170,7 @@
       });
     } catch (error) {
       console.error(error);
-      showProblem('Mission Control couldn’t start. Check your connection and try again.', true);
+      showProblem('The tracker couldn’t start. Check your connection and try again.', true);
     }
   }
 

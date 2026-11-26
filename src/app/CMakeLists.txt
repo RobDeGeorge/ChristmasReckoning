@@ -13,33 +13,12 @@ qt_add_qml_module(christmasreckoning
     QML_FILES
         qml/Main.qml
         qml/Theme.qml
-        qml/charts/HopProfile.qml
-        qml/charts/LineChart.qml
-        qml/charts/LogBarChart.qml
-        qml/charts/ZoneGantt.qml
-        qml/components/CalendarButton.qml
-        qml/components/Formula.qml
-        qml/components/LiveBadge.qml
-        qml/components/ParamSlider.qml
-        qml/components/PillButton.qml
-        qml/components/PlayPauseButton.qml
-        qml/components/Readout.qml
-        qml/components/SnowField.qml
-        qml/components/SourceChip.qml
-        qml/components/StatusLight.qml
+        qml/TrackerPage.qml
+        qml/components/ActionButton.qml
+        qml/components/Tag.qml
         qml/globe/Globe.qml
-        qml/globe/SantaMarker.qml
-        qml/mission/ConsoleDetail.qml
-        qml/mission/ConsoleTile.qml
-        qml/mission/LiveBanner.qml
-        qml/mission/ScenarioDetail.qml
-        qml/mission/SidePanel.qml
-        qml/mission/SourcesDetail.qml
-        qml/mission/Telemetry.qml
-        qml/mission/TimelineBar.qml
-        qml/pages/CountdownPage.qml
-        qml/pages/MissionControlPage.qml
-        qml/js/fmt.js
+        qml/globe/FlightOverlay.qml
+        qml/js/calendar.js
 )
 
 if(EMSCRIPTEN)
@@ -57,7 +36,6 @@ qt_add_shaders(christmasreckoning "shaders"
     NOMSL
     FILES
         shaders/globe.frag
-        shaders/snow.frag
 )
 
 # The simulation's world data and the matching delivery texture are built together by
@@ -70,13 +48,11 @@ qt_add_resources(christmasreckoning "worlddata"
         "${PROJECT_SOURCE_DIR}/data/delivery.png"
 )
 
-# Fonts, and the console formulas typeset to SVG by tools/formulas/render.cjs.
 file(GLOB cr_font_files CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/assets/fonts/*.ttf")
-file(GLOB cr_formula_files CONFIGURE_DEPENDS "${PROJECT_SOURCE_DIR}/assets/formulas/*.svg")
 qt_add_resources(christmasreckoning "assets"
     PREFIX "/"
     BASE "${PROJECT_SOURCE_DIR}/assets"
-    FILES ${cr_font_files} ${cr_formula_files}
+    FILES ${cr_font_files}
 )
 
 target_link_libraries(christmasreckoning PRIVATE
@@ -84,8 +60,6 @@ target_link_libraries(christmasreckoning PRIVATE
     Qt6::Gui
     Qt6::Qml
     Qt6::Quick
-    Qt6::QuickControls2
-    Qt6::Svg
     Qt6::Network
 )
 
@@ -94,9 +68,9 @@ if(NOT MSVC)
 endif()
 
 if(EMSCRIPTEN)
-    # Smallest code; the app only decodes JPEG (Earth imagery), PNG (built in) and SVG (formulas).
+    # Smallest code; the app only decodes JPEG (Earth imagery) and PNG (built in).
     target_link_options(christmasreckoning PRIVATE -Oz)
     qt_import_plugins(christmasreckoning
-        INCLUDE_BY_TYPE imageformats Qt::QJpegPlugin Qt::QSvgPlugin
+        INCLUDE_BY_TYPE imageformats Qt::QJpegPlugin
     )
 endif()
