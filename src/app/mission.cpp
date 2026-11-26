@@ -1,13 +1,10 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #include "mission.h"
 
-#include "format.h"
-
+#include <QLocale>
 #include <QQmlEngine>
 
 #include <cmath>
-
-namespace F = cr::format;
 
 namespace {
 
@@ -57,21 +54,21 @@ Mission *Mission::create(QQmlEngine *, QJSEngine *)
 
 void Mission::setYear(int year)
 {
-    if (year == m_scenario.year || year < 2000 || year > 2200)
+    if (year == m_year || year < 2000 || year > 2200)
         return;
-    m_scenario.year = year;
+    m_year = year;
     recompute();
 }
 
 void Mission::recompute()
 {
     if (!m_world) {
-        m_results = cr::Results();
-        m_results.referenceEpochMs = cr::christmasUtcEpochMs(m_scenario.year);
+        m_results = cr::FlightPlan();
+        m_results.referenceEpochMs = cr::christmasUtcEpochMs(m_year);
         emit resultsChanged();
         return;
     }
-    m_results = cr::analyse(*m_world, m_scenario);
+    m_results = cr::planFlight(*m_world, m_year);
 
     if (m_timeMs == 0)
         m_timeMs = launchMs();
@@ -119,7 +116,7 @@ QVariantMap Mission::toMap(const cr::SantaState &s) const
         {QStringLiteral("longitude"), s.longitudeDeg},
         {QStringLiteral("frontierZone"), s.frontierZone},
         {QStringLiteral("frontierRank"), s.frontierRank},
-        {QStringLiteral("presents"), qs(F::grouped(s.presentsDelivered))},
+        {QStringLiteral("presents"), QLocale(QLocale::English).toString(qlonglong(std::round(s.presentsDelivered)))},
     };
 }
 
@@ -158,7 +155,7 @@ QVariantMap Mission::zoneForOffset(int offsetMinutes) const
     }
     if (best < 0)
         return {};
-    const cr::ZoneResult &z = m_results.zones[std::size_t(best)];
+    const cr::ZonePlan &z = m_results.zones[std::size_t(best)];
     return QVariantMap{{QStringLiteral("label"), qs(z.label)},
                        {QStringLiteral("startMs"), toMs(z.startS + z.transitionTimeS)},
                        {QStringLiteral("endMs"), toMs(z.endS)}};

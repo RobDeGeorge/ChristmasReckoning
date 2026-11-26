@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 // Sanity checks on the real data/world.bin produced by tools/data/build_world.py, so a broken or
 // implausible rebuild of the data can't slip into the site unnoticed.
-#include "analysis.h"
+#include "flightplan.h"
 #include "timeline.h"
 #include "worlddata.h"
 
 #include <QTest>
 
+#include <algorithm>
 #include <cmath>
 
 class TestWorldData : public QObject
@@ -69,18 +70,18 @@ private slots:
             QVERIFY(world->resolution[i].pathSumM >= world->resolution[i - 1].pathSumM);
     }
 
-    void defaultScenarioHeadlinesAreInRange()
+    void theRealNightIsInRange()
     {
-        const cr::Results r = cr::analyse(*world, cr::Scenario());
-        QVERIFY(r.feasible);
+        const cr::FlightPlan r = cr::planFlight(*world, world->dataYear);
         // Order-of-magnitude targets from the independent model review.
-        QVERIFY2(r.pathM > 3e10 && r.pathM < 3e11, qPrintable(QString::number(r.pathM)));
-        QVERIFY2(r.peakSpeedMps > 3e5 && r.peakSpeedMps < 5e6, qPrintable(QString::number(r.peakSpeedMps)));
-        QVERIFY(r.averageSpeedMps < r.peakSpeedMps);
-        QVERIFY(r.timePerStopS > 1e-5 && r.timePerStopS < 1e-3);
-        QVERIFY(r.nightSpanS > 30 * 3600 && r.nightSpanS < 36 * 3600);
-        QVERIFY(r.clockLagS > 0.01 && r.clockLagS < 10);
-        QVERIFY(r.bindingHouseholdShare > 0.3);
+        QVERIFY2(r.distanceM > 3e10 && r.distanceM < 3e11, qPrintable(QString::number(r.distanceM)));
+        double peak = 0;
+        for (const cr::ZonePlan &z : r.zones)
+            peak = std::max(peak, z.speedMps);
+        QVERIFY2(peak > 3e5 && peak < 5e6, qPrintable(QString::number(peak)));
+        // Liftoff when it is 22:00 in the first time zone; home about a day and a half later.
+        QCOMPARE(r.launchS, r.zones.front().windowOpenS);
+        QVERIFY(r.landingS - r.launchS > 30 * 3600 && r.landingS - r.launchS < 38 * 3600);
 
         // The whole night, end to end.
         const auto landed = cr::stateAt(*world, r, r.referenceEpochMs + (r.landingS + 60) * 1000);
