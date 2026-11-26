@@ -46,5 +46,3 @@ The bundled files are subset, static instances made by `tools/fonts/build_fonts.
 
 NASA imagery is not protected by copyright in the United States. See
 <https://www.nasa.gov/nasa-brand-center/images-and-media/>.
-
-The constants and reference figures used in the calculations are cited in `src/core/sources.cpp`.

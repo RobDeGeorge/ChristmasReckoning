@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 #pragma once
 
-#include "analysis.h"
+#include "flightplan.h"
 #include "timeline.h"
 #include "worlddata.h"
 
@@ -41,7 +41,7 @@ public:
 
     bool ready() const { return m_world.has_value(); }
     QString loadError() const { return m_loadError; }
-    int year() const { return m_scenario.year; }
+    int year() const { return m_year; }
     void setYear(int year);
 
     double referenceMs() const { return m_results.referenceEpochMs; }
@@ -76,8 +76,8 @@ private:
 
     std::optional<cr::WorldData> m_world;
     QString m_loadError;
-    cr::Scenario m_scenario;
-    cr::Results m_results;
+    int m_year = 2026;
+    cr::FlightPlan m_results;
     cr::SantaState m_state;
     double m_timeMs = 0;
     QVariantMap m_stateMap;

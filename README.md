@@ -26,9 +26,9 @@ everyone watching sees the same sleigh at the same moment.
 ## Repository layout
 
 ```
-src/core/      scheduler, timeline, physics, world-data reader (C++20 + QtCore, unit-tested)
+src/core/      scheduler, flight plan, timeline, world-data reader (C++20 + QtCore, unit-tested)
 src/app/       Qt Quick app: the tracker page, globe shader, platform bridge
-tests/         Qt Test suites (countdown, sun position, physics, formatting, scheduler, analysis, real data)
+tests/         Qt Test suites (countdown, sun position, scheduler, flight plan, real data)
 data/          world.bin + delivery.png (generated, committed) and world-report.json
 tools/data/    dataset fetching (pinned SHA-256) and the world builder
 tools/fonts/   subset OFL fonts     tools/web/  site packager

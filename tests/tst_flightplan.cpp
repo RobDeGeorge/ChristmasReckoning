@@ -1,17 +1,15 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Whole-pipeline checks on a synthetic world: totals, schedule wiring, console integrity, the
-// timeline's invariants, and the binary world format round trip.
-#include "analysis.h"
-#include "sources.h"
+// Whole-pipeline checks on a synthetic world: totals, schedule wiring, the timeline's invariants,
+// and the binary world format round trip.
+#include "flightplan.h"
 #include "testworld.h"
 #include "timeline.h"
 
-#include <QSet>
 #include <QTest>
 
 #include <cmath>
 
-class TestAnalysis : public QObject
+class TestFlightPlan : public QObject
 {
     Q_OBJECT
 
@@ -35,79 +33,34 @@ private slots:
         QVERIFY(!cr::WorldData::fromBytes(QByteArrayLiteral("nope")));
     }
 
-    void totalsFollowEligibility()
+    void everyHouseholdIsOnTheRoute()
     {
         const auto world = crtest::makeWorld();
-        cr::Scenario s;
-        auto all = cr::analyse(world, s);
-        QCOMPARE(all.households, world.totalHouseholds());
-        s.set(cr::Param::Eligibility, 25);
-        auto quarter = cr::analyse(world, s);
-        QVERIFY(std::abs(quarter.households - 0.25 * all.households) < 1e-6 * all.households);
-        // Tour length scales with √(share) for randomly mixed households.
-        QVERIFY(std::abs(quarter.pathM - 0.5 * all.pathM) < 1e-9 * all.pathM);
+        const auto plan = cr::planFlight(world, 2026);
+        QCOMPARE(plan.households, world.totalHouseholds());
+        QCOMPARE(plan.zones.size(), world.zones.size());
     }
 
     void scheduleUsesWindowsAndOffsets()
     {
         const auto world = crtest::makeWorld();
-        cr::Scenario s;
-        const auto r = cr::analyse(world, s);
-        QVERIFY(r.feasible);
+        const auto plan = cr::planFlight(world, 2026);
         // Window 22:00–06:00: UTC+10 opens at 12:00 UTC on the 24th, i.e. −12 h from the reference.
-        QCOMPARE(r.zones[0].windowOpenS, -12.0 * 3600);
-        QCOMPARE(r.zones[2].windowCloseS, (6.0 + 5.0) * 3600);
-        QCOMPARE(r.nightSpanS, (8.0 + 15.0) * 3600);
-        QVERIFY(r.peakSpeedMps > 0 && std::isfinite(r.peakSpeedMps));
-        for (const auto &z : r.zones) {
+        QCOMPARE(plan.zones[0].windowOpenS, -12.0 * 3600);
+        QCOMPARE(plan.zones[2].windowCloseS, (6.0 + 5.0) * 3600);
+        for (const auto &z : plan.zones) {
+            QVERIFY(z.speedMps > 0 && std::isfinite(z.speedMps));
             QVERIFY(z.startS >= z.windowOpenS - 1e-6);
             QVERIFY(z.endS <= z.windowCloseS + 1e-3);
         }
-    }
-
-    void tooLongAStopIsReportedNotHidden()
-    {
-        const auto world = crtest::makeWorld();
-        cr::Scenario s;
-        const auto baseline = cr::analyse(world, s);
-        s.set(cr::Param::StopTimeS, baseline.maxStopTimeS * 2);
-        const auto r = cr::analyse(world, s);
-        QVERIFY(!r.feasible);
-        QVERIFY(!r.feasibilityNote.empty());
-        QVERIFY(std::isfinite(r.peakSpeedMps)); // physics falls back to fly-by delivery
-    }
-
-    void consolesAreCompleteAndCited()
-    {
-        const auto world = crtest::makeWorld();
-        const auto r = cr::analyse(world, cr::Scenario());
-        QCOMPARE(int(r.consoles.size()), 13);
-        QSet<QString> ids;
-        for (const cr::Console &c : r.consoles) {
-            QVERIFY2(!ids.contains(QString::fromStdString(c.id)), c.id.c_str());
-            ids.insert(QString::fromStdString(c.id));
-            QVERIFY(!c.callsign.empty() && !c.status.empty() && !c.question.empty());
-            QVERIFY(!c.readouts.empty());
-            for (const cr::Readout &readout : c.readouts) {
-                const QString value = QString::fromStdString(readout.value);
-                QVERIFY2(!value.contains(u"nan") && !value.isEmpty(), (c.id + ": " + readout.label).c_str());
-            }
-            for (const cr::Step &step : c.steps) {
-                QVERIFY(!step.tex.empty() && !step.plain.empty() && !step.result.empty());
-                for (const std::string &key : step.sources)
-                    QVERIFY2(cr::findSource(key), (c.id + "/" + step.id + " cites unknown source " + key).c_str());
-            }
-            for (const std::string &param : c.params)
-                QVERIFY2(cr::parameterInfo(param), (c.id + " lists unknown parameter " + param).c_str());
-        }
-        for (const cr::ParamInfo &info : cr::parameterTable())
-            QVERIFY2(cr::findSource(info.sourceKey), std::string(info.key).c_str());
+        QCOMPARE(plan.launchS, plan.zones.front().startS);
+        QVERIFY(plan.landingS > plan.lastDeliveryS);
     }
 
     void timelineIsMonotoneAndEndsAtHome()
     {
         const auto world = crtest::makeWorld();
-        const auto r = cr::analyse(world, cr::Scenario());
+        const auto r = cr::planFlight(world, 2026);
         const double begin = r.referenceEpochMs + (r.launchS - 3600) * 1000;
         const double end = r.referenceEpochMs + (r.landingS + 3600) * 1000;
 
@@ -136,16 +89,16 @@ private slots:
         QVERIFY(std::abs(after.householdsDelivered - r.households) < 1e-6 * r.households);
         QVERIFY(std::abs(after.distanceM - r.distanceM) < 1e-6 * r.distanceM);
         QVERIFY(std::abs(after.latitudeDeg - 90) < 1e-6);
-        QVERIFY(std::abs(after.massKg - r.baseMassKg) < 1e-6 * r.launchMassKg);
+        QVERIFY(std::abs(after.presentsDelivered - r.children) < 1e-6 * r.children);
     }
 
     void timelineIsDeterministic()
     {
         const auto world = crtest::makeWorld();
-        const auto r = cr::analyse(world, cr::Scenario());
+        const auto r = cr::planFlight(world, 2026);
         const double t = r.referenceEpochMs + r.zones[1].startS * 1000 + 1234567;
         const auto a = cr::stateAt(world, r, t);
-        const auto b = cr::stateAt(world, cr::analyse(world, cr::Scenario()), t);
+        const auto b = cr::stateAt(world, cr::planFlight(world, 2026), t);
         QCOMPARE(a.latitudeDeg, b.latitudeDeg);
         QCOMPARE(a.longitudeDeg, b.longitudeDeg);
         QCOMPARE(a.householdsDelivered, b.householdsDelivered);
@@ -159,5 +112,5 @@ private slots:
     }
 };
 
-QTEST_GUILESS_MAIN(TestAnalysis)
-#include "tst_analysis.moc"
+QTEST_GUILESS_MAIN(TestFlightPlan)
+#include "tst_flightplan.moc"
