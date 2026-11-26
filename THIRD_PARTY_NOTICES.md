@@ -5,7 +5,7 @@ It is built with, and ships, the following third-party software, data and assets
 
 ## Software
 
-- **Qt 6.12** (Qt Base, Qt Declarative, Qt Quick Controls, Qt SVG, Qt Network, Qt Shader Tools),
+- **Qt 6.12** (Qt Base, Qt Declarative, Qt Network, Qt Shader Tools),
   © The Qt Company Ltd. and other contributors. Used under the GNU LGPL v3 (`qtloader.js`: GNU GPL v3).
   The WebAssembly build links Qt statically. The complete source of this application is in this
   repository, and Qt's source is available from <https://download.qt.io/official_releases/qt/6.12/>,
@@ -47,5 +47,4 @@ The bundled files are subset, static instances made by `tools/fonts/build_fonts.
 NASA imagery is not protected by copyright in the United States. See
 <https://www.nasa.gov/nasa-brand-center/images-and-media/>.
 
-Every constant and reference figure used in the calculations is cited in the app's
-"Sources & assumptions" panel (`src/core/sources.cpp`).
+The constants and reference figures used in the calculations are cited in `src/core/sources.cpp`.

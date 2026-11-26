@@ -37,7 +37,7 @@ double requestedNowMs()
 
 QString currentHash()
 {
-    // CR_ROUTE=mission-control opens a page directly.
+    // CR_ROUTE=live starts on the shareable Christmas Eve link.
     return QString::fromUtf8(qgetenv("CR_ROUTE"));
 }
 

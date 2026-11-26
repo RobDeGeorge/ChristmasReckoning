@@ -11,7 +11,6 @@ from __future__ import annotations
 import argparse
 import gzip
 import hashlib
-import html
 import json
 import pathlib
 import shutil
@@ -36,25 +35,12 @@ def brotli_compress(data: bytes) -> bytes | None:
     return brotli.compress(data, quality=11, lgwin=24)
 
 
-def render_summary(path: pathlib.Path | None) -> str:
-    """Static HTML table of headline numbers from cr-report (empty until that tool exists)."""
-    if not path or not path.exists():
-        return ""
-    report = json.loads(path.read_text())
-    rows = "\n".join(
-        f"<tr><th scope=\"row\">{html.escape(item['label'])}</th><td>{html.escape(item['value'])}</td></tr>"
-        for item in report.get("headline", []))
-    intro = html.escape(report.get("intro", ""))
-    return f"<h2>Santa's night, by the numbers</h2>\n<p>{intro}</p>\n<table>\n{rows}\n</table>"
-
-
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--build", type=pathlib.Path,
                         default=pathlib.Path.home() / "build/christmasreckoning/wasm-release")
     parser.add_argument("--out", type=pathlib.Path,
                         default=pathlib.Path.home() / "build/christmasreckoning/dist")
-    parser.add_argument("--summary", type=pathlib.Path, help="cr-report JSON for the static summary")
     args = parser.parse_args()
 
     app_dir = args.build / "src" / "app"
@@ -104,8 +90,7 @@ def main() -> int:
             .replace("{{BUILD_JSON}}", json.dumps(build, separators=(",", ":")))
             .replace("{{APP_JS}}", names["js"])
             .replace("{{QTLOADER_JS}}", names["qtloader"])
-            .replace("{{SOURCE_URL}}", SOURCE_URL)
-            .replace("{{SUMMARY}}", render_summary(args.summary)))
+            .replace("{{SOURCE_URL}}", SOURCE_URL))
     if "{{" in page:
         print("index.html still has unrendered placeholders", file=sys.stderr)
         return 1

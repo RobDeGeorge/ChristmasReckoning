@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 // SPDX-License-Identifier: GPL-3.0-or-later
 // End-to-end smoke test: loads the built site in headless Chromium, waits for the Qt app's first
-// frame, checks routing (hash links, back/forward, deep links), checks the countdown against
-// JavaScript's Date in several emulated time zones, and saves screenshots.
+// frame, checks the hash links (#/live, and links into the old site), the countdown against
+// JavaScript's Date in several emulated time zones, and the tracker before, during and after the
+// flight, and saves screenshots.
 //
 //   node tools/smoke/smoke.cjs --dist ~/build/christmasreckoning/dist [--out shots/] [--chrome path]
 //   node tools/smoke/smoke.cjs --url https://www.christmasreckoning.com
@@ -115,7 +116,7 @@ async function main() {
   const sleep = ms => new Promise(r => setTimeout(r, ms));
 
   try {
-    // 1. Countdown page loads and renders.
+    // 1. The tracker loads and renders.
     {
       const { page, errors, readyMs } = await openPage(`${base}/`);
       check('app reaches first frame', true, `${readyMs} ms`);
@@ -124,30 +125,28 @@ async function main() {
       const transfer = await page.evaluate(() => performance.getEntriesByType('resource')
         .reduce((sum, e) => sum + (e.transferSize || e.encodedBodySize || 0), 0));
       check('total transfer measured', transfer > 0, `${(transfer / 1048576).toFixed(2)} MiB`);
-      await sleep(1500);
-      await page.screenshot({ path: path.join(args.out, 'countdown.png') });
-      const route = await page.evaluate(() => window.crState && window.crState.route);
-      check('initial route is countdown', route === '', JSON.stringify(route));
-
-      // 2. Hash navigation into Mission Control, then browser back.
-      await page.evaluate(() => { location.hash = '#/mission-control'; });
-      await page.waitForFunction(() => window.crState.route === 'mission-control', { timeout: 15000 });
-      check('hash link opens Mission Control', true);
       await sleep(4000); // let the Earth textures arrive and fade in
-      await page.screenshot({ path: path.join(args.out, 'mission-control.png') });
+      await page.screenshot({ path: path.join(args.out, 'tracker.png') });
+      const route = await page.evaluate(() => window.crState && window.crState.route);
+      check('initial route is the tracker', route === '', JSON.stringify(route));
+
+      // 2. The shareable Christmas Eve link, then browser back.
+      await page.evaluate(() => { location.hash = '#/live'; });
+      await page.waitForFunction(() => window.crState.route === 'live', { timeout: 15000 });
+      check('hash link #/live is recognised', true);
       await page.goBack();
       await page.waitForFunction(() => window.crState.route === '', { timeout: 15000 });
-      check('back button returns to countdown', true);
-      check('no console errors (countdown session)', errors.length === 0, errors.join(' | '));
+      check('back button returns', true);
+      check('no console errors', errors.length === 0, errors.join(' | '));
       await page.close();
     }
 
-    // 3. Deep link straight into Mission Control.
+    // 3. Links into the old site's pages still open the tracker.
     {
-      const { page, errors } = await openPage(`${base}/#/mission-control`);
+      const { page, errors } = await openPage(`${base}/#/mission-control/fido`);
       const route = await page.evaluate(() => window.crState.route);
-      check('deep link to #/mission-control', route === 'mission-control', JSON.stringify(route));
-      check('no console errors (deep link)', errors.length === 0, errors.join(' | '));
+      check('old #/mission-control links open the tracker', route === '', JSON.stringify(route));
+      check('no console errors (old link)', errors.length === 0, errors.join(' | '));
       await page.close();
     }
 
@@ -181,7 +180,6 @@ async function main() {
       await waitTracker(page, 't => true');
       let t = await tracker(page);
       check('#/live before Christmas Eve is a preview', t.mode === 'preview' && !t.live, JSON.stringify(t));
-      check('#/live opens Mission Control', await page.evaluate(() => window.crState.route) === 'mission-control/live');
       await page.close();
 
       ({ page } = await openPage(`${base}/?now=2026-12-24T07:59:52Z#/live`, { timezone: 'America/New_York' }));
@@ -195,7 +193,7 @@ async function main() {
       check('Santa lifts off live at launch time', t.live && t.phase !== 'prelaunch', JSON.stringify(t));
       await page.close();
 
-      ({ page } = await openPage(`${base}/?now=2026-12-24T20:00:00Z#/mission-control`, { timezone: 'America/New_York' }));
+      ({ page } = await openPage(`${base}/?now=2026-12-24T20:00:00Z`, { timezone: 'America/New_York' }));
       await waitTracker(page, 't => t.live');
       t = await tracker(page);
       check('live during the night', t.live && t.phase === 'delivering', JSON.stringify(t));
@@ -203,7 +201,7 @@ async function main() {
       await page.screenshot({ path: path.join(args.out, 'live-night.png') });
       await page.close();
 
-      ({ page } = await openPage(`${base}/?now=2026-12-25T21:00:00Z#/mission-control`, { timezone: 'Europe/London' }));
+      ({ page } = await openPage(`${base}/?now=2026-12-25T21:00:00Z`, { timezone: 'Europe/London' }));
       await waitTracker(page, 't => true');
       t = await tracker(page);
       check('after landing it is a replay', t.mode === 'replay' && !t.live, JSON.stringify(t));
@@ -214,7 +212,7 @@ async function main() {
     {
       const { page } = await openPage(`${base}/`, { viewport: { width: 390, height: 844, deviceScaleFactor: 2, isMobile: true, hasTouch: true } });
       await sleep(1500);
-      await page.screenshot({ path: path.join(args.out, 'countdown-phone.png') });
+      await page.screenshot({ path: path.join(args.out, 'tracker-phone.png') });
       check('phone viewport renders', true);
       await page.close();
     }

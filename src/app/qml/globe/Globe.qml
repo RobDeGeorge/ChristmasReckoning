@@ -2,8 +2,7 @@
 import QtQuick
 import ChristmasReckoning
 
-// Ray-traced Earth with a real day/night terminator and the delivery layer.
-// Drag to rotate, scroll or pinch to zoom.
+// Ray-traced Earth with a real day/night terminator and the delivery layer. Drag to rotate.
 Item {
     id: root
 
@@ -11,8 +10,6 @@ Item {
     property real centerLonDeg: 10
     property real distance: 3.3          // camera distance in Earth radii
     property real fovDeg: 32
-    property bool mapMode: false
-    property real mapZoom: 1
     property double timeMs: Platform.nowMs()
     property bool interactive: true
     property real gridAlpha: 0.14
@@ -28,13 +25,6 @@ Item {
     // Screen position of a geographic point: {x, y, visible}. Mirrors the shader's camera exactly.
     function project(latDeg, lonDeg) {
         const lat = latDeg * Math.PI / 180, lon = lonDeg * Math.PI / 180;
-        if (mapMode) {
-            const mapWidth = Math.min(width, 2 * height) * mapZoom;
-            const pxPerRad = mapWidth / (2 * Math.PI);
-            let dLon = lon - centerLonDeg * Math.PI / 180;
-            dLon = ((dLon + Math.PI) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI) - Math.PI;
-            return { x: width / 2 + offsetX + dLon * pxPerRad, y: height / 2 + offsetY - lat * pxPerRad, visible: true };
-        }
         const p = [Math.cos(lat) * Math.cos(lon), Math.cos(lat) * Math.sin(lon), Math.sin(lat)];
         const cLat = centerLatDeg * Math.PI / 180, cLon = centerLonDeg * Math.PI / 180;
         const f = [Math.cos(cLat) * Math.cos(cLon), Math.cos(cLat) * Math.sin(cLon), Math.sin(cLat)];
@@ -98,8 +88,8 @@ Item {
         property real camDistance: root.distance
         property real fovY: root.fovDeg * Math.PI / 180
         property vector3d sunDir: Astro.sunDirection(root.timeMs)
-        property real mapMode: root.mapMode ? 1 : 0
-        property real mapZoom: root.mapZoom
+        property real mapMode: 0   // the shader can also draw a flat map; the tracker never asks it to
+        property real mapZoom: 1
         property real texturesReady: root.texturesReady ? 1 : 0
         property real gridAlpha: root.gridAlpha
         property real deliveryAlpha: root.showDeliveries ? 1 : 0
@@ -130,53 +120,15 @@ Item {
             if (active) {
                 startLat = root.centerLatDeg;
                 startLon = root.centerLonDeg;
-                root.userInteracted();
             }
+            root.userInteracted();
         }
         onTranslationChanged: {
             if (!active)
                 return;
-            if (root.mapMode) {
-                const pxPerDeg = Math.min(root.width, 2 * root.height) * root.mapZoom / 360;
-                root.centerLonDeg = startLon - translation.x / pxPerDeg;
-                return;
-            }
             const degPerPx = 70 / root.height * (root.distance - 1);
             root.centerLonDeg = startLon - translation.x * degPerPx;
             root.centerLatDeg = Math.max(-85, Math.min(85, startLat + translation.y * degPerPx));
-        }
-    }
-
-    WheelHandler {
-        enabled: root.interactive
-        acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
-        onWheel: event => {
-            const factor = Math.pow(1.0015, -event.angleDelta.y);
-            if (root.mapMode)
-                root.mapZoom = Math.max(1, Math.min(6, root.mapZoom / factor));
-            else
-                root.distance = Math.max(1.35, Math.min(8, 1 + (root.distance - 1) * factor));
-            root.userInteracted();
-        }
-    }
-
-    PinchHandler {
-        enabled: root.interactive
-        target: null
-        property real startDistance
-        property real startZoom
-        onActiveChanged: {
-            if (active) {
-                startDistance = root.distance;
-                startZoom = root.mapZoom;
-                root.userInteracted();
-            }
-        }
-        onActiveScaleChanged: {
-            if (root.mapMode)
-                root.mapZoom = Math.max(1, Math.min(6, startZoom * activeScale));
-            else
-                root.distance = Math.max(1.35, Math.min(8, 1 + (startDistance - 1) / activeScale));
         }
     }
 }

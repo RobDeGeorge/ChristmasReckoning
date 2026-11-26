@@ -26,27 +26,18 @@ const VIEWPORTS = {
 
 // name, viewport, hash/query, wait ms, optional action
 const SHOTS = [
-  ['countdown-laptop', 'laptop', '/', 1500],
-  ['countdown-phone', 'phone', '/', 1500],
-  ['countdown-eve-laptop', 'laptop', '/?now=2026-12-24T20:00:00Z', 2000],
-  ['countdown-eve-phone', 'phone', '/?now=2026-12-24T20:00:00Z', 2000],
-  ['mission-laptop', 'laptop', '/?now=2026-12-24T20:00:00Z#/mission-control', 4000],
-  ['mission-phone', 'phone', '/?now=2026-12-24T20:00:00Z#/mission-control', 4000],
-  ['mission-desktop', 'desktop', '/?now=2026-12-24T20:00:00Z#/mission-control', 4000],
-  ['console-fido-laptop', 'laptop', '/?now=2026-12-24T20:00:00Z#/mission-control/fido', 3000],
-  ['console-fido-phone', 'phone', '/?now=2026-12-24T20:00:00Z#/mission-control/fido', 3000],
-  ['console-windows-laptop', 'laptop', '/?now=2026-12-24T20:00:00Z#/mission-control/windows', 3000],
-  ['scenario-phone', 'phone', '/#/mission-control/scenario', 3000],
-  ['mission-preview-laptop', 'laptop', '/#/mission-control', 9000],
-  ['countdown-smalllaptop', 'smallLaptop', '/', 1500],
-  ['mission-smalllaptop', 'smallLaptop', '/?now=2026-12-24T20:00:00Z#/mission-control', 4000],
-  ['mission-phone-landscape', 'phoneLandscape', '/?now=2026-12-24T20:00:00Z#/mission-control', 4000],
-  ['og', 'og', '/?now=2026-12-24T21:30:00Z#/mission-control', 5000],
-  ['come-back-countdown-phone', 'phone', '/?now=2026-12-10T12:00:00Z', 2000],
-  ['come-back-countdown-laptop', 'laptop', '/?now=2026-12-10T12:00:00Z', 2000],
-  ['come-back-mission-phone', 'phone', '/?now=2026-12-10T12:00:00Z#/mission-control', 3000],
-  ['live-countdown-phone', 'phone', '/?now=2026-12-24T07:30:00Z', 2000],
-  ['live-tracker-phone', 'phone', '/?now=2026-12-24T20:00:00Z#/live', 3000]
+  ['before-laptop', 'laptop', '/?now=2026-12-10T12:00:00Z', 9000],
+  ['before-phone', 'phone', '/?now=2026-12-10T12:00:00Z', 9000],
+  ['before-desktop', 'desktop', '/?now=2026-12-10T12:00:00Z', 20000],
+  ['before-smalllaptop', 'smallLaptop', '/?now=2026-12-10T12:00:00Z', 30000],
+  ['before-phone-landscape', 'phoneLandscape', '/?now=2026-12-10T12:00:00Z', 9000],
+  ['prelaunch-phone', 'phone', '/?now=2026-12-24T07:30:00Z#/live', 4000],
+  ['live-laptop', 'laptop', '/?now=2026-12-24T20:00:00Z#/live', 4000],
+  ['live-phone', 'phone', '/?now=2026-12-24T20:00:00Z#/live', 4000],
+  ['live-phone-landscape', 'phoneLandscape', '/?now=2026-12-24T20:00:00Z#/live', 4000],
+  ['after-laptop', 'laptop', '/?now=2026-12-25T21:00:00Z', 9000],
+  ['after-phone', 'phone', '/?now=2026-12-25T21:00:00Z', 9000],
+  ['og', 'og', '/?now=2026-12-24T21:30:00Z#/live', 5000]
 ];
 
 function serve(root) {

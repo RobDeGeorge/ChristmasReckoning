@@ -2,15 +2,11 @@
 #include "platform.h"
 
 #include <QQmlEngine>
-#include <QRegularExpression>
-#include <QStringList>
 
 #include <cmath>
 
 namespace {
 Platform *g_platform = nullptr;
-
-const QStringList kPages = {QString(), QStringLiteral("mission-control")};
 } // namespace
 
 Platform::Platform(QObject *parent)
@@ -44,31 +40,9 @@ QString Platform::routeFromHash(const QString &hash)
     QString path = hash;
     while (path.startsWith(u'#') || path.startsWith(u'/'))
         path.remove(0, 1);
-    while (path.endsWith(u'/'))
-        path.chop(1);
-    path = path.toLower();
-
-    QString first = path.section(u'/', 0, 0);
-    if (first == u"live")
-        return QStringLiteral("mission-control/live");
-    if (!kPages.contains(first))
-        return QString();
-    // Keep only simple, safe sub-route segments (console ids like "fido").
-    const QString second = path.section(u'/', 1, 1);
-    static const QRegularExpression safe(QStringLiteral("^[a-z0-9-]{1,32}$"));
-    if (!second.isEmpty() && safe.match(second).hasMatch())
-        return first + u'/' + second;
-    return first;
-}
-
-QString Platform::page() const
-{
-    return m_route.section(u'/', 0, 0);
-}
-
-QString Platform::subRoute() const
-{
-    return m_route.section(u'/', 1, 1);
+    // There is one screen. "#/live" is the link people share for Christmas Eve; every other hash
+    // (including links into the old site's pages) simply opens the tracker.
+    return path.section(u'/', 0, 0).toLower() == u"live" ? QStringLiteral("live") : QString();
 }
 
 void Platform::setRoute(const QString &route)
